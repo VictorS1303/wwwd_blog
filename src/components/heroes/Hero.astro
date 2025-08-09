@@ -1,5 +1,14 @@
 ---
-const {class: className, id: id, src, alt, heroHeaderText, heroParagraphText} = Astro.props 
+const {
+  class: className,
+  id: id,
+  src,
+  alt,
+  heroHeaderText,
+  heroParagraphText,
+} = Astro.props
+
+import Overlay from "../Overlay.astro"
 ---
 
 <section class={`${className} relative h-[80vh]`} id={id}>
@@ -9,13 +18,16 @@ const {class: className, id: id, src, alt, heroHeaderText, heroParagraphText} = 
     class="absolute object-cover h-[100%] w-screen rounded-md"
   />
   <div class="absolute bottom-3 left-3 hero-desc-container text-white">
-    <header class="relative ">
-      <h1 class=" text-[var(--headings-font)] uppercase text-2xl">{heroHeaderText}</h1>
+    <header class="relative">
+      <h1 class="text-[var(--headings-font)] uppercase text-2xl">
+        {heroHeaderText}
+      </h1>
     </header>
     <p class="text-[var(--paragraphs-font)] italic">
       {heroParagraphText}
     </p>
   </div>
+  <Overlay />
 </section>
 
 <!-- Victor Schweitz The author of World Wide Web Development -->
