@@ -1,0 +1,21 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/family=Roboto:100,200,300,400,500,600,700,800,900');
+@import url('https://fonts.googleapis.com/family=Gabarito:100,200,300,400,500,600,700,800,900');
+
+
+@theme
+{
+    /* COLORS */
+    --primary-text-color: #fff;
+    --secondary-text-color: #f45b35;
+
+    /* FONTS */
+    --headings-font: 'Gabarito', sans-serif;
+    --paragraph-font: 'Roboto', sans-serif;
+}
+
+body
+{
+    font-family: 'Gabarito', sans-serif;
+    text-transform: uppercase;
+}
