@@ -1,5 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro"
+import Hero from "../components/heroes/Hero.astro"
 ---
 
-<Layout title="Home" />
+<Layout title="Home">
+  <Hero
+    src="/images/landing_hero/landing_hero_bg.webp"
+    alt="landing hero image"
+    heroHeaderText="Victor Schweitz"
+    heroParagraphText="The author of World Wide Web Development"
+  />
+</Layout>

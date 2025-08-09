@@ -11,11 +11,10 @@
 
     /* FONTS */
     --headings-font: 'Gabarito', sans-serif;
-    --paragraph-font: 'Roboto', sans-serif;
+    --paragraphs-font: 'Roboto', sans-serif;
 }
 
 body
 {
     font-family: 'Gabarito', sans-serif;
-    text-transform: uppercase;
 }
