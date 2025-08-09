@@ -17,7 +17,9 @@ import Overlay from "../Overlay.astro"
     alt={alt}
     class="absolute object-cover h-[100%] w-screen rounded-md"
   />
-  <div class="absolute bottom-3 left-3 hero-desc-container text-white">
+  <div
+    class="absolute bottom-3 left-3 hero-desc-container text-white z-[10000]"
+  >
     <header class="relative">
       <h1 class="text-[var(--headings-font)] uppercase text-2xl">
         {heroHeaderText}
@@ -29,5 +31,3 @@ import Overlay from "../Overlay.astro"
   </div>
   <Overlay />
 </section>
-
-<!-- Victor Schweitz The author of World Wide Web Development -->
