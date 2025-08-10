@@ -1,6 +1,29 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import Hero from "../components/heroes/Hero.astro"
+import AccordionItemsContainer from "../components/accordion/AccordionItemsContainer.astro"
+import AccordionItem from "../components/accordion/AccordionItem.astro"
+
+const accordionItems = [
+  {
+    accordionItemTitle: "1. Music",
+    accordionItemIcon: "fas fa-music",
+    accordionItemText:
+      "I have been playing the piano since I was 8. On top of that, I have been a fan of reggae since I was 11, and this genre of music is what I primarily listen to.",
+  },
+  {
+    accordionItemTitle: "2. Workout",
+    accordionItemIcon: "fas fa-bicycle",
+    accordionItemText:
+      "I love to go for a bike ride quite often - either outside, when the weather allows for it or inside, when the weather is bad. Besides that, I work as a delivery guy, which means more time on the bike.",
+  },
+  {
+    accordionItemTitle: "3. Sparetime",
+    accordionItemIcon: "fas fa-hourglass-half",
+    accordionItemText:
+      "In my sparetime, I really like to solve riddles and other puzzles of different types - all from online riddles to escape rooms and anything in between.",
+  },
+]
 ---
 
 <Layout title="Home">
@@ -10,4 +33,5 @@ import Hero from "../components/heroes/Hero.astro"
     heroHeaderText="Victor Schweitz"
     heroParagraphText="The author of World Wide Web Development"
   />
+  <AccordionItemsContainer accordionItems={accordionItems} />
 </Layout>

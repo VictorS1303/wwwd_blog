@@ -8,6 +8,7 @@
     /* COLORS */
     --primary-text-color: #fff;
     --secondary-text-color: #f45b35;
+    --accordion-item-bg-color: #f45b35;
 
     /* FONTS */
     --headings-font: 'Gabarito', sans-serif;
