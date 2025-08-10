@@ -1,5 +1,9 @@
 ---
-const {class: className, id: id} = Astro.props
+const { class: className, id: id } = Astro.props
 ---
 
-<article class=`${className} absolute top-0 left-0 w-full h-full bg-black opacity-30` id={id}></article>
+<article
+  class=`${className} rounded-md absolute top-0 left-0 w-full h-full bg-black opacity-30`
+  id={id}
+>
+</article>
