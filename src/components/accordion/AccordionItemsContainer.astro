@@ -1,21 +1,19 @@
 ---
 import AccordionItem from "./AccordionItem.astro"
 
-const {class: className, id: id, accordionItems = []} = Astro.props
+const { class: className, id: id, accordionItems = [] } = Astro.props
 ---
 
-<article class=`${className}` id={id}>
+<article class={`${className} sticky top-0 md:relative md:top-auto`} id={id}>
   {
-    accordionItems.length > 0 ? (
-      accordionItems.map((accordionItem) => (
-        <AccordionItem
-          accordionItemTitle={accordionItem.accordionItemTitle}
-          accordionItemIcon={accordionItem.accordionItemIcon}
-          accordionItemText={accordionItem.accordionItemText}
-        />
-      ))
-    ) : (
-      ''
-    )
+    accordionItems.length > 0
+      ? accordionItems.map((accordionItem) => (
+          <AccordionItem
+            accordionItemTitle={accordionItem.accordionItemTitle}
+            accordionItemIcon={accordionItem.accordionItemIcon}
+            accordionItemText={accordionItem.accordionItemText}
+          />
+        ))
+      : null
   }
 </article>

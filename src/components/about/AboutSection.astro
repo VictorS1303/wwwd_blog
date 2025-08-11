@@ -1,0 +1,13 @@
+---
+const { accordionItems } = Astro.props
+
+import Section from '../generals/section/Section.astro'
+import AccordionItemsContainer from "../accordion/AccordionItemsContainer.astro"
+---
+
+<Section class="about-section mt-8" id="about_section">
+  <div class="flex flex-col gap-4 md:flex-row md:justify-between">
+    
+    <AccordionItemsContainer accordionItems={accordionItems} />
+  </div>
+</Section>

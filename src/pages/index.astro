@@ -1,8 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro"
 import Hero from "../components/heroes/Hero.astro"
-import AccordionItemsContainer from "../components/accordion/AccordionItemsContainer.astro"
-import AccordionItem from "../components/accordion/AccordionItem.astro"
+import AboutSection from "../components/about/AboutSection.astro"
 
 const accordionItems = [
   {
@@ -33,5 +32,6 @@ const accordionItems = [
     heroHeaderText="Victor Schweitz"
     heroParagraphText="The author of World Wide Web Development"
   />
-  <AccordionItemsContainer accordionItems={accordionItems} />
+
+  <AboutSection accordionItems={accordionItems} />
 </Layout>
