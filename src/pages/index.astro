@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro"
 import Hero from "../components/heroes/Hero.astro"
 import AboutSection from "../components/about/AboutSection.astro"
+import TextBlock from "../components/text_block/TextBlock.astro"
 
 const accordionItems = [
   {
@@ -32,6 +33,6 @@ const accordionItems = [
     heroHeaderText="Victor Schweitz"
     heroParagraphText="The author of World Wide Web Development"
   />
-
+  <TextBlock />
   <AboutSection accordionItems={accordionItems} />
 </Layout>

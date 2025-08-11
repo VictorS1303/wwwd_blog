@@ -1,0 +1,17 @@
+---
+import Header from '../header/Header.astro'
+const {class: className, id: id, hasHeader} = Astro.props
+---
+
+<article class=`${className}` id={id}>
+  {
+    hasHeader ? (
+      <Header
+        isTextBlockHeader={true}
+        headerText="Hey"
+      />
+    ) : (
+''
+    )
+  }
+</article>
