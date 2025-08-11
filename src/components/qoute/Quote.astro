@@ -1,0 +1,7 @@
+---
+const {class: className, id: id, quoteText="Remember to make your website just a little bit more awesome every day"} = Astro.props
+---
+
+<blockquote class=`${className}` id={id}>
+  <p class="text-gray-400 text-md italic">- {quoteText}</p>
+</blockquote>
