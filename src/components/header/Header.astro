@@ -1,0 +1,21 @@
+---
+const { class: className, id: id, headerText, isTextBlockHeader } = Astro.props
+---
+
+{
+  isTextBlockHeader ? (
+    <header
+      class={`${className === "hero-header" ? "text-white" : "text-[#f45b35]"} text-lg font-bold uppercase tracking-wide`}
+      id={id}
+    >
+      <h1>{headerText}</h1>
+    </header>
+  ) : (
+    <header
+      class={`${className === "hero-header" ? "text-white" : "text-[#f45b35]"} text-2xl`}
+      id={id}
+    >
+      <h1>{headerText}</h1>
+    </header>
+  )
+}

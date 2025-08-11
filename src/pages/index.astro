@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro"
 import Hero from "../components/heroes/Hero.astro"
 import AboutSection from "../components/about/AboutSection.astro"
+import Header from "../components/header/Header.astro"
 
 const accordionItems = [
   {
@@ -34,4 +35,5 @@ const accordionItems = [
   />
 
   <AboutSection accordionItems={accordionItems} />
+  <Header headerText="Hey" isTextBlockHeader={true} />
 </Layout>
