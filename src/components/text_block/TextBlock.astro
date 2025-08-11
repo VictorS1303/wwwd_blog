@@ -1,17 +1,17 @@
 ---
-import Header from '../header/Header.astro'
-const {class: className, id: id, hasHeader} = Astro.props
+import Header from "../header/Header.astro"
+const {
+  class: className,
+  id,
+  headerText,
+  hasHeader,
+  textBlockParagraphText,
+} = Astro.props
 ---
 
-<article class=`${className}` id={id}>
-  {
-    hasHeader ? (
-      <Header
-        isTextBlockHeader={true}
-        headerText="Hey"
-      />
-    ) : (
-''
-    )
-  }
+<article class=`${className} flex flex-col gap-1 mt-4` id={id}>
+  {hasHeader && <Header isTextBlockHeader={true} headerText={headerText} />}
+  <p>
+    {textBlockParagraphText}
+  </p>
 </article>
