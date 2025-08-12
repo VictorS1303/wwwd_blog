@@ -1,9 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro"
+import LatestPosts from "../components/posts/LatestPosts.astro"
 import Hero from "../components/hero/Hero.astro"
 import AboutSection from "../components/about/AboutSection.astro"
 import TextBlock from "../components/text_block/TextBlock.astro"
-import Card from "../components/card/Card.astro"
+import Section from "../components/generals/section/Section.astro"
 
 const accordionItems = [
   {
@@ -23,6 +24,35 @@ const accordionItems = [
     accordionItemIcon: "fas fa-hourglass-half",
     accordionItemText:
       "In my sparetime, I really like to solve riddles and other puzzles of different types - all from online riddles to escape rooms and anything in between.",
+  },
+]
+
+const latestPosts = [
+  {
+    isBlogPostCard: true,
+    headerText: "How the browser reads CSS",
+    labelText: "CSS",
+    isBlogPostCardText: true,
+    isBlogPostCardHeader: true,
+    textBlockParagraphText:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
+    buttonText: "Read More",
+    href: "#",
+    src: "/images/landing_hero/landing_hero_bg.webp",
+    alt: "blog post card image",
+  },
+  {
+    isBlogPostCard: true,
+    headerText: "What is HTML?",
+    labelText: "HTML",
+    isBlogPostCardText: true,
+    isBlogPostCardHeader: true,
+    textBlockParagraphText:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
+    buttonText: "Read More",
+    href: "#",
+    src: "/images/landing_hero/landing_hero_bg.webp",
+    alt: "blog post card image",
   },
 ]
 ---
@@ -56,17 +86,11 @@ const accordionItems = [
     </div>
     <AboutSection accordionItems={accordionItems} />
   </div>
-  <Card
-    isBlogPostCard={true}
-    headerText="Title"
-    labelText="CSS"
-    isBlogPostCardText={true}
-    isBlogPostCardHeader={true}
-    textBlockParagraphText="Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus"
-    buttonText="Read More"
-    href="#"
-    class="rounded-t-md"
-    src="/images/landing_hero/landing_hero_bg.webp"
-    alt="blog post card image"
+
+  <LatestPosts
+    headerText="Latest Posts"
+    isTextBlockHeader={true}
+    latestPosts={latestPosts}
+    class="mt-4"
   />
 </Layout>

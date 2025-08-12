@@ -24,14 +24,8 @@ const {
 
 {
   isBlogPostCard ? (
-    <article class="relative w-[200px]">
+    <article class="relative w-fit max-w-[250px]">
       <Image src={src} class={className} alt={alt} />
-
-      {/* <img
-        src="/images/landing_hero/landing_hero_bg.webp"
-        class="rounded-t-md"
-        alt="blog post card image"
-      /> */}
 
       <div class="blog-post-title-and-topic-container flex justify-between items-center py-2">
         <Header

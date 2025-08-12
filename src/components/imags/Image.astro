@@ -1,18 +1,5 @@
 ---
-const {class: className, id: id, src, alt} = Astro.props
+const { class: className, id: id, src, alt } = Astro.props
 ---
-<img
-  src={src}
-  class={className}
-  alt={alt}
-/>
 
-
-<!-- 
-<img
-        src="/images/landing_hero/landing_hero_bg.webp"
-        class="rounded-t-md"
-        alt="blog post card image"
-      />
-
--->
+<img src={src} class={className} alt={alt} />

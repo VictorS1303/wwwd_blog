@@ -1,0 +1,31 @@
+---
+import Card from '../card/Card.astro'
+
+const {class: className, id: id, latestPosts = []} = Astro.props
+---
+
+
+
+<div class="flex gap-6 flex-wrap mt-4">
+  {
+    latestPosts.length > 0 ? (
+      latestPosts.map((latestBlogPostCard) => (
+        <Card
+          isBlogPostCard={latestBlogPostCard.isBlogPostCard}
+          headerText={latestBlogPostCard.headerText}
+          labelText={latestBlogPostCard.labelText}
+          isBlogPostCardText={latestBlogPostCard.isBlogPostCardText}
+          textBlockParagraphText={latestBlogPostCard.textBlockParagraphText}
+          isBlogPostCardHeader={latestBlogPostCard.isBlogPostCardHeader}
+          buttonText={latestBlogPostCard.buttonText}
+          href={latestBlogPostCard.href}
+          class="rounded-t-md"
+          src={latestBlogPostCard.src}
+          alt={latestBlogPostCard.alt}
+        />
+      ))
+    ) : (
+      'No current latest posts'
+    )
+  }
+</div>
