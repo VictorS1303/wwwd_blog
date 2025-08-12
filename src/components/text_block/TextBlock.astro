@@ -1,5 +1,6 @@
 ---
 import Header from "../header/Header.astro"
+import FadeOutOverlay from "../generals/overlay/FadeOutOverlay.astro"
 const {
   class: className,
   id,
@@ -12,9 +13,10 @@ const {
 
 {
   isBlogPostCardText ? (
-    <article class={`${className} flex flex-col gap-1 my-2`} id={id}>
+    <article class={`${className} relative flex flex-col gap-1 my-2`} id={id}>
       {hasHeader && <Header isTextBlockHeader={true} headerText={headerText} />}
       <p>{textBlockParagraphText}</p>
+      <FadeOutOverlay />
     </article>
   ) : (
     <article class={`${className} flex flex-col gap-1 mt-4`} id={id}>

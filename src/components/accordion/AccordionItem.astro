@@ -1,17 +1,27 @@
 ---
-const { class: className, id, accordionItemTitle, accordionItemText, accordionItemIcon } = Astro.props
+const {
+  class: className,
+  id,
+  accordionItemTitle,
+  accordionItemText,
+  accordionItemIcon,
+} = Astro.props
 ---
 
 <details
-  class={`accordion-item bg-[var(--accordion-item-bg-color)] h-fit min-w-[200px] max-w-[300px] px-3 py-3 border-b-2 border-white
+  class={`accordion-item bg-[var(--accordion-item-bg-color)] h-fit w-full  px-3 py-3 border-b-2 border-white md:w-[200px]
     first:rounded-t-md last:rounded-b-md
   `}
 >
-  <summary class="accordion-item-header flex items-center justify-between gap-4 cursor-pointer text-lg text-white ">
+  <summary
+    class="accordion-item-header flex items-center justify-between gap-4 cursor-pointer text-lg text-white"
+  >
     <h3>{accordionItemTitle}</h3>
-    <i class={accordionItemIcon} />
+    <i class={accordionItemIcon}></i>
   </summary>
-  <p class="accordion-item-description-text text-base text-wrap bg-transparent w-full h-fit my-4 leading-5 text-white">
+  <p
+    class="accordion-item-description-text text-base text-wrap bg-transparent w-full h-fit my-4 leading-5 text-white"
+  >
     {accordionItemText}
   </p>
 </details>
