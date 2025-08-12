@@ -1,0 +1,14 @@
+---
+const {class: className, id: id, href, buttonText} = Astro.props
+---
+
+<a href={href} class=`${className}` id={id}>{buttonText}</a>
+
+<!--
+<a
+        href="#"
+        class="absolute p-2 mt-4 text-sm rounded-sm bg-[var(--blog-post-card-button-border-color)] text-white "
+      >
+        Read More
+      </a>
+-->

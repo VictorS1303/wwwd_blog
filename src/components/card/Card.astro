@@ -1,36 +1,63 @@
 ---
-const { class: className, id: id, isBlogPostCard } = Astro.props
+import Label from "../label/Label.astro"
+import Header from "../header/Header.astro"
+import TextBlock from "../text_block/TextBlock.astro"
+import Image from "../imags/Image.astro"
+import Button from "../button/Button.astro"
+import FadeOutOverlay from "../generals/overlay/FadeOutOverlay.astro"
+
+const {
+  class: className,
+  id: id,
+  isBlogPostCard,
+  headerText,
+  labelText,
+  textBlockParagraphText,
+  isBlogPostCardText,
+  href,
+  buttonText,
+  isBlogPostCardHeader,
+  src,
+  alt,
+} = Astro.props
 ---
 
 {
-  isBlogPostCard ?
-  (
+  isBlogPostCard ? (
     <article class="relative w-[200px]">
-      <img
+      <Image src={src} class={className} alt={alt} />
+
+      {/* <img
         src="/images/landing_hero/landing_hero_bg.webp"
         class="rounded-t-md"
         alt="blog post card image"
-      />
+      /> */}
 
       <div class="blog-post-title-and-topic-container flex justify-between items-center py-2">
-        <h3>Title</h3>
-        <span class="blog-post-category text-xs bg-[var(--blog-post-card-category-label-bg-color)] px-2 py-1 w-fit text-white rounded-full" id="blog_post_category">
-          CSS
-        </span>
+        <Header
+          headerText={headerText}
+          isBlogPostCardHeader={isBlogPostCardHeader}
+        />
+        <Label
+          class="blog-post-category text-xs bg-[var(--blog-post-card-category-label-bg-color)] px-2 py-1 w-fit text-white rounded-full"
+          id="blog_post_category"
+          labelText={labelText}
+        />
       </div>
 
-      <p class="excerpt line-clamp-4 text-sm" id="excerpt">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint,
-        vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus
-        cumque, tenetur quae qui officia dolores blanditiis natus consequuntur.
-        Non, neque! Exercitationem et nostrum quidem voluptas sequi vel
-        voluptatum, a hic aspernatur ab necessitatibus distinctio deserunt dicta
-        suscipit iste maiores?
-      </p>
+      <TextBlock
+        class="excerpt line-clamp-4 text-sm"
+        textBlockParagraphText={textBlockParagraphText}
+        isBlogPostCardText={isBlogPostCardText}
+      />
 
-      <div class="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-white to-transparent" />
+      <FadeOutOverlay />
 
-      <a href="#" class="absolute p-2 mt-4 text-sm rounded-sm bg-[var(--blog-post-card-button-border-color)] text-white ">Read More</a>
+      <Button
+        href={href}
+        class="absolute p-2 mt-4 text-sm rounded-sm bg-[var(--blog-post-card-button-border-color)] text-white"
+        buttonText={buttonText}
+      />
     </article>
   ) : null
 }

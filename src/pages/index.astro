@@ -28,7 +28,7 @@ const accordionItems = [
 ---
 
 <Layout title="Home">
-  <!-- <Hero
+  <Hero
     src="/images/landing_hero/landing_hero_bg.webp"
     alt="landing hero image"
     heroHeaderText="Victor Schweitz"
@@ -54,6 +54,19 @@ const accordionItems = [
         textBlockParagraphText="Back in the summer of 2021, I began publishing technical articles on various web development topics—sharing tips, experiments, and lessons learned. This page is my space to collect and showcase them in one place - all for you to read and enjoy."
       />
     </div>
-    <AboutSection accordionItems={accordionItems} /> -->
-  <Card isBlogPostCard={true} />
+    <AboutSection accordionItems={accordionItems} />
+  </div>
+  <Card
+    isBlogPostCard={true}
+    headerText="Title"
+    labelText="CSS"
+    isBlogPostCardText={true}
+    isBlogPostCardHeader={true}
+    textBlockParagraphText="Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus"
+    buttonText="Read More"
+    href="#"
+    class="rounded-t-md"
+    src="/images/landing_hero/landing_hero_bg.webp"
+    alt="blog post card image"
+  />
 </Layout>
