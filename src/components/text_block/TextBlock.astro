@@ -11,17 +11,9 @@ const {
 } = Astro.props
 ---
 
-{
-  isBlogPostCardText ? (
-    <article class={`${className} relative flex flex-col gap-1 my-2`} id={id}>
-      {hasHeader && <Header isTextBlockHeader={true} headerText={headerText} />}
-      <p>{textBlockParagraphText}</p>
-      <FadeOutOverlay />
-    </article>
-  ) : (
-    <article class={`${className} flex flex-col gap-1 mt-4`} id={id}>
-      {hasHeader && <Header isTextBlockHeader={true} headerText={headerText} />}
-      <p>{textBlockParagraphText}</p>
-    </article>
-  )
-}
+<article class=`${className} flex flex-col gap-1 mt-8` id={id}>
+  {hasHeader && <Header isTextBlockHeader={true} headerText={headerText} />}
+  <p class="text-xl">
+    {textBlockParagraphText}
+  </p>
+</article>
