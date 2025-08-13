@@ -24,23 +24,23 @@ const {
 
 {
   isBlogPostCard ? (
-    <article class="relative w-fit max-w-[250px]">
+    <article class="relative w-[300px]">
       <Image src={src} class={className} alt={alt} />
 
-      <div class="blog-post-title-and-topic-container flex justify-between items-center py-2">
+      <div class="blog-post-title-and-topic-container flex justify-between gap-8 items-center py-2">
         <Header
           headerText={headerText}
           isBlogPostCardHeader={isBlogPostCardHeader}
         />
         <Label
-          class="blog-post-category text-xs bg-[var(--blog-post-card-category-label-bg-color)] px-2 py-1 w-fit text-white rounded-full"
+          class="blog-post-category text-md bg-[var(--blog-post-card-category-label-bg-color)] px-2 py-1 w-fit text-white rounded-full"
           id="blog_post_category"
           labelText={labelText}
         />
       </div>
 
       <TextBlock
-        class="excerpt line-clamp-4 text-sm"
+        class="excerpt line-clamp-4 text-md"
         textBlockParagraphText={textBlockParagraphText}
         isBlogPostCardText={isBlogPostCardText}
       />
@@ -49,7 +49,7 @@ const {
 
       <Button
         href={href}
-        class="absolute p-2 mt-4 text-sm rounded-sm bg-[var(--blog-post-card-button-border-color)] text-white"
+        class="absolute p-2 mt-4 text-xl rounded-sm bg-[var(--blog-post-card-button-border-color)] text-white"
         buttonText={buttonText}
       />
     </article>
