@@ -1,0 +1,18 @@
+---
+const {class: className, id: id, navItems = []} = Astro.props
+---
+
+
+<nav class={`${className} sticky z-[1000000] mr-6 pt-4`} id={id}>
+  {navItems.length > 0 && (
+    <ul class="flex gap-4 justify-end text-white text-2xl">
+      {navItems
+        .filter(item => item.isShown !== false)  // show all except those explicitly false
+        .map((navItem, index) => (
+          <li key={index} class="cursor-pointer">
+            <a href={navItem.href} class="transition-text duration-150 ease-in hover:text-[var(--secondary-text-color)]">{navItem.text}</a>
+          </li>
+      ))}
+    </ul>
+  )}
+</nav>

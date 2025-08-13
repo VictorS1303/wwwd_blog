@@ -9,6 +9,18 @@ const {
 } = Astro.props
 
 import Overlay from "../generals/overlay/Overlay.astro"
+import Navigation from "../generals/navigation/Navigation.astro"
+
+const navItems = [
+  {
+    text: "Home",
+    href: "/",
+  },
+  {
+    text: "Blog Posts",
+    href: "blog-posts",
+  },
+]
 ---
 
 <section class={`${className} relative h-[60vh]`} id={id}>
@@ -29,5 +41,6 @@ import Overlay from "../generals/overlay/Overlay.astro"
       {heroParagraphText}
     </p>
   </div>
+  <Navigation navItems={navItems} />
   <Overlay />
 </section>
