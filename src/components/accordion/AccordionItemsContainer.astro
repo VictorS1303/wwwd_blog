@@ -2,6 +2,7 @@
 import AccordionItem from "./AccordionItem.astro"
 
 const { class: className, id: id, accordionItems = [] } = Astro.props
+const { class: className, id: id, accordionItems = [] } = Astro.props
 ---
 
 <article class={`${className} sticky top-0 md:relative md:top-auto`} id={id}>
@@ -17,3 +18,4 @@ const { class: className, id: id, accordionItems = [] } = Astro.props
       : null
   }
 </article>
+
