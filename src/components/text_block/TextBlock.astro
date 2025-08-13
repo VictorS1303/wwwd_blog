@@ -9,9 +9,9 @@ const {
 } = Astro.props
 ---
 
-<article class=`${className} flex flex-col gap-1 mt-4` id={id}>
+<article class=`${className} flex flex-col gap-1 mt-8` id={id}>
   {hasHeader && <Header isTextBlockHeader={true} headerText={headerText} />}
-  <p>
+  <p class="text-xl">
     {textBlockParagraphText}
   </p>
 </article>
