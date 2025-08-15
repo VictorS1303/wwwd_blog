@@ -1,0 +1,27 @@
+---
+import Card from "../card/Card.astro"
+
+const { class: className, id: id, posts = [], headerText} = Astro.props
+---
+
+<div class="flex gap-8 flex-wrap mt-4">
+  {
+    posts.length > 0
+      ? posts.map((latestBlogPostCard) => (
+          <Card
+            isBlogPostCard={latestBlogPostCard.isBlogPostCard}
+            headerText={latestBlogPostCard.headerText}
+            labelText={latestBlogPostCard.labelText}
+            isBlogPostCardText={latestBlogPostCard.isBlogPostCardText}
+            textBlockParagraphText={latestBlogPostCard.textBlockParagraphText}
+            isBlogPostCardHeader={latestBlogPostCard.isBlogPostCardHeader}
+            buttonText={latestBlogPostCard.buttonText}
+            href={latestBlogPostCard.href}
+            class="rounded-t-md"
+            src={latestBlogPostCard.src}
+            alt={latestBlogPostCard.alt}
+          />
+        ))
+      : "No posts"
+  }
+</div>

@@ -1,0 +1,10 @@
+---
+const {posts, headerText, isTextBlockHeader} = Astro.props
+import Section from '../generals/section/Section.astro'
+import PostsContainer from './PostsContainer.astro'
+import Header from '../header/Header.astro'
+---
+<Section class="mt-8">
+  <Header headerText={headerText} isTextBlockHeader={isTextBlockHeader} />
+  <PostsContainer posts={posts} />
+</Section>
