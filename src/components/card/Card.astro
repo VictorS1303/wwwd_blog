@@ -24,33 +24,33 @@ const {
 
 {
   isBlogPostCard ? (
-    <article class="relative w-[300px]">
+    <article class="relative w-full md:max-w-[300px]">
       <Image src={src} class={className} alt={alt} />
 
-      <div class="blog-post-title-and-topic-container flex justify-between gap-8 items-center py-2">
-        <Header
-          headerText={headerText}
-          isBlogPostCardHeader={isBlogPostCardHeader}
-          class="w-[65ch]"
+      <div class="blog-post-card-content-container flex flex-col gap-2 mt-4">
+        <div class="blog-post-title-and-topic-container flex justify-between gap-8 items-center">
+          <Header
+            headerText={headerText}
+            isBlogPostCardHeader={isBlogPostCardHeader}
+            class="w-[65ch]"
+          />
+          <Label
+            class="blog-post-category text-md bg-[var(--blog-post-card-category-label-bg-color)] px-2 py-1 w-fit text-white rounded-full"
+            id="blog_post_category"
+            labelText={labelText}
+          />
+        </div>
+        <TextBlock
+          class="excerpt line-clamp-4 text-md"
+          textBlockParagraphText={textBlockParagraphText}
+          isBlogPostCardText={isBlogPostCardText}
         />
-        <Label
-          class="blog-post-category text-md bg-[var(--blog-post-card-category-label-bg-color)] px-2 py-1 w-fit text-white rounded-full"
-          id="blog_post_category"
-          labelText={labelText}
+        <Button
+          href={href}
+          class="relative p-2 mt-4 text-xl rounded-sm bg-[var(--blog-post-card-button-border-color)] text-white"
+          buttonText={buttonText}
         />
       </div>
-
-      <TextBlock
-        class="excerpt line-clamp-4 text-md"
-        textBlockParagraphText={textBlockParagraphText}
-        isBlogPostCardText={isBlogPostCardText}
-      />
-
-      <Button
-        href={href}
-        class="absolute p-2 mt-4 text-xl rounded-sm bg-[var(--blog-post-card-button-border-color)] text-white"
-        buttonText={buttonText}
-      />
     </article>
   ) : null
 }

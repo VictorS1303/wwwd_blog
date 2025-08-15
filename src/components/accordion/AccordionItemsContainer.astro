@@ -4,7 +4,7 @@ import AccordionItem from "./AccordionItem.astro"
 const { class: className, id: id, accordionItems = [] } = Astro.props
 ---
 
-<article class={`${className} sticky top-0 md:relative md:top-auto`} id={id}>
+<article class={`${className} top-0 md:relative md:top-auto`} id={id}>
   {
     accordionItems.length > 0
       ? accordionItems.map((accordionItem) => (
