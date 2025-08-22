@@ -8,7 +8,7 @@ import Aside from "../components/aside/Aside.astro"
 import InteractionButton from "../components/interactions/InteractionButton.astro"
 import InteractionsContainer from "../components/interactions/InteractionsContainer.astro"
 import TableOfContents from "../components/table_of_contents/TableOfContents.astro"
-import { buildTableOfContents } from "../../js/toc";
+import { buildTableOfContents } from "../../js/toc"
 
 const { frontmatter, headings = [] } = Astro.props
 
@@ -33,79 +33,82 @@ const tabItems = [
 
 const interactionButtons = [
   {
-    id: 'like_button',
+    id: "like_button",
     class: "fas fa-heart text-2xl",
-
   },
   {
-    id: 'save_button',
+    id: "save_button",
     class: "fas fa-bookmark text-2xl",
   },
   {
-    id: 'download_button',
+    id: "download_button",
     href: `/pdfs/${download}`,
     download: "how_the_browser_reads_css",
     class: "fas fa-download text-2xl",
     isAvailable: true,
   },
   {
-    id: 'share_button',
+    id: "share_button",
     class: "fas fa-share text-[var(--secondary-text-color)] text-2xl",
     isAvailable: true,
   },
 ]
 
-console.log('Table of contents: ', buildTableOfContents)
+console.log("Table of contents: ", buildTableOfContents)
 ---
 
 <Layout title={title}>
   <main class="w-full md:max-w-[90vw] mx-auto">
-  <div class="flex flex-col gap-4">
-    <Hero
-      isSingleView={true}
-      heroText={title}
-      src={src}
-      alt={alt}
-      hasOverlay={true}
-    />
+    <div class="flex flex-col gap-4">
+      <Hero
+        isSingleView={true}
+        heroText={title}
+        src={src}
+        alt={alt}
+        hasOverlay={true}
+      />
 
-    <div
-      class="author-categories-container flex flex-col gap-4 items-start md:flex-row md:justify-between"
+      <div
+        class="author-categories-container flex flex-col gap-4 items-start md:flex-row md:justify-between"
+      >
+        <h3 class="text-lg">
+          <span class="text-[var(--secondary-text-color)] font-bold"
+            >Author:</span
+          >
+          {authorName}
+        </h3>
+        <TabsContainer tabItems={tabItems} />
+      </div>
+    </div>
+
+    <Section
+      class="prior-to-reading flex flex-col gap-4 md:flex-row md:justify-between mt-6 mb-24"
     >
-      <h3 class="text-lg">
-        <span class="text-[var(--secondary-text-color)] font-bold">Author:</span
-        >
-        {authorName}
-      </h3>
-      <TabsContainer tabItems={tabItems} />
-    </div>
+      <div class="prior-knowledge">
+        <h3 class="text-[var(--secondary-text-color)] text-xl font-bold">
+          Prior knowledge:
+        </h3>
+        <p class="text-xl">{priorKnowledge}</p>
+      </div>
 
-  </div>
+      <div class="reading-time">
+        <h3 class="text-[var(--secondary-text-color)] text-xl font-bold">
+          Reading time:
+        </h3>
+        <p class="text-xl">{readingTime}</p>
+      </div>
+    </Section>
 
-  <Section
-    class="prior-to-reading flex flex-col gap-4 md:flex-row md:justify-between mt-6 mb-24"
-  >
-    <div class="prior-knowledge">
-      <h3 class="text-[var(--secondary-text-color)] text-xl font-bold">
-        Prior knowledge:
-      </h3>
-      <p class="text-xl">{priorKnowledge}</p>
-    </div>
+    <div class="flex flex-col gap-8 md:flex-row md:justify-between">
+      <TableOfContents
+        class="border-2 border-[var(--secondary-text-color)]"
+        headerText="Content of blog post:"
+        headings={headings}
+      />
 
-    <div class="reading-time">
-      <h3 class="text-[var(--secondary-text-color)] text-xl font-bold">
-        Reading time:
-      </h3>
-      <p class="text-xl">{readingTime}</p>
-    </div>
-  </Section>
-
-  <div class="flex flex-col gap-8 md:flex-row md:justify-between">
-    <TableOfContents class="border-2 border-[var(--secondary-text-color)]" headerText="Content of blog post:" headings={headings} />
-
-    <!-- Main content -->
-    <div
-      class="blog-post-content prose prose-p-0 prose-m-0 mt-12
+      <!-- Main content -->
+      <div
+        class="blog-post-content prose prose-p-0 prose-m-0 mt-12
            prose-p:text-[var(--paragraphs-font)]
        
      prose-h1:text-[var(--secondary-text-color)] prose-h1:m-0
@@ -121,11 +124,11 @@ console.log('Table of contents: ', buildTableOfContents)
            prose-img:mb-0
            prose-hr:border-2 prose-hr:border-[var(--secondary-text-color)] prose-hr:block prose-hr:pb-0 prose-hr:mt-4 prose-hr:w-[250px]
            md:prose-max-w-none md:w-[60vw] order-last md:order-first"
-    >
-      <slot />
+      >
+        <slot />
+      </div>
     </div>
-  </div>
 
-  <InteractionsContainer interactionButtons={interactionButtons} />
+    <InteractionsContainer interactionButtons={interactionButtons} />
   </main>
 </Layout>
