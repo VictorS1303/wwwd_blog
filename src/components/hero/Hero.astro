@@ -9,13 +9,14 @@ const {
   isHeroHeader,
   isSingleView,
   hasOverlay,
+  href,
 } = Astro.props
 
 import Overlay from "../generals/overlay/Overlay.astro"
 import Navigation from "../generals/navigation/Navigation.astro"
 import Header from "../header/Header.astro"
 import Section from "../generals/section/Section.astro"
-import Button from "../button/Button.astro"
+import BackButton from "../button/BackButton.astro"
 
 const navItems = [
   {
@@ -45,6 +46,8 @@ const navItems = [
             {heroParagraphText}
           </p>
         </div>
+
+        <BackButton href={href} />
       </Section>
     </div>
   ) : (
