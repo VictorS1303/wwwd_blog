@@ -7,11 +7,15 @@ const {
   headerText,
   heroParagraphText,
   isHeroHeader,
+  isSingleView,
+  hasOverlay,
 } = Astro.props
 
 import Overlay from "../generals/overlay/Overlay.astro"
 import Navigation from "../generals/navigation/Navigation.astro"
 import Header from "../header/Header.astro"
+import Section from "../generals/section/Section.astro"
+import Button from "../button/Button.astro"
 
 const navItems = [
   {
@@ -25,21 +29,41 @@ const navItems = [
 ]
 ---
 
-<section class={`${className} relative h-[60vh]`} id={id}>
-  <img
-    src={src}
-    alt={alt}
-    class="absolute object-cover h-[100%] w-screen rounded-md"
-  />
-  <div
-    class="absolute bottom-3 left-3 hero-desc-container text-white z-[10000]"
-  >
-    <Header isHeroHeader={true} headerText={headerText} />
+{
+  isSingleView ? (
+    <div class="flex flex-col gap-2">
+      <Section class={`${className} relative h-[60vh]`} id={id}>
+        <img
+          src={src}
+          alt={alt}
+          class="absolute object-cover h-[100%] w-screen rounded-md"
+        />
+        {hasOverlay && <Overlay />}
+        <div class="absolute top-[50%] left-[50%] -translate-[50%] hero-desc-container text-white text-3xl z-[10000] md:text-5xl">
+          <Header isHeroHeader={true} headerText={headerText} />
+          <p class="text-[var(--paragraphs-font)] italic text-md md:text-lg">
+            {heroParagraphText}
+          </p>
+        </div>
+      </Section>
+     
+    </div>
+  ) : (
+    <Section class={`${className} relative h-[60vh]`} id={id}>
+      <img
+        src={src}
+        alt={alt}
+        class="absolute object-cover h-[100%] w-screen rounded-md"
+      />
+      <div class="absolute bottom-3 left-3 hero-desc-container text-white z-[10000]">
+        <Header isHeroHeader={true} headerText={headerText} />
 
-    <p class="text-[var(--paragraphs-font)] italic text-md md:text-lg">
-      {heroParagraphText}
-    </p>
-  </div>
-  <Navigation navItems={navItems} />
-  <Overlay />
-</section>
+        <p class="text-[var(--paragraphs-font)] italic text-md md:text-lg">
+          {heroParagraphText}
+        </p>
+      </div>
+      <Navigation navItems={navItems} />
+      {hasOverlay && <Overlay />}
+    </Section>
+  )
+}

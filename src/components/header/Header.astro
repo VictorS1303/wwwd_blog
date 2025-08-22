@@ -3,7 +3,7 @@ const {
   class: className,
   id: id,
   headerText,
-
+  isSingleViewHeader,
   isTextBlockHeader,
   isBlogPostCardHeader,
   isHeroHeader,
@@ -21,7 +21,11 @@ const {
   ) : isBlogPostCardHeader ? (
     <header class="text-xl font-bolder">{headerText}</header>
   ) : isHeroHeader ? (
-    <header class="text-white text-2xl uppercase font-bolder md:text-3xl">
+    <header class="text-white text-4xl uppercase font-bolder md:text-5xl">
+      {headerText}
+    </header>
+  ) : isSingleViewHeader ? (
+    <header class="absolute z-[100000] top-[50%] left-[50%] -translate-1/2 text-white text-3xl text-center uppercase font-bolder md:text-5xl">
       {headerText}
     </header>
   ) : (

@@ -1,0 +1,23 @@
+---
+const { class: className, id: id, tabText, href, isBlogPostTab } = Astro.props
+---
+
+{
+  isBlogPostTab ? (
+    <a href={href} target="_blank">
+      <article
+        class={`${className} bg-[var(--secondary-text-color)] text-white w-fit p-2 rounded-full`}
+        id={id}
+      >
+        <h5>{tabText}</h5>
+      </article>
+    </a>
+  ) : (
+    <article
+      class={`${className} bg-[var(--secondary-text-color)] text-white w-fit p-2 rounded-full`}
+      id={id}
+    >
+      <h5>{tabText}</h5>
+    </article>
+  )
+}

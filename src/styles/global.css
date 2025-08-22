@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/family=Roboto:100,200,300,400,500,600,700,800,900');
 @import url('https://fonts.googleapis.com/family=Gabarito:100,200,300,400,500,600,700,800,900');
-
+@plugin '@tailwindcss/typography';
 
 @theme
 {
@@ -17,7 +17,29 @@
     --paragraphs-font: 'Roboto', sans-serif;
 }
 
+html
+{
+  scroll-behavior: smooth;
+}
+
 body
 {
     font-family: 'Gabarito', sans-serif;
+}
+
+code
+{
+    font-family: var(--paragraphs-font);
+}
+
+/* Target all Expressive Code blocks */
+.expressive-code {
+  font-size: 4rem;      /* change font size */
+ /* change font */
+
+  & .code
+  {
+    font-size: 20px;
+      font-family: 'Gabarito', monospace, sans-serif;
+  }
 }

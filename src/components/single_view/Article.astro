@@ -1,0 +1,9 @@
+---
+const { class: className, id: id, textBlocks = []} = Astro.props
+import Section from "../generals/section/Section.astro"
+import TextBlocksContainer from "../text_block/TextBlocksContainer.astro"
+---
+
+<Section class=`${className} mt-24 space-x-4` id={id}>
+  <TextBlocksContainer textBlocks={textBlocks} />
+</Section>

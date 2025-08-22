@@ -8,24 +8,32 @@ const {
   hasHeader,
   textBlockParagraphText,
   isBlogPostCardText,
+  isArticleText,
 } = Astro.props
 ---
 
 {
-   isBlogPostCardText ? (
-      <article class=`${className} relative flex flex-col gap-1` id={id}>
-        {hasHeader && <Header isTextBlockHeader={true} headerText={headerText} />}
-        <p class="text-xl line-clamp-4">
-          {textBlockParagraphText}
-        </p>
-        <FadeOutOverlay />
-      </article>
-        ) : (
-          <article class=`${className} relative flex flex-col gap-1` id={id}>
-        {hasHeader && <Header isTextBlockHeader={true} headerText={headerText} />}
-        <p class="text-xl">
-          {textBlockParagraphText}
-        </p>
-      </article>
-   )
+  isBlogPostCardText ? (
+    <article class={`${className} relative flex flex-col`} id={id}>
+      {hasHeader && <Header isTextBlockHeader={true} headerText={headerText} />}
+      <p class="text-xl line-clamp-4">{textBlockParagraphText}</p>
+      <FadeOutOverlay />
+    </article>
+  ) : isArticleText ? (
+    <article class={`${className} relative flex flex-col`} id={id}>
+      {hasHeader && <Header isTextBlockHeader={true} headerText={headerText} />}
+      <p class="text-xl mt-0">{textBlockParagraphText}</p>
+    </article>
+  ) : (
+    <article
+      class={`${className} relative flex flex-col ${hasHeader ? "mt-12" : "mt-0"}`}
+      id={id}
+    >
+      {hasHeader && <Header isTextBlockHeader={true} headerText={headerText} />}
+      <p class={`text-xl ${hasHeader ? "mt-0" : "mt-2"}`}>
+        {textBlockParagraphText}
+      </p>
+      {isBlogPostCardText && <FadeOutOverlay />}
+    </article>
+  )
 }

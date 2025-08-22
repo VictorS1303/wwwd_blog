@@ -1,0 +1,7 @@
+---
+const { class: className, id: id, src, alt, isBlogPostAside } = Astro.props
+---
+
+<aside class=`${className}` id={id}>
+  <slot />
+</aside>

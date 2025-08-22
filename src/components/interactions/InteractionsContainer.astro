@@ -1,0 +1,92 @@
+---
+import Button from "../../components/button/Button.astro"
+import Header from "../../components/header/Header.astro"
+
+const { class: className, id: id, interactionButtons = [] } = Astro.props
+---
+
+<div class="interaction-buttons-container mt-12">
+  <Header headerText="Like & Share" isTextBlockHeader={true} />
+  <div class="flex gap-4 mt-4">
+  {
+    interactionButtons.length > 0 &&
+      interactionButtons.map((interactionButton) => (
+        <Button
+          href={interactionButton.href}
+          class={
+            interactionButton.class +
+            (interactionButton.isAvailable
+              ? ""
+              : " opacity-50 cursor-not-allowed")
+          }
+          id={interactionButton.id}
+          disabled={!interactionButton.isAvailable}
+          download={interactionButton.download}
+          share={interactionButton.share}
+          data-available={interactionButton.isAvailable} 
+          buttonText={interactionButton.text}
+        />
+      ))
+  }
+</div>
+
+</div>
+
+<script>
+  const interactionButtonsContainer = document.querySelector(
+    ".interaction-buttons-container",
+  );
+
+  interactionButtonsContainer?.addEventListener("click", (e) =>
+    chooseInteraction(e),
+  );
+
+  function chooseInteraction(e) {
+  const button = e.target.closest("button, a");
+  if (!button) return;
+
+  const isAvailable = button.dataset.available === "true";
+
+  if (!isAvailable) {
+    alert("This action isn't available");
+    e.preventDefault(); // prevent navigation for <a> tags
+    return;
+  }
+
+  switch (button.id) {
+    case "like_button":
+      likePost();
+      break;
+    case "save_button":
+      savePost();
+      break;
+    case "download_button":
+      downloadPost();
+      break;
+    case "share_button":
+      sharePost();
+      break;
+    default:
+      console.log("No action defined for this button");
+  }
+}
+
+
+  function likePost() {
+    console.log("Post liked!");
+  }
+  function savePost() {
+    console.log("Post saved!");
+  }
+  function downloadPost() {
+    console.log("Post downloaded!");
+  }
+  function sharePost() {
+    const postUrl = window.location.href
+
+    navigator.clipboard.writeText(postUrl).then(() => {
+      alert('Copied')
+    })
+    
+  }
+</script>

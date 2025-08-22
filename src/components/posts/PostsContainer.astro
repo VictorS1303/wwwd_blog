@@ -1,13 +1,13 @@
 ---
 import Card from "../card/Card.astro"
 
-const { class: className, id: id, posts = [], headerText} = Astro.props
+const { class: className, id: id, posts = [], headerText } = Astro.props
 ---
 
 <div class="flex gap-8 flex-wrap mt-4">
   {
     posts.length > 0
-      ? posts.map((latestBlogPostCard) => (
+      ? posts.map((latestBlogPostCard, index) => (
           <Card
             isBlogPostCard={latestBlogPostCard.isBlogPostCard}
             headerText={latestBlogPostCard.headerText}
@@ -16,8 +16,8 @@ const { class: className, id: id, posts = [], headerText} = Astro.props
             textBlockParagraphText={latestBlogPostCard.textBlockParagraphText}
             isBlogPostCardHeader={latestBlogPostCard.isBlogPostCardHeader}
             buttonText={latestBlogPostCard.buttonText}
-            href={latestBlogPostCard.href}
             class="rounded-t-md"
+            href={`/blog-posts/post-${index + 1}`}
             src={latestBlogPostCard.src}
             alt={latestBlogPostCard.alt}
           />

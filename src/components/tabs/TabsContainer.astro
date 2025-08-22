@@ -1,0 +1,17 @@
+---
+import Tab from "./Tab.astro"
+const { tabItems = [], isBlogPostTab } = Astro.props
+---
+
+<!-- const { class: className, id: id, tabText, href, isBlogPostTab } = Astro.props -->
+<div>
+  {
+    tabItems.length > 0
+      ? tabItems.map((tabItem) => (
+          <a href={tabItem.href}>
+            <Tab tabText={tabItem.tabText} />
+          </a>
+        ))
+      : "No category"
+  }
+</div>

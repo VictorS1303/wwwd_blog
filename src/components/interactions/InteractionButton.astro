@@ -1,0 +1,11 @@
+---
+const {class: className, id: id, href, interactionButtonIconClass} = Astro.props
+import Button from '../../components/button/Button.astro'
+---
+
+<Button
+    class=`${className} text-3xl`
+    id={id}
+    href={href}>
+  <i class={interactionButtonIconClass} />
+</Button>

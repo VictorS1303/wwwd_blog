@@ -1,14 +1,38 @@
 ---
-const {class: className, id: id, href, buttonText} = Astro.props
+const { class: className, id, href, buttonText, download, share } = Astro.props
 ---
 
-<a href={href} class=`${className} w-fit` id={id}>{buttonText}</a>
-
-<!--
-<a
-        href="#"
-        class="absolute p-2 mt-4 text-sm rounded-sm bg-[var(--blog-post-card-button-border-color)] text-white "
-      >
-        Read More
-      </a>
--->
+{
+  share ? (
+    <button
+      class={`${className} share-button w-fit text-[var(--secondary-text-color)] cursor-pointer`}
+      id={id}
+      type="button"
+      data-available={Astro.props["data-available"]}
+    >
+      {buttonText}
+      <slot />
+    </button>
+  ) : href ? (
+    <a
+      href={href}
+      class={`${className} w-fit text-[var(--secondary-text-color)] cursor-pointer`}
+      id={id}
+      download={download ? true : undefined}
+      data-available={Astro.props["data-available"]}
+    >
+      {buttonText}
+      <slot />
+    </a>
+  ) : (
+    <button
+      class={`${className} w-fit text-[var(--secondary-text-color)] cursor-pointer`}
+      id={id}
+      type="button"
+      data-available={Astro.props["data-available"]}
+    >
+      {buttonText}
+      <slot />
+    </button>
+  )
+}
