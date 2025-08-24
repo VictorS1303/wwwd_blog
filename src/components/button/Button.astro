@@ -6,7 +6,7 @@ const {
   buttonText,
   download,
   share,
-  available,
+  "data-available": dataAvailable,
 } = Astro.props
 ---
 
@@ -27,7 +27,7 @@ const {
       class={`${className} w-fit text-[var(--secondary-text-color)] cursor-pointer`}
       id={id}
       download={download ? true : undefined}
-      data-available={available}
+      data-available={dataAvailable}
     >
       {buttonText}
       <slot />
@@ -37,7 +37,7 @@ const {
       class={`${className} w-fit text-[var(--secondary-text-color)] cursor-pointer`}
       id={id}
       type="button"
-      data-available={available}
+      data-available={dataAvailable}
     >
       {buttonText}
       <slot />

@@ -1,10 +1,9 @@
 ---
 import BlogPostLayout from "../../layouts/BlogPostLayout.astro"
-import { buildTableOfContents } from '../../../js/toc.js'
+import { buildTableOfContents } from "../../../js/toc.js"
 import { supabaseClient } from "../../../js/supabase/supabase_client"
-import { marked } from "marked";
+import { marked } from "marked"
 const { slug } = Astro.params
-
 
 // Fetch single post
 console.log("Slug from URL:", slug)
@@ -15,14 +14,11 @@ const { data: post, error } = await supabaseClient
   .eq("post_slug", slug)
   .single()
 
-  
-
 const fileKey = `${post.post_download_url}.pdf`
 
-const {data: postDownloadData, error: postDownloadError} = supabaseClient
-.storage
-.from('downloadable-posts')
-.getPublicUrl(fileKey, {download: true})
+const { data: postDownloadData } = supabaseClient.storage
+  .from("downloadable-posts")
+  .getPublicUrl(fileKey, { download: true })
 
 post.post_download_url = postDownloadData.publicUrl
 
@@ -36,7 +32,6 @@ if (post?.post_text) {
 } else {
   console.warn("No post text found for slug:", slug)
 }
-
 ---
 
 <BlogPostLayout
