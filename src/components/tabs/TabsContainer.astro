@@ -1,16 +1,14 @@
 ---
 import Tab from "./Tab.astro"
-import { supabaseClient } from "../../../js/supabase/supabase_client"
+import { fetchAllPosts } from "../../../js/utils/supabase_methods"
 
-const { data: blogPosts, error } = await supabaseClient
-  .from("blog_posts")
-  .select("post_categories")
+const posts = await fetchAllPosts()
 ---
 
 <div class="flex gap-2">
   {
-    blogPosts && blogPosts.length > 0
-      ? blogPosts.flatMap((post) =>
+    posts && posts.length > 0
+      ? posts.flatMap((post) =>
           post.post_categories.map((category) => (
             <a href={`/blog-posts?category=${category.toLowerCase()}`}>
               <Tab tabText={category} />
