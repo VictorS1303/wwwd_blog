@@ -6,7 +6,7 @@ export const fetchAllPosts = async () =>
     const { data: postsData, error: postsError } = await supabaseClient
       .from("blog_posts")
       .select("*")
-      .order('publish_date', {ascending: false})
+      .order('publish_date', {ascending: true})
 
     if (postsError)
     {
