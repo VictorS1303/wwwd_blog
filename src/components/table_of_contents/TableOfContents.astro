@@ -1,11 +1,16 @@
----
+<!-- ---
 import Aside from "../aside/Aside.astro"
 import Header from "../header/Header.astro"
 import { buildTableOfContents } from "../../../js/toc"
 
-const { headings = [], heading, headerText } = Astro.props
-const headingsToRender = heading ? [heading] : buildTableOfContents(headings)
+const { headings, heading, headerText } = Astro.props
 
+// Ensure headings is always an array
+const normalizedHeadings = Array.isArray(headings) ? headings : []
+
+const headingsToRender = heading
+  ? [heading]
+  : buildTableOfContents(normalizedHeadings)
 // Calculate indentation based on heading depth
 function getIndent(depth) {
   switch (depth) {
@@ -19,6 +24,8 @@ function getIndent(depth) {
       return 2.5 + (depth - 3) * 1 // h4+ add 1rem per level
   }
 }
+
+console.log(Array.isArray(headings), headings)
 ---
 
 <Aside class="table-of-content" id="table_of_content">
@@ -52,4 +59,4 @@ function getIndent(depth) {
       </ul>
     </nav>
   </div>
-</Aside>
+</Aside> -->

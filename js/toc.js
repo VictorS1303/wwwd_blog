@@ -1,4 +1,4 @@
-export function buildTableOfContents(headings = []) { // default to empty array
+export function buildTableOfContents(headings = []) {
   const tableOfContents = [];
   const parentHeadings = new Map();
 
@@ -15,7 +15,10 @@ export function buildTableOfContents(headings = []) { // default to empty array
         parentDepth--;
       }
       const parent = parentHeadings.get(parentDepth);
-      if (parent) parent.subHeadings.push(node);
+      if (parent)
+      {
+        parent.subHeadings.push(node);
+      }
       else tableOfContents.push(node);
     }
   });

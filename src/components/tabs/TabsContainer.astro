@@ -1,17 +1,22 @@
 ---
 import Tab from "./Tab.astro"
-const { tabItems = [], isBlogPostTab } = Astro.props
+import { supabaseClient } from "../../../js/supabase/supabase_client"
+
+const { data: blogPosts, error } = await supabaseClient
+  .from("blog_posts")
+  .select("post_categories")
 ---
 
-<!-- const { class: className, id: id, tabText, href, isBlogPostTab } = Astro.props -->
-<div>
+<div class="flex gap-2">
   {
-    tabItems.length > 0
-      ? tabItems.map((tabItem) => (
-          <a href={tabItem.href}>
-            <Tab tabText={tabItem.tabText} />
-          </a>
-        ))
+    blogPosts && blogPosts.length > 0
+      ? blogPosts.flatMap((post) =>
+          post.post_categories.map((category) => (
+            <a href={`/blog-posts?category=${category.toLowerCase()}`}>
+              <Tab tabText={category} />
+            </a>
+          )),
+        )
       : "No category"
   }
 </div>

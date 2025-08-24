@@ -10,6 +10,7 @@ const {
   isSingleView,
   hasOverlay,
   href,
+  date,
 } = Astro.props
 
 import Overlay from "../generals/overlay/Overlay.astro"
@@ -37,6 +38,7 @@ const navItems = [
         <img
           src={src}
           alt={alt}
+         
           class="absolute object-cover h-[100%] w-screen rounded-md"
         />
         {hasOverlay && <Overlay />}

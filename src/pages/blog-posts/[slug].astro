@@ -1,0 +1,52 @@
+---
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro"
+import { buildTableOfContents } from '../../../js/toc.js'
+import { supabaseClient } from "../../../js/supabase/supabase_client"
+import { marked } from "marked";
+const { slug } = Astro.params
+
+
+// Fetch single post
+console.log("Slug from URL:", slug)
+
+const { data: post, error } = await supabaseClient
+  .from("blog_posts")
+  .select("*")
+  .eq("post_slug", slug)
+  .single()
+
+  
+
+const fileKey = `${post.post_download_url}.pdf`
+
+const {data: postDownloadData, error: postDownloadError} = supabaseClient
+.storage
+.from('downloadable-posts')
+.getPublicUrl(fileKey, {download: true})
+
+post.post_download_url = postDownloadData.publicUrl
+
+if (error) {
+  console.log("Error: ", error.hint, error.message, slug)
+}
+
+let html = ""
+if (post?.post_text) {
+  html = marked(post.post_text)
+} else {
+  console.warn("No post text found for slug:", slug)
+}
+
+---
+
+<BlogPostLayout
+  title={post.post_title}
+  date={post.publish_date}
+  authorName={post.author}
+  priorKnowledge={post.prior_knowledge}
+  download={post.post_download_url}
+  readingTime={post.reading_time}
+  image={{ src: post.post_image, alt: post.post_image_alt }}
+>
+  <div set:html={html} />
+</BlogPostLayout>

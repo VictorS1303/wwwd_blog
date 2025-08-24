@@ -1,27 +1,35 @@
 ---
 import Card from "../card/Card.astro"
+import { supabaseClient } from "../../../js/supabase/supabase_client"
 
-const { class: className, id: id, posts = [], headerText } = Astro.props
+// Fetch posts from Supabase
+const { data: postsData, error: postsError } = await supabaseClient
+  .from("blog_posts")
+  .select("*")
+
+if (postsError) {
+  throw new Error(`Failed to fetch posts: ${postsError.message}`)
+}
 ---
 
-<div class="flex gap-8 flex-wrap mt-4">
-  {
-    posts.length > 0
-      ? posts.map((latestBlogPostCard, index) => (
+<div class="flex flex-col mt-16">
+  <div class="posts-cards-container flex flex-wrap justify-center mt-4">
+    {
+      postsData && postsData.length > 0 ? (
+        postsData.map((post) => (
           <Card
-            isBlogPostCard={latestBlogPostCard.isBlogPostCard}
-            headerText={latestBlogPostCard.headerText}
-            labelText={latestBlogPostCard.labelText}
-            isBlogPostCardText={latestBlogPostCard.isBlogPostCardText}
-            textBlockParagraphText={latestBlogPostCard.textBlockParagraphText}
-            isBlogPostCardHeader={latestBlogPostCard.isBlogPostCardHeader}
-            buttonText={latestBlogPostCard.buttonText}
-            class="rounded-t-md"
-            href={`/blog-posts/post-${index + 1}`}
-            src={latestBlogPostCard.src}
-            alt={latestBlogPostCard.alt}
+            class="blog-post-card rounded-t-md"
+            isBlogPostCard={true}
+            headerText={post.post_title}
+            src={`${post.post_image}.webp`}
+            href={`/blog-posts/${post.post_slug}`}
+            textBlockParagraphText={post.post_excerpt}
+            buttonText={post.post_card_button_text}
           />
         ))
-      : "No posts"
-  }
+      ) : (
+        <p>No posts available.</p>
+      )
+    }
+  </div>
 </div>

@@ -11,7 +11,7 @@ import TableOfContents from "../components/table_of_contents/TableOfContents.ast
 import { formatDate } from "../../js/formatting.js"
 import { supabaseClient } from "../../js/supabase/supabase_client"
 
-const { frontmatter, headings = [] } = Astro.props
+const { frontmatter, headings } = Astro.props
 
 const {
   title,
@@ -23,7 +23,7 @@ const {
   date,
   authorDescription,
   image: { src, alt },
-} = frontmatter
+} = Astro.props
 
 const tabItems = [
   {
@@ -44,7 +44,7 @@ const interactionButtons = [
   },
   {
     id: "download_button",
-    href: `/pdfs/${download}`,
+    href: download,
     download: "how_the_browser_reads_css",
     class: "fas fa-download text-2xl",
     isAvailable: true,
@@ -56,7 +56,7 @@ const interactionButtons = [
   },
 ]
 
-console.log(supabaseClient)
+const formattedDate = date ? formatDate(date) : "Unknown date"
 ---
 
 <Layout title={title}>
@@ -65,8 +65,9 @@ console.log(supabaseClient)
       <Hero
         isSingleView={true}
         heroText={title}
-        src={src}
+        src={`${src}.webp`}
         alt={alt}
+        date={date}
         hasOverlay={true}
         href="/blog-posts"
       />
@@ -85,7 +86,7 @@ console.log(supabaseClient)
             <span class="text-[var(--secondary-text-color)] font-bold"
               >Published:</span
             >
-            {formatDate(date)}
+            {formattedDate}
           </h3>
         </div>
         <TabsContainer tabItems={tabItems} />

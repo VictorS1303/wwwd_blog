@@ -127,7 +127,7 @@ tag. The way we link a CSS file to our HTML file is by using the tag, in which w
   }
 </html>
 ```
-
+## CONCLUSION
 Now you know the different ways available to write CSS, but that still doesn’t answer the question being the topic of the post: How does the browser read CSS?
 The different way of writing it has its own ranking in terms of precedence. The way of writing the CSS that the browser weighs the heaviest, is inline. This means that any styling that might have been added to the same element either internally or externally, will be overridden by the inline styling in terms of if the same property is written both inline or internally and/or externally.
  
