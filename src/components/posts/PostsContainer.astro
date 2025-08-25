@@ -5,8 +5,10 @@ import { fetchAllPosts } from "../../../js/utils/supabase_methods"
 const posts = await fetchAllPosts()
 ---
 
-<div class="flex flex-col mt-16">
-  <div class="posts-cards-container flex flex-wrap justify-center mt-4">
+<div class="flex flex-col mt-4">
+  <div
+    class="posts-cards-container flex flex-wrap flex-col justify-start mt-4 gap-12 md:flex-row"
+  >
     {
       posts && posts.length > 0 ? (
         posts.map((post) => (
