@@ -1,0 +1,5 @@
+---
+const {class: className, id: id, placeholder} = Astro.props
+---
+
+<input class=`${className} border-b-2 border-[var(--secondary-text-color)] text-xl w-full block focus:outline-0 focus:ring-0 md:w-[300px]` id={id} placeholder={placeholder} />

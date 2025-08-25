@@ -5,6 +5,7 @@ import TextBlock from "../text_block/TextBlock.astro"
 import Image from "../imags/Image.astro"
 import Button from "../button/Button.astro"
 import FadeOutOverlay from "../generals/overlay/FadeOutOverlay.astro"
+import Tab from "../tabs/Tab.astro"
 
 const {
   class: className,
@@ -19,20 +20,32 @@ const {
   isBlogPostCardHeader,
   src,
   alt,
+  categories = [],
 } = Astro.props
 ---
 
 {
   isBlogPostCard ? (
-    <article class="flex flex-col relative w-full md:max-w-[300px]">
+    <article
+      class="blog-post-card flex flex-col relative w-full md:max-w-[300px]"
+      data-title={headerText}
+    >
       <Image src={src} class="h-50 rounded-t-md object-fit" alt={alt} />
-
+      <div class="flex justify-end mt-4">
+        {categories.length > 0 && (
+          <div class="flex gap-2">
+            {categories.map((cat) => (
+              <Tab tabText={cat} />
+            ))}
+          </div>
+        )}
+      </div>
       <div class="blog-post-card-content-container flex flex-col gap-2 mt-4 flex-1">
         <div class="blog-post-title-and-topic-container flex justify-between gap-8 items-center">
           <Header
             headerText={headerText}
             isBlogPostCardHeader={isBlogPostCardHeader}
-            class="w-[65ch]"
+            class="w-[80ch]"
           />
         </div>
         <TextBlock

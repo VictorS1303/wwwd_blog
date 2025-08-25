@@ -7,19 +7,20 @@ const posts = await fetchAllPosts()
 
 <div class="flex flex-col mt-4">
   <div
-    class="posts-cards-container flex flex-wrap flex-col justify-start mt-4 gap-12 md:flex-row"
+    class="post-cards-container flex flex-wrap flex-col justify-start mt-4 gap-12 md:flex-row"
   >
     {
       posts && posts.length > 0 ? (
         posts.map((post) => (
           <Card
-            class="blog-post-card rounded-t-md"
+            class=" rounded-t-md"
             isBlogPostCard={true}
             headerText={post.post_title}
             src={`${post.post_image}.webp`}
             href={`/blog-posts/${post.post_slug}`}
             textBlockParagraphText={post.post_excerpt}
             buttonText={post.post_card_button_text}
+            categories={post.post_categories}
           />
         ))
       ) : (

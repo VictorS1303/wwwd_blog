@@ -3,9 +3,57 @@ const { posts, headerText, isTextBlockHeader } = Astro.props
 import Section from "../generals/section/Section.astro"
 import PostsContainer from "./PostsContainer.astro"
 import Header from "../header/Header.astro"
+import Input from "../input/Input.astro"
 ---
 
 <Section class="mt-8">
   <Header headerText={headerText} isTextBlockHeader={isTextBlockHeader} />
-  <PostsContainer posts={posts} />
+  <div class="mt-6">
+    <Input
+      class="text-2xl"
+      id="blog_post_filter"
+      placeholder="Search posts by title"
+    />
+    <PostsContainer posts={posts} />
+  </div>
 </Section>
+
+<script>
+  import { fetchFilteredPosts } from "../../../js/utils/supabase_methods.js"
+
+  const blogPostFilter = document.querySelector("#blog_post_filter")
+  const blogPostCards =
+    document.querySelectorAll<HTMLElement>(".blog-post-card")
+
+  blogPostFilter?.addEventListener("input", (e) => filterPosts(e))
+
+  async function filterPosts(e) {
+    const searchTerm = e.target.value.trim().toLowerCase()
+
+    // Update browser URL
+    const url = new URL(window.location)
+    if (searchTerm) {
+      url.searchParams.set("title", searchTerm)
+    } else {
+      url.searchParams.delete("title")
+    }
+    history.replaceState(null, "", url)
+
+    // Optional: fetch filtered posts from backend
+    await fetchFilteredPosts(searchTerm)
+
+    // Show/hide cards
+    blogPostCards.forEach((card) => {
+      const title = card.dataset.title?.toLowerCase() || ""
+
+      if (!searchTerm || title.includes(searchTerm)) {
+        // Show all if input empty, or matching cards
+        card.classList.remove("hide-card")
+        card.style.display = "" // reset display
+      } else {
+        card.classList.add("hide-card")
+        card.style.display = "none"
+      }
+    })
+  }
+</script>

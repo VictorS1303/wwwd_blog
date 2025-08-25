@@ -24,7 +24,6 @@ export const fetchSinglePostBySlug = async (slug) =>
         .select("*")
         .eq("post_slug", slug)
         .single()
-    
 
     if (error)
     {
@@ -32,4 +31,16 @@ export const fetchSinglePostBySlug = async (slug) =>
     }
     
     return post || []
+}
+
+// Fetch filtered posts
+export const fetchFilteredPosts = async (searchTerm) =>
+{
+    const { data: posts } = await supabaseClient
+      .from("blog_posts")
+      .select("*")
+      .ilike("post_categories", `%${searchTerm}%`)
+      .order("publish_date", { ascending: true })
+    
+    return posts || []
 }
