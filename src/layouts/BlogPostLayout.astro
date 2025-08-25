@@ -20,18 +20,17 @@ const {
   readingTime,
   asideImageSrc,
   authorName,
+  categories,
   date,
   authorDescription,
   image: { src, alt },
 } = Astro.props
 
-const tabItems = [
-  {
-    isBlogPostTab: true,
-    href: "/blog-posts/css",
-    tabText: "CSS",
-  },
-]
+const tabItems = categories.map((category) => ({
+  isBlogPostTab: true,
+  href: `/blog-posts?category=${category.toLowerCase()}`,
+  tabText: category,
+}))
 
 const interactionButtons = [
   {
@@ -91,7 +90,6 @@ const formattedDate = date ? formatDate(date) : "Unknown date"
             {formattedDate}
           </h3>
         </div>
-        <TabsContainer tabItems={tabItems} />
       </div>
     </div>
 

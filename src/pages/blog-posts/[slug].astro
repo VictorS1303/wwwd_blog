@@ -4,10 +4,12 @@ import BlogPostLayout from "../../layouts/BlogPostLayout.astro"
 import { supabaseClient } from "../../../js/supabase/supabase_client"
 import { marked } from "marked"
 
-// Fetch single post
 const { slug } = Astro.params
+
+// Fetch full post (includes categories already)
 const post = await fetchSinglePostBySlug(slug)
 
+// File download handling
 const fileKey = `${post.post_download_url}.pdf`
 
 const { data: postDownloadData } = supabaseClient.storage
@@ -16,6 +18,7 @@ const { data: postDownloadData } = supabaseClient.storage
 
 post.post_download_url = postDownloadData.publicUrl
 
+// Convert markdown to HTML
 let html = ""
 if (post?.post_text) {
   html = marked(post.post_text)
@@ -28,6 +31,7 @@ if (post?.post_text) {
   title={post.post_title}
   date={post.publish_date}
   authorName={post.author}
+  categories={post.post_categories}
   priorKnowledge={post.prior_knowledge}
   download={post.post_download_url}
   readingTime={post.reading_time}
