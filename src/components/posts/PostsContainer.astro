@@ -15,6 +15,7 @@ const posts = await fetchAllPosts()
           <Card
             class=" rounded-t-md"
             isBlogPostCard={true}
+            isBlogPostCardText={true}
             headerText={post.post_title}
             src={`${post.post_image}.webp`}
             href={`/blog-posts/${post.post_slug}`}

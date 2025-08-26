@@ -1,63 +1,11 @@
 ---
+import { fetchAllPosts } from "../../js/utils/supabase_methods"
 import Layout from "../layouts/Layout.astro"
 import Hero from "../components/hero/Hero.astro"
 import PostsContainer from "../components/posts/PostsContainer.astro"
 import BlogPostsSection from "../components/posts/BlogPostsSection.astro"
 
-const posts = [
-  {
-    isBlogPostCard: true,
-    headerText: "How the browser reads CSS",
-    labelText: "CSS",
-    isBlogPostCardText: true,
-    isBlogPostCardHeader: true,
-    textBlockParagraphText:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
-    buttonText: "Read More",
-    href: "#",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    alt: "blog post card image",
-  },
-  {
-    isBlogPostCard: true,
-    headerText: "What is HTML?",
-    labelText: "HTML",
-    isBlogPostCardText: true,
-    isBlogPostCardHeader: true,
-    textBlockParagraphText:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
-    buttonText: "Read More",
-    href: "#",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    alt: "blog post card image",
-  },
-  {
-    isBlogPostCard: true,
-    headerText: "What is HTML?",
-    labelText: "HTML",
-    isBlogPostCardText: true,
-    isBlogPostCardHeader: true,
-    textBlockParagraphText:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
-    buttonText: "Read More",
-    href: "#",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    alt: "blog post card image",
-  },
-  {
-    isBlogPostCard: true,
-    headerText: "What is HTML?",
-    labelText: "HTML",
-    isBlogPostCardText: true,
-    isBlogPostCardHeader: true,
-    textBlockParagraphText:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
-    buttonText: "Read More",
-    href: "#",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    alt: "blog post card image",
-  },
-]
+const posts = await fetchAllPosts()
 ---
 
 <Layout title="Blog Posts">

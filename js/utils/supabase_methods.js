@@ -42,5 +42,25 @@ export const fetchFilteredPosts = async (searchTerm) =>
       .ilike("post_categories", `%${searchTerm}%`)
       .order("publish_date", { ascending: true })
     
+   
     return posts || []
 }
+
+// Fetch latest posts
+export const fetchLatestPosts = async () => {
+    const { data: postsData, error: postsError } = await supabaseClient
+      .from("blog_posts")
+      .select("*")
+      .order('publish_date', { ascending: false })
+      .limit(3)
+
+    if (postsError) {
+        throw new Error(`Failed to fetch posts: ${postsError.message}`)
+    }
+
+    console.log(postsData)
+
+    return postsData || []
+}
+
+fetchLatestPosts()

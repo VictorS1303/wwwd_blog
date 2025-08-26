@@ -1,27 +1,37 @@
 ---
+import { fetchLatestPosts } from "../../../js/utils/supabase_methods"
 import Card from "../card/Card.astro"
 
-const { class: className, id: id, latestPosts = [] } = Astro.props
+const { class: className, id: id } = Astro.props
+
+const latestPosts = await fetchLatestPosts()
+
+console.log("Latest posts: ", latestPosts)
 ---
 
 <div class="flex gap-8 flex-wrap mt-4">
   {
-    latestPosts.length > 0
-      ? latestPosts.map((latestBlogPostCard) => (
+    latestPosts.length > 0 ? (
+      latestPosts.map((latestBlogPostCard) => {
+        return (
           <Card
-            isBlogPostCard={latestBlogPostCard.isBlogPostCard}
-            headerText={latestBlogPostCard.headerText}
-            labelText={latestBlogPostCard.labelText}
-            isBlogPostCardText={latestBlogPostCard.isBlogPostCardText}
-            textBlockParagraphText={latestBlogPostCard.textBlockParagraphText}
-            isBlogPostCardHeader={latestBlogPostCard.isBlogPostCardHeader}
-            buttonText={latestBlogPostCard.buttonText}
-            href={latestBlogPostCard.href}
+            isBlogPostCard={true}
+            headerText={latestBlogPostCard.post_title}
+            labelText={latestBlogPostCard.post_categories}
+            textBlockParagraphText={latestBlogPostCard.post_excerpt}
+            isBlogPostCardText={true}
+            isBlogPostCardHeader={true}
+            buttonText={latestBlogPostCard.post_card_button_text}
+            href={`/blog-posts/${latestBlogPostCard.post_slug}`}
             class="rounded-t-md"
-            src={latestBlogPostCard.src}
-            alt={latestBlogPostCard.alt}
+            categories={latestBlogPostCard.post_categories}
+            src={`${latestBlogPostCard.post_image}.webp`}
+            alt={latestBlogPostCard.post_image_alt}
           />
-        ))
-      : "No current latest posts"
+        )
+      })
+    ) : (
+      <p>No current latest posts</p>
+    )
   }
 </div>
