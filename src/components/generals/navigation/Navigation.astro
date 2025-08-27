@@ -1,18 +1,34 @@
 ---
-const {class: className, id: id, navItems = []} = Astro.props
+const { class: className, id: id, navItems = [] } = Astro.props
+const currentPath = Astro.url.pathname
 ---
 
-
 <nav class={`${className} sticky z-[1000000] mr-6 pt-4`} id={id}>
-  {navItems.length > 0 && (
-    <ul class="flex gap-4 justify-end text-white text-2xl">
-      {navItems
-        .filter(item => item.isShown !== false)  // show all except those explicitly false
-        .map((navItem, index) => (
-          <li key={index} class="cursor-pointer">
-            <a href={navItem.href} class="transition-text duration-150 ease-in hover:text-[var(--secondary-text-color)]">{navItem.text}</a>
-          </li>
-      ))}
-    </ul>
-  )}
+  {
+    navItems.length > 0 && (
+      <ul class="flex gap-4 justify-end text-white text-2xl">
+        {navItems
+          .filter((item) => item.isShown !== false)
+          .map((navItem, index) => {
+            const isActive =
+              currentPath === navItem.href ||
+              (navItem.href !== "/" && currentPath.startsWith(navItem.href))
+            return (
+              <li key={index} class="flex justify-center cursor-pointer">
+                <a
+                  href={navItem.href}
+                  class={`relative  before:content-[''] before:absolute before:bottom-0 before:left-0 
+                   before:w-full before:h-[2px] before:bg-white 
+                   before:transition-transform before:duration-300
+                   hover:before:scale-x-100
+                   ${isActive ? "before:scale-x-100" : "before:scale-x-0"}`}
+                >
+                  {navItem.text}
+                </a>
+              </li>
+            )
+          })}
+      </ul>
+    )
+  }
 </nav>
