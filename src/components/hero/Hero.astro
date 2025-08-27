@@ -11,6 +11,9 @@ const {
   hasOverlay,
   href,
   date,
+  isVideoBackground,
+  desktopVideo,
+  mobileVideo,
 } = Astro.props
 
 import Overlay from "../generals/overlay/Overlay.astro"
@@ -18,6 +21,7 @@ import Navigation from "../generals/navigation/Navigation.astro"
 import Header from "../header/Header.astro"
 import Section from "../generals/section/Section.astro"
 import BackButton from "../button/BackButton.astro"
+import Video from "../videos/Video.astro"
 
 const navItems = [
   {
@@ -38,7 +42,6 @@ const navItems = [
         <img
           src={src}
           alt={alt}
-         
           class="absolute object-cover h-[100%] w-screen rounded-md"
         />
         {hasOverlay && <Overlay />}
@@ -54,11 +57,20 @@ const navItems = [
     </div>
   ) : (
     <Section class={`${className} relative h-[60vh]`} id={id}>
+      {isVideoBackground && (
+        <Video
+          desktopVideo={desktopVideo}
+          mobileVideo={mobileVideo}
+          class="absolute inset-0 object-cover w-full h-full rounded-md"
+          id={id ? `${id}-video` : undefined}
+        />
+      )}
       <img
         src={src}
         alt={alt}
         class="absolute object-cover h-[100%] w-screen rounded-md"
       />
+
       <div class="absolute bottom-3 left-3 hero-desc-container text-white z-[10000]">
         <Header isHeroHeader={true} headerText={headerText} />
 

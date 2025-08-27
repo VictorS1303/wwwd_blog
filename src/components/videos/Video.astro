@@ -1,0 +1,28 @@
+---
+const { class: className = "", id, desktopVideo, mobileVideo } = Astro.props;
+---
+
+
+<div class={`${className} absolute inset-0 overflow-hidden`} id={id}>
+  {mobileVideo && (
+    <video
+      src={mobileVideo}
+      autoplay
+      muted
+      loop
+      playsinline
+      class="block md:hidden w-full h-full object-cover"
+    ></video>
+  )}
+
+  {desktopVideo && (
+    <video
+      src={desktopVideo}
+      autoplay
+      muted
+      loop
+      playsinline
+      class="hidden md:block w-full h-full object-cover"
+    ></video>
+  )}
+</div>
