@@ -64,3 +64,18 @@ export const fetchLatestPosts = async () => {
 }
 
 fetchLatestPosts()
+
+// Fetch accordian data
+export const fetchAccordianData = async () => {
+  const { data: accordianData, error: accordianError } = await supabaseClient
+    .from('accordians')
+    .select('*')
+    .order('accordian_number', { ascending: true });
+
+  if (accordianError) {
+    console.log(accordianError.message, accordianError.hint);
+  }
+
+  console.log(accordianData)
+  return accordianData || [];
+}

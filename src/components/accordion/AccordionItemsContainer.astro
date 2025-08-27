@@ -4,7 +4,7 @@ import AccordionItem from "./AccordionItem.astro"
 const { class: className, id: id, accordionItems = [] } = Astro.props
 ---
 
-<article class={`${className} top-0 md:relative md:top-auto`} id={id}>
+<article class=`${className}` id={id}>
   {
     accordionItems.length > 0
       ? accordionItems.map((accordionItem) => (
@@ -14,6 +14,6 @@ const { class: className, id: id, accordionItems = [] } = Astro.props
             accordionItemText={accordionItem.accordionItemText}
           />
         ))
-      : null
+      : ""
   }
 </article>
