@@ -29,14 +29,21 @@ const {
     <article
       class="blog-post-card flex flex-col relative w-full md:max-w-[300px]"
       data-title={headerText}
+      data-categories={categories
+        .map((category) => category.toLowerCase())
+        .join(",")}
     >
       <Image src={src} class="h-50 rounded-t-md object-fit" alt={alt} />
       <div class="flex justify-end mt-4">
         {categories.length > 0 && (
           <div class="flex gap-2">
-            {categories.map((cat) => (
-              <Tab tabText={cat} />
-            ))}
+            {categories.length > 0 && (
+              <div class="flex gap-2">
+                {[...new Set(categories)].map((cat) => (
+                  <Tab tabText={cat} />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

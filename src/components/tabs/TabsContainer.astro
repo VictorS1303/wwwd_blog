@@ -3,18 +3,80 @@ import Tab from "./Tab.astro"
 import { fetchAllPosts } from "../../../js/utils/supabase_methods"
 
 const posts = await fetchAllPosts()
+
+// Collect all categories into a flat array
+const allCategories = posts?.flatMap((post) => post.post_categories) || []
+
+// Deduplicate
+const uniqueCategories = [...new Set(allCategories)]
+
+// Get current category from URL
+const categoryParam = Astro.url.searchParams.get("category")?.toLowerCase()
 ---
 
-<div class="flex gap-2">
+<div class="tabs-container flex gap-2 mb-4">
+  <Tab
+    tabText="All"
+    isBlogPostTab={true}
+    isActive={!categoryParam}
+    data-category=""
+  />
+
   {
-    posts && posts.length > 0
-      ? posts.flatMap((post) =>
-          post.post_categories.map((category) => (
-            <a href={`/blog-posts?category=${category.toLowerCase()}`}>
-              <Tab tabText={category} />
-            </a>
-          )),
+    uniqueCategories.length > 0 &&
+      uniqueCategories.map((category) => {
+        const isActive = category.toLowerCase() === categoryParam
+        return (
+          <Tab
+            tabText={category}
+            isBlogPostTab={true}
+            isActive={isActive}
+            data-category={category.toLowerCase()}
+          />
         )
-      : "No category"
+      })
   }
 </div>
+
+<script>
+  const tabsContainer = document.querySelector(".tabs-container")
+  const blogPostCards = document.querySelectorAll(".blog-post-card")
+
+  tabsContainer?.addEventListener("click", (e) => {
+    const clickedTab = e.target.closest("[data-category]")
+    if (!clickedTab) return
+
+    const category = clickedTab.dataset.category
+
+    // Update URL
+    const url = new URL(window.location)
+    if (category) {
+      url.searchParams.set("category", category)
+    } else {
+      url.searchParams.delete("category")
+    }
+    history.replaceState(null, "", url)
+
+    // Highlight active tab
+    document.querySelectorAll("[data-category]").forEach((tab) => {
+      tab.classList.toggle(
+        "bg-[var(--secondary-text-color)",
+        tab === clickedTab,
+      )
+      tab.classList.toggle(
+        "bg-[var(--secondary-text-color)]",
+        tab !== clickedTab,
+      )
+    })
+
+    // Filter cards
+    blogPostCards.forEach((card) => {
+      const cardCategories = card.dataset.categories.split(",")
+      if (!category || cardCategories.includes(category)) {
+        card.classList.remove("hide-card")
+      } else {
+        card.classList.add("hide-card")
+      }
+    })
+  })
+</script>
