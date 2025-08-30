@@ -5,8 +5,6 @@ import Card from "../card/Card.astro"
 const { class: className, id: id } = Astro.props
 
 const latestPosts = await fetchLatestPosts()
-
-console.log("Latest posts: ", latestPosts)
 ---
 
 <div class="flex gap-8 flex-wrap mt-4">

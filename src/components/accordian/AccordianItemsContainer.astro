@@ -1,0 +1,19 @@
+---
+import AccordianItem from "./AccordianItem.astro"
+
+const { class: className, id: id, accordianData } = Astro.props
+---
+
+<article class={className} id={id}>
+  {
+    accordianData.length > 0
+      ? accordianData.map((accordianItem) => (
+          <AccordianItem
+            accordianItemTitle={accordianItem.accordian_item_title}
+            accordianItemIcon={accordianItem.accordian_item_icon}
+            accordianItemText={accordianItem.accordian_item_text}
+          />
+        ))
+      : ""
+  }
+</article>

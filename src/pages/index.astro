@@ -4,8 +4,7 @@ import LatestPosts from "../components/posts/LatestPosts.astro"
 import Hero from "../components/hero/Hero.astro"
 import AboutSection from "../components/about/AboutSection.astro"
 import TextBlock from "../components/text_block/TextBlock.astro"
-import Section from "../components/generals/section/Section.astro"
-import Video from "../components/videos/Video.astro"
+import { fetchAccordianData } from "../../js/utils/supabase_methods"
 
 const accordionItems = [
   {
@@ -56,6 +55,10 @@ const latestPosts = [
     alt: "blog post card image",
   },
 ]
+
+const accordianData = await fetchAccordianData()
+
+console.log(accordianData)
 ---
 
 <Layout title="Home">
@@ -86,7 +89,7 @@ const latestPosts = [
         textBlockParagraphText="Back in the summer of 2021, I began publishing technical articles on various web development topics—sharing tips, experiments, and lessons learned. This page is my space to collect and showcase them in one place - all for you to read and enjoy."
       />
     </div>
-    <AboutSection accordionItems={accordionItems} />
+    <AboutSection accordianData={accordianData} />
   </div>
 
   <LatestPosts

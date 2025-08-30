@@ -11,7 +11,6 @@ console.log(currentPath)
         {navItems
           .filter((item) => item.isShown !== false)
           .map((navItem, index) => {
-            // ✅ compute active state per navItem
             const isActive =
               currentPath === navItem.href ||
               (navItem.href !== "/" && currentPath.startsWith(navItem.href))
