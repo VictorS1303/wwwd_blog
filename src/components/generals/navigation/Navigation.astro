@@ -1,7 +1,7 @@
 ---
 const { class: className, id: id, navItems = [] } = Astro.props
-const currentPath = Astro.url.pathname
-console.log(currentPath)
+const activePage = new URL(Astro.request.url).pathname.replace(/\/$/, "")
+const isHome = activePage === "/"
 ---
 
 <nav class={`${className} sticky z-[1000000] mr-6 pt-4`} id={id}>
@@ -12,18 +12,17 @@ console.log(currentPath)
           .filter((item) => item.isShown !== false)
           .map((navItem, index) => {
             const isActive =
-              currentPath === navItem.href ||
-              (navItem.href !== "/" && currentPath.startsWith(navItem.href))
+              (navItem.href === "/" && isHome) || navItem.href === activePage
 
             return (
               <li key={index} class="flex justify-center cursor-pointer">
                 <a
                   href={navItem.href}
-                  class={`relative before:content-[''] before:absolute before:bottom-0 before:left-0 
+                  class={`
+                          relative before:content-[''] before:absolute before:bottom-0 before:left-0 
                           before:w-full before:h-[2px] before:bg-white 
                           before:origin-left before:transition-transform before:duration-300
-                          hover:before:scale-x-100
-                          ${isActive ? "before:scale-x-100" : "before:scale-x-0"}`}
+                          ${navItem.href === activePage ? "before:scale-x-100" : "before:scale-x-0"}`}
                 >
                   {navItem.text}
                 </a>
@@ -34,3 +33,15 @@ console.log(currentPath)
     )
   }
 </nav>
+
+{
+  /* <a
+                  href={navItem.href}
+                  class={`relative before:content-[''] before:absolute before:bottom-0 before:left-0 
+                        before:w-full before:h-[2px] before:bg-white 
+                        before:origin-left before:transition-transform before:duration-300
+                        ${isActive ? "before:scale-x-100" : "before:scale-x-0 hover:before:scale-x-100"}`}
+                >
+                  {navItem.text}
+                </a> */
+}
