@@ -1,12 +1,10 @@
 ---
-import ErrorPageLayout from '../layouts/ErrorPageLayout.astro'
-import { fetchRandomPost } from '../../js/utils/supabase_methods.js'
-import { fetchErrorPageData } from '../../js/utils/supabase_methods.js'
+import ErrorPageLayout from "../layouts/ErrorPageLayout.astro"
+import { fetchRandomPost } from "../../js/utils/supabase_methods.js"
+import { fetchErrorPageData } from "../../js/utils/supabase_methods.js"
 const randomPost = await fetchRandomPost()
 
 const errorPageData = await fetchErrorPageData()
-
-console.log(errorPageData)
 ---
 
 <ErrorPageLayout

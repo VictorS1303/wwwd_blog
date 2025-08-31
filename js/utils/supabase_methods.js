@@ -58,8 +58,6 @@ export const fetchLatestPosts = async () => {
         throw new Error(`Failed to fetch posts: ${postsError.message}`)
     }
 
-    console.log(postsData)
-
     return postsData || []
 }
 
@@ -76,7 +74,6 @@ export const fetchAccordianData = async () => {
     console.log(accordianError.message, accordianError.hint);
   }
 
-  console.log(accordianData)
   return accordianData || [];
 }
 
