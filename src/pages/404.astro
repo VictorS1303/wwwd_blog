@@ -1,0 +1,20 @@
+---
+import ErrorPageLayout from '../layouts/ErrorPageLayout.astro'
+import { fetchRandomPost } from '../../js/utils/supabase_methods.js'
+import { fetchErrorPageData } from '../../js/utils/supabase_methods.js'
+const randomPost = await fetchRandomPost()
+
+const errorPageData = await fetchErrorPageData()
+
+console.log(errorPageData)
+---
+
+<ErrorPageLayout
+  title={errorPageData.error_page_title}
+  src={`${errorPageData.error_page_image}.gif`}
+  textBlockParagraphText={errorPageData.error_page_text}
+  blogPostsHref={errorPageData.blog_posts_button_href}
+  blogPostsButtonText={errorPageData.blog_posts_button_text}
+  randomBlogPostHref={`${errorPageData.blog_posts_button_href}/${randomPost}`}
+  randomBlogPostButtonText={errorPageData.random_blog_post_button_text}
+/>

@@ -80,4 +80,33 @@ export const fetchAccordianData = async () => {
   return accordianData || [];
 }
 
-// fetchAccordianData()
+// Fetch random post
+export const fetchRandomPost = async () => {
+  const {data: randomPostData, error: randomPostError} = await supabaseClient
+  .from('random_blog_post')
+  .select('post_slug')
+  .limit(1)
+  .single()
+
+  if(randomPostError)
+  {
+    console.log(randomPostError.message, randomPostError.hint)
+  }
+
+  return randomPostData.post_slug
+}
+
+// Fetch error page data
+export const fetchErrorPageData = async () =>
+{
+  const {data: errorPageData, error: errorPageError} = await supabaseClient
+  .from('error_page')
+  .select('*')
+
+  if(errorPageError)
+  {
+    console.log(errorPageData.message, errorPageError.hint)
+  }
+
+  return errorPageData[0] || []
+}
