@@ -4,6 +4,7 @@ import LatestPosts from "../components/posts/LatestPosts.astro"
 import Hero from "../components/hero/Hero.astro"
 import AboutSection from "../components/about/AboutSection.astro"
 import TextBlock from "../components/text_block/TextBlock.astro"
+import Dialog from "../components/dialog/Dialog.astro"
 import { fetchAccordianData } from "../../js/utils/supabase_methods"
 
 const accordionItems = [
@@ -96,4 +97,6 @@ const accordianData = await fetchAccordianData()
     latestPosts={latestPosts}
     class="mt-4"
   />
+
+  <Dialog headerText="Hey" textBlockParagraphText="Hey" />
 </Layout>

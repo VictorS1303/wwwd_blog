@@ -1,0 +1,46 @@
+---
+import Header from "../header/Header.astro"
+import TextBlock from "../text_block/TextBlock.astro"
+import Button from "../button/Button.astro"
+const { class: className, id: id, headerText, textBlockParagraphText } = Astro.props
+---
+
+<dialog
+  class=`${className} absolute top-0 left-[50%] -translate-[50%] h-fit w-[80vw] px-4 py-4 max-w-[450px] rounded-md text-center
+  transition-top duration-400 ease-in open:top-[50%] open:backdrop-blur-3xl focus:outline-0 focus:ring-0`
+  id={id}
+>
+<Button class="absolute top-2 right-2 text-xl close-dialog-btn" id="close_dialog_btn">
+  <i class="fas fa-times" />
+</Button>
+  
+<Header headerText={headerText} />
+  <TextBlock textBlockParagraphText={textBlockParagraphText} />
+
+  <slot />
+</dialog>
+
+<style>
+  dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.4); /* like Tailwind’s bg-black/40 */
+    backdrop-filter: blur(4px);            /* like Tailwind’s backdrop-blur-sm */
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector("dialog")
+  const closeDialogBtn = document.querySelector('#close_dialog_btn')
+
+  closeDialogBtn?.addEventListener('click', (e) => closeDialog(e))
+
+
+  function closeDialog(e)
+  {
+    e.target.closest('dialog').close()
+  }
+
+  setTimeout((e) => {
+    dialog?.close()
+  }, 5000)
+
+</script>
