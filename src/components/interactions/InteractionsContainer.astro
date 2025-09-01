@@ -7,12 +7,12 @@ const { class: className, id: id, interactionButtons = [] } = Astro.props
 
 const dialogButtons = [
   {
-    href: "/sign-up",
     buttonText: "Sign up",
+    href: "/sign-up",
   },
   {
-    href: "/login",
     buttonText: "Login",
+    href: "/login",
   },
 ]
 ---
@@ -42,21 +42,21 @@ const dialogButtons = [
     }
   </div>
 
-  <!-- Login Warning Dialog -->
+  <!-- Login Warning Modal -->
   <Dialog
-    id="login_warning_dialog"
-    headerText="YOU ARE NOT LOGGED IN"
-    textBlockParagraphText="You must be logged in for this action."
+    id="login_warning_modal"
     type="login"
+    headerText="YOU ARE NOT LOGGED IN"
+    textBlockParagraphText="You must be logged in to continue."
     dialogButtons={dialogButtons}
   />
 
-  <!-- Share Dialog -->
+  <!-- Share Modal -->
   <Dialog
-    id="share_blog_post_dialog"
-    headerText="URL copied to clipboard"
-    textBlockParagraphText="This post is now ready to be shared wherever you wish!"
-    type="share"
+    id="share_blog_post_modal"
+    type="login"
+    headerText="URL COPIED TO CLIPBOARD"
+    textBlockParagraphText="The blog post is now ready to be shared wherever and with whomever you want!"
   />
 </div>
 
@@ -65,12 +65,12 @@ const dialogButtons = [
     ".interaction-buttons-container",
   )
 
+  const loginWarningModal = document.querySelector("#login_warning_modal")
+  const shareBlogPostModal = document.querySelector("#share_blog_post_modal")
+
   interactionButtonsContainer?.addEventListener("click", (e) =>
     chooseInteraction(e),
   )
-
-  const loginWarningModal = document.querySelector("#login_warning_dialog")
-  const shareBlogPostDialog = document.querySelector("#share_blog_post_dialog")
 
   function chooseInteraction(e) {
     const button = e.target.closest("button, a")
@@ -79,8 +79,8 @@ const dialogButtons = [
     const isAvailable = button.dataset.available === "true"
 
     if (!isAvailable) {
-      loginWarningModal?.showModal({ preventScroll: true })
-      e.preventDefault()
+      loginWarningModal?.showModal()
+      e.preventDefault() // prevent navigation for <a> tags
       return
     }
 
@@ -109,13 +109,13 @@ const dialogButtons = [
     console.log("Post saved!")
   }
   function downloadPost() {
-    downloadBlogPostDialog?.showModal()
+    console.log("Post downloaded!")
   }
   function sharePost() {
     const postUrl = window.location.href
 
     navigator.clipboard.writeText(postUrl).then(() => {
-      shareBlogPostDialog?.showModal()
+      shareBlogPostModal?.showModal()
     })
   }
 </script>
