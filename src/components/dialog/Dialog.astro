@@ -2,45 +2,88 @@
 import Header from "../header/Header.astro"
 import TextBlock from "../text_block/TextBlock.astro"
 import Button from "../button/Button.astro"
-const { class: className, id: id, headerText, textBlockParagraphText } = Astro.props
+
+const {
+  class: className,
+  id,
+  headerText,
+  textBlockParagraphText,
+  type, // single type prop: "login" | "share" | "download" | undefined
+  dialogButtons = [],
+} = Astro.props
+
+let dialogType = type || "default"
 ---
 
 <dialog
-  class=`${className} absolute top-0 left-[50%] -translate-[50%] h-fit w-[80vw] px-4 py-4 max-w-[450px] rounded-md text-center
-  transition-top duration-400 ease-in open:top-[50%] open:backdrop-blur-3xl focus:outline-0 focus:ring-0`
+  class={`${className} fixed top-0 left-[50%] -translate-[50%] h-fit w-[80vw] px-4 py-4 max-w-[450px] rounded-md text-center
+          transition-top duration-400 ease-in open:top-[50%] open:backdrop-blur-3xl focus:outline-0 focus:ring-0`}
   id={id}
 >
-<Button class="absolute top-2 right-2 text-xl close-dialog-btn" id="close_dialog_btn">
-  <i class="fas fa-times" />
-</Button>
-  
-<Header headerText={headerText} />
-  <TextBlock textBlockParagraphText={textBlockParagraphText} />
+  <!-- Close button -->
+  <Button
+    class="absolute top-2 right-2 text-xl close-dialog-btn"
+    data-target={id}
+    id={`close_dialog_btn_${id}`}
+  >
+    <i class="fas fa-times pointer-events-none"></i>
+  </Button>
 
-  <slot />
+  {
+    dialogType === "login" ? (
+      <>
+        <div class="mt-12">
+          <Header class="text-2xl font-bold" headerText={headerText} />
+          <TextBlock textBlockParagraphText={textBlockParagraphText} />
+          <div class="mt-12 mb-4 space-x-4">
+            {dialogButtons.map((dialogButton) => (
+              <Button
+                href={dialogButton.href}
+                buttonText={dialogButton.buttonText}
+                class="bg-[var(--secondary-text-color)] text-white px-4 py-2 text-xl rounded-md transition-opacity duration-150 ease-in hover:opacity-90"
+              />
+            ))}
+          </div>
+        </div>
+      </>
+    ) : dialogType === "share" ? (
+      <>
+        <div class="grid place-content-center mx-auto py-8">
+          <Header class="text-2xl font-bold" headerText={headerText} />
+          <TextBlock textBlockParagraphText={textBlockParagraphText} />
+        </div>
+        <slot />
+      </>
+    ) : dialogType === "download" ? (
+      <>
+        <Header headerText={headerText} />
+        <TextBlock textBlockParagraphText={textBlockParagraphText} />
+        <slot />
+      </>
+    ) : (
+      <>
+        <Header headerText={headerText} />
+        <TextBlock textBlockParagraphText={textBlockParagraphText} />
+        <slot />
+      </>
+    )
+  }
 </dialog>
 
 <style>
   dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.4); /* like Tailwind’s bg-black/40 */
-    backdrop-filter: blur(4px);            /* like Tailwind’s backdrop-blur-sm */
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
   }
 </style>
 
 <script>
-  const dialog = document.querySelector("dialog")
-  const closeDialogBtn = document.querySelector('#close_dialog_btn')
-
-  closeDialogBtn?.addEventListener('click', (e) => closeDialog(e))
-
-
-  function closeDialog(e)
-  {
-    e.target.closest('dialog').close()
-  }
-
-  setTimeout((e) => {
-    dialog?.close()
-  }, 5000)
-
+  // Close button logic
+  document.querySelectorAll(".close-dialog-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation() // prevent parent click listeners from triggering
+      const dialog = e.currentTarget.closest("dialog")
+      dialog?.close()
+    })
+  })
 </script>

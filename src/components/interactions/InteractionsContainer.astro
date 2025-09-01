@@ -1,8 +1,20 @@
 ---
 import Button from "../../components/button/Button.astro"
 import Header from "../../components/header/Header.astro"
+import Dialog from "../dialog/Dialog.astro"
 
 const { class: className, id: id, interactionButtons = [] } = Astro.props
+
+const dialogButtons = [
+  {
+    href: "/sign-up",
+    buttonText: "Sign up",
+  },
+  {
+    href: "/login",
+    buttonText: "Login",
+  },
+]
 ---
 
 <div class="interaction-buttons-container mt-12">
@@ -29,6 +41,23 @@ const { class: className, id: id, interactionButtons = [] } = Astro.props
         ))
     }
   </div>
+
+  <!-- Login Warning Dialog -->
+  <Dialog
+    id="login_warning_dialog"
+    headerText="YOU ARE NOT LOGGED IN"
+    textBlockParagraphText="You must be logged in for this action."
+    type="login"
+    dialogButtons={dialogButtons}
+  />
+
+  <!-- Share Dialog -->
+  <Dialog
+    id="share_blog_post_dialog"
+    headerText="URL copied to clipboard"
+    textBlockParagraphText="This post is now ready to be shared wherever you wish!"
+    type="share"
+  />
 </div>
 
 <script>
@@ -40,6 +69,9 @@ const { class: className, id: id, interactionButtons = [] } = Astro.props
     chooseInteraction(e),
   )
 
+  const loginWarningModal = document.querySelector("#login_warning_dialog")
+  const shareBlogPostDialog = document.querySelector("#share_blog_post_dialog")
+
   function chooseInteraction(e) {
     const button = e.target.closest("button, a")
     if (!button) return
@@ -47,8 +79,8 @@ const { class: className, id: id, interactionButtons = [] } = Astro.props
     const isAvailable = button.dataset.available === "true"
 
     if (!isAvailable) {
-      alert("This action isn't available")
-      e.preventDefault() // prevent navigation for <a> tags
+      loginWarningModal?.showModal({ preventScroll: true })
+      e.preventDefault()
       return
     }
 
@@ -77,13 +109,13 @@ const { class: className, id: id, interactionButtons = [] } = Astro.props
     console.log("Post saved!")
   }
   function downloadPost() {
-    console.log("Post downloaded!")
+    downloadBlogPostDialog?.showModal()
   }
   function sharePost() {
     const postUrl = window.location.href
 
     navigator.clipboard.writeText(postUrl).then(() => {
-      alert("Copied")
+      shareBlogPostDialog?.showModal()
     })
   }
 </script>
