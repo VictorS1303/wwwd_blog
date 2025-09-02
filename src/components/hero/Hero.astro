@@ -11,6 +11,7 @@ const {
   hasOverlay,
   href,
   date,
+  isLandingHero,
 } = Astro.props
 
 import Overlay from "../generals/overlay/Overlay.astro"
@@ -55,6 +56,16 @@ const navItems = [
         <BackButton href={href} />
       </Section>
     </div>
+  ) : isLandingHero ? (
+    <Section
+      class={`${className} relative top-0 left-0 h-screen w-screen bg-[#131212] overflow-hidden`}
+      id={id}
+    >
+      <Navigation navItems={navItems} />
+      <div class="grid place-content-center min-h-screen">
+        <slot />
+      </div>
+    </Section>
   ) : (
     <Section class={`${className} relative h-[60vh]`} id={id}>
       <img
@@ -64,7 +75,6 @@ const navItems = [
       />
       <div class="absolute bottom-3 left-3 hero-desc-container text-white z-[10000]">
         <Header isHeroHeader={true} headerText={headerText} />
-
         <p class="text-[var(--paragraphs-font)] italic text-md md:text-lg">
           {heroParagraphText}
         </p>

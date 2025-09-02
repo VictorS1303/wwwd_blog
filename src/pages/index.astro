@@ -1,0 +1,65 @@
+---
+import Hero from "../components/hero/Hero.astro"
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout title="WWWD | Home" isLandingHero={true}>
+  <Hero isLandingHero={true}>
+    <h1
+      class="heading text-white text-[6rem] text-center leading-26"
+      id="heading"
+    >
+    </h1>
+    <p class="tagline italic text-white text-2xl text-center mt-6" id="tagline">
+    </p>
+  </Hero>
+</Layout>
+
+<script>
+  import Typewriter from "typewriter-effect/dist/core"
+
+  const headingEl = document.querySelector("#heading")
+  const taglineEl = document.querySelector("#tagline")
+
+  const headingText =
+    "<span class='first-letter'>W</span>orld <span class='first-letter'>W</span>ide<br><span class='first-letter'>W</span>eb <span class='first-letter'>D</span>evelopment"
+
+  const taglineText =
+    "Remember to make your website just a little bit more awesome every day"
+
+  const heading = new Typewriter(headingEl, {
+    autoStart: false,
+    loop: false,
+    delay: 100, // typing speed (ms per char)
+    cursor: "",
+    deleteSpeed: 40, // deleting speed (ms per char)
+  })
+
+  const tagline = new Typewriter(taglineEl, {
+    autoStart: false,
+    loop: false,
+    cursor: "",
+    delay: 60, // tagline typing speed
+  })
+
+  // Step 1: Type heading
+  heading
+    .typeString(headingText)
+    .callFunction(() => {
+      // Step 2: Small pause, then start tagline
+      setTimeout(() => {
+        tagline
+          .typeString(taglineText)
+          .callFunction(() => {
+            // Step 3: After tagline is fully typed, delete heading
+            heading.deleteAll().callFunction(() => {
+              // Step 4: Hide the heading cursor once it's done
+              const cursor = headingEl.querySelector(".Typewriter__cursor")
+              if (cursor) cursor.style.display = "none"
+            })
+          })
+          .start()
+      }, 1000)
+    })
+    .start()
+</script>

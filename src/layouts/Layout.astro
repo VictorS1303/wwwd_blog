@@ -1,6 +1,7 @@
 ---
 const { title } = Astro.props
 import "../styles/global.css"
+const { isLandingHero } = Astro.props
 ---
 
 <!doctype html>
@@ -14,8 +15,16 @@ import "../styles/global.css"
     <title>{title}</title>
   </head>
   <body class="min-h-screen min-w-screen">
-    <main class="p-4 md:px-10">
-      <slot />
-    </main>
+    {
+      isLandingHero ? (
+        <main>
+          <slot />
+        </main>
+      ) : (
+        <main class="p-4 md:px-10">
+          <slot />
+        </main>
+      )
+    }
   </body>
 </html>

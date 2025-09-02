@@ -51,3 +51,8 @@ code
   opacity: 0;
   transition: opacity .2s ease-in;
 }
+
+.first-letter
+{
+  color: var(--secondary-text-color)
+}
