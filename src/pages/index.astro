@@ -17,15 +17,16 @@ import Layout from "../layouts/Layout.astro"
 
 <script>
   import Typewriter from "typewriter-effect/dist/core"
+  import { fetchLandingPageData } from "../../js/utils/supabase_methods.js"
+
+  const landingPageData = await fetchLandingPageData()
 
   const headingEl = document.querySelector("#heading")
   const taglineEl = document.querySelector("#tagline")
 
-  const headingText =
-    "<span class='first-letter'>W</span>orld <span class='first-letter'>W</span>ide<br><span class='first-letter'>W</span>eb <span class='first-letter'>D</span>evelopment"
+  const headingText = landingPageData.heading_text
 
-  const taglineText =
-    "Remember to make your website just a little bit more awesome every day"
+  const taglineText = landingPageData.tagline_text
 
   const heading = new Typewriter(headingEl, {
     autoStart: false,
