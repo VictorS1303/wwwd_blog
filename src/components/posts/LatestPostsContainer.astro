@@ -5,6 +5,8 @@ import Card from "../card/Card.astro"
 const { class: className, id: id } = Astro.props
 
 const latestPosts = await fetchLatestPosts()
+
+console.log(latestPosts)
 ---
 
 <div class="flex gap-8 flex-wrap mt-4">
@@ -13,7 +15,6 @@ const latestPosts = await fetchLatestPosts()
       latestPosts.map((latestBlogPostCard) => {
         return (
           <Card
-            isBlogPostCard={true}
             headerText={latestBlogPostCard.post_title}
             labelText={latestBlogPostCard.post_categories}
             textBlockParagraphText={latestBlogPostCard.post_excerpt}
@@ -25,6 +26,7 @@ const latestPosts = await fetchLatestPosts()
             categories={latestBlogPostCard.post_categories}
             src={`${latestBlogPostCard.post_image}.webp`}
             alt={latestBlogPostCard.post_image_alt}
+            isLatestBlogPostCard={true}
           />
         )
       })
