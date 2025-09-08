@@ -5,18 +5,32 @@ const {
   tabText,
   isBlogPostTab = false,
   isActive = false,
+  href,
   "data-category": dataCategory,
 } = Astro.props
 ---
 
-<article
-  class={`${className} ${
-    isActive
-      ? "bg-[var(--secondary-text-color)] text-[var(--primary-text-color)]" // Active background
-      : "bg-[var(--secondary-text-color)] text-white" // Default background
-  } text-center min-w-[50px] w-fit p-2 rounded-full transition-colors duration-300 cursor-pointer`}
-  id={id}
-  data-category={dataCategory}
->
-  <h5>{tabText}</h5>
-</article>
+{
+  href ? (
+    <a
+      href={href}
+      id={id}
+      data-category={dataCategory}
+      class={`${className} ${
+        isActive
+          ? "bg-[var(--secondary-text-color)] text-[var(--primary-text-color)]"
+          : "bg-[var(--secondary-text-color)] text-white"
+      } text-center min-w-[50px] w-fit p-2 rounded-full transition-colors duration-300 cursor-pointer`}
+    >
+      <h5>{tabText}</h5>
+    </a>
+  ) : (
+    <article
+      id={id}
+      data-category={dataCategory}
+      class="text-center min-w-[50px] w-fit p-2 rounded-full bg-[var(--secondary-text-color)] text-[var(--primary-text-color)]"
+    >
+      <h5>{tabText}</h5>
+    </article>
+  )
+}

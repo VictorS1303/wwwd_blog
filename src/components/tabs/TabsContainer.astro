@@ -8,33 +8,29 @@ const posts = await fetchAllPosts()
 const allCategories = posts?.flatMap((post) => post.post_categories) || []
 
 // Deduplicate
-const uniqueCategories = [...new Set(allCategories)]
+const uniqueCategories = ["All", ...new Set(allCategories)]
 
 // Get current category from URL
 const categoryParam = Astro.url.searchParams.get("category")?.toLowerCase()
 ---
 
 <div class="tabs-container flex gap-2 mb-4">
-  <Tab
-    tabText="All"
-    isBlogPostTab={true}
-    isActive={!categoryParam}
-    data-category=""
-  />
-
   {
-    uniqueCategories.length > 0 &&
-      uniqueCategories.map((category) => {
-        const isActive = category.toLowerCase() === categoryParam
-        return (
-          <Tab
-            tabText={category}
-            isBlogPostTab={true}
-            isActive={isActive}
-            data-category={category.toLowerCase()}
-          />
-        )
-      })
+    uniqueCategories.map((category) => {
+      const isAll = category === "All"
+      const categoryValue = isAll ? "" : category.toLowerCase()
+      const isActive = isAll ? !categoryParam : categoryParam === categoryValue
+
+      return (
+        <Tab
+          tabText={category}
+          isBlogPostTab={true}
+          isActive={isActive}
+          data-category={categoryValue}
+          class="uppercase"
+        />
+      )
+    })
   }
 </div>
 
@@ -42,41 +38,53 @@ const categoryParam = Astro.url.searchParams.get("category")?.toLowerCase()
   const tabsContainer = document.querySelector(".tabs-container")
   const blogPostCards = document.querySelectorAll(".blog-post-card")
 
-  tabsContainer?.addEventListener("click", (e) => {
-    const clickedTab = e.target.closest("[data-category]")
-    if (!clickedTab) return
+  function filterPostsByCategory(category) {
+    // Show/hide posts with fade
+    blogPostCards.forEach((card) => {
+      const cardCategories = card.dataset.categories.split(",")
+      const shouldShow = !category || cardCategories.includes(category)
 
-    const category = clickedTab.dataset.category
-
-    // Update URL
-    const url = new URL(window.location)
-    if (category) {
-      url.searchParams.set("category", category)
-    } else {
-      url.searchParams.delete("category")
-    }
-    history.replaceState(null, "", url)
+      if (shouldShow) {
+        card.classList.remove("hidden", "opacity-0")
+        card.classList.add("opacity-100")
+      } else {
+        card.classList.remove("opacity-100")
+        card.classList.add("opacity-0")
+        setTimeout(() => card.classList.add("hidden"), 200)
+      }
+    })
 
     // Highlight active tab
     document.querySelectorAll("[data-category]").forEach((tab) => {
-      tab.classList.toggle(
-        "bg-[var(--secondary-text-color)",
-        tab === clickedTab,
-      )
-      tab.classList.toggle(
-        "bg-[var(--secondary-text-color)]",
-        tab !== clickedTab,
-      )
+      const isActive = tab.dataset.category === category
+      tab.classList.remove("text-white")
+      tab.classList.toggle("text-[var(--primary-text-color)]", isActive)
+      tab.classList.toggle("bg-[#111]", isActive)
+      tab.classList.toggle("bg-[var(--secondary-text-color)]", !isActive)
+      tab.classList.toggle("text-white", !isActive)
     })
 
-    // Filter cards
-    blogPostCards.forEach((card) => {
-      const cardCategories = card.dataset.categories.split(",")
-      if (!category || cardCategories.includes(category)) {
-        card.classList.remove("hide-card")
-      } else {
-        card.classList.add("hide-card")
-      }
-    })
+    // Update URL
+    const url = new URL(window.location)
+    if (category === "") {
+      url.searchParams.delete("category") // "All" → remove param
+    } else {
+      url.searchParams.set("category", category)
+    }
+    history.replaceState(null, "", url)
+  }
+
+  // Manual filtering on tab click
+  tabsContainer?.addEventListener("click", (e) => {
+    const clickedTab = e.target.closest("[data-category]")
+    if (!clickedTab) return
+    filterPostsByCategory(clickedTab.dataset.category)
+  })
+
+  // Initial filtering on page load
+  window.addEventListener("DOMContentLoaded", () => {
+    const initialCategory =
+      new URL(window.location).searchParams.get("category") || ""
+    filterPostsByCategory(initialCategory)
   })
 </script>

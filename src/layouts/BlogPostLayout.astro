@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro"
 import Hero from "../components/hero/Hero.astro"
 import Section from "../components/generals/section/Section.astro"
+import Tab from "../components/tabs/Tab.astro"
 import TabsContainer from "../components/tabs/TabsContainer.astro"
 import Button from "../components/button/Button.astro"
 import Aside from "../components/aside/Aside.astro"
@@ -26,9 +27,9 @@ const {
   image: { src, alt },
 } = Astro.props
 
-const tabItems = categories.map((category) => ({
+const currentPostCategories = categories.map((category) => ({
   isBlogPostTab: true,
-  href: `/blog-posts?category=${category.toLowerCase()}`,
+  href: `/blog-posts?category=${encodeURIComponent(category.toLowerCase())}`,
   tabText: category,
 }))
 
@@ -89,6 +90,19 @@ const formattedDate = date ? formatDate(date) : "Unknown date"
             >
             {formattedDate}
           </h3>
+        </div>
+
+        <div class="tabs-container flex gap-2 mb-4">
+          {
+            currentPostCategories.map((tab) => (
+              <Tab
+                tabText={tab.tabText}
+                isBlogPostTab={tab.isBlogPostTab}
+                href={tab.href}
+                class="uppercase"
+              />
+            ))
+          }
         </div>
       </div>
     </div>
