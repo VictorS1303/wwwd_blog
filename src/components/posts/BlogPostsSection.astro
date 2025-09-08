@@ -2,20 +2,15 @@
 const { posts, headerText, isTextBlockHeader } = Astro.props
 import Section from "../generals/section/Section.astro"
 import PostsContainer from "./PostsContainer.astro"
+import FilterContainer from "../containers/FilterContainer.astro"
 import Header from "../header/Header.astro"
 import Input from "../input/Input.astro"
 ---
 
 <Section class="mt-8">
   <Header headerText={headerText} isTextBlockHeader={isTextBlockHeader} />
-  <div class="mt-6">
-    <Input
-      class="text-2xl"
-      id="blog_post_filter"
-      placeholder="Search posts by title"
-    />
-    <PostsContainer posts={posts} />
-  </div>
+  <FilterContainer class="mt-6" />
+  <PostsContainer class="mt-6" posts={posts} />
 </Section>
 
 <script>

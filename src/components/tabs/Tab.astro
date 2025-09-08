@@ -1,21 +1,34 @@
 ---
-const { class: className, id: id, tabText, href, isBlogPostTab } = Astro.props
+const {
+  class: className,
+  id,
+  tabText,
+  isBlogPostTab = false,
+  isActive = false,
+  href,
+  "data-category": dataCategory,
+} = Astro.props
 ---
 
 {
-  isBlogPostTab ? (
-    <a href={href} target="_blank">
-      <article
-        class={`${className} bg-[var(--secondary-text-color)] text-white text-center min-w-[50px] w-fit p-2 rounded-full`}
-        id={id}
-      >
-        <h5>{tabText}</h5>
-      </article>
+  href ? (
+    <a
+      href={href}
+      id={id}
+      data-category={dataCategory}
+      class={`${className} ${
+        isActive
+          ? "bg-[var(--secondary-text-color)] text-[var(--primary-text-color)]"
+          : "bg-[var(--secondary-text-color)] text-white"
+      } text-center min-w-[50px] w-fit p-2 rounded-full transition-colors duration-300 cursor-pointer`}
+    >
+      <h5>{tabText}</h5>
     </a>
   ) : (
     <article
-      class={`${className} bg-[var(--secondary-text-color)] text-white text-center min-w-[50px] w-fit p-2 rounded-full`}
       id={id}
+      data-category={dataCategory}
+      class="text-center min-w-[50px] w-fit p-2 rounded-full bg-[var(--secondary-text-color)] text-[var(--primary-text-color)]"
     >
       <h5>{tabText}</h5>
     </article>

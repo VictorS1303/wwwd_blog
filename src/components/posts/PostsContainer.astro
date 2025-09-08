@@ -1,13 +1,15 @@
 ---
 import Card from "../card/Card.astro"
 import { fetchAllPosts } from "../../../js/utils/supabase_methods"
+import FilterContainer from "../containers/FilterContainer.astro"
 
 const posts = await fetchAllPosts()
 ---
 
-<div class="flex flex-col mt-4">
+<div class="relative flex flex-col mt-4 w-full">
+  <!-- <FilterContainer /> -->
   <div
-    class="post-cards-container flex flex-wrap flex-col justify-start mt-4 gap-12 md:flex-row"
+    class="post-cards-container flex flex-wrap flex-col justify-between mt-4 gap-12 md:flex-row"
   >
     {
       posts && posts.length > 0 ? (

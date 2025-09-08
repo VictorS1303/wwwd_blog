@@ -2,10 +2,19 @@
 import { fetchAllPosts } from "../../js/utils/supabase_methods"
 import Layout from "../layouts/Layout.astro"
 import Hero from "../components/hero/Hero.astro"
-import PostsContainer from "../components/posts/PostsContainer.astro"
 import BlogPostsSection from "../components/posts/BlogPostsSection.astro"
 
 const posts = await fetchAllPosts()
+const categoryParam = Astro.url.searchParams.get("category")?.toLowerCase()
+
+// Filter posts by category
+const filteredPosts = categoryParam
+  ? posts.filter((post) => {
+      return post.post_categories.some(
+        (category) => category.toLowerCase() === categoryParam,
+      )
+    })
+  : posts
 ---
 
 <Layout title="Blog Posts">
@@ -16,5 +25,9 @@ const posts = await fetchAllPosts()
     hasOverlay={true}
   />
 
-  <BlogPostsSection posts={posts} headerText="Posts" isTextBlockHeader={true} />
+  <BlogPostsSection
+    posts={filteredPosts}
+    headerText="Posts"
+    isTextBlockHeader={true}
+  />
 </Layout>
