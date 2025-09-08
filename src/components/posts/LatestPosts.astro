@@ -2,12 +2,15 @@
 import Section from "../generals/section/Section.astro"
 import LatestPostsContainer from "./LatestPostsContainer.astro"
 import Header from "../header/Header.astro"
-import { fetchLatestPosts } from "../../../js/utils/supabase_methods"
 
-const { class: className, id: id, headerText, isTextBlockHeader } = Astro.props
-
-// Fetch latest posts here
-const latestPosts = await fetchLatestPosts()
+// ✅ Receive data from props instead of fetching again
+const {
+  class: className,
+  id,
+  headerText,
+  isTextBlockHeader,
+  latestPosts = [],
+} = Astro.props
 ---
 
 <Section class={`${className} mt-16`} id={id}>

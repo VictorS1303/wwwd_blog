@@ -6,65 +6,19 @@ import AboutSection from "../components/about/AboutSection.astro"
 import TextBlock from "../components/text_block/TextBlock.astro"
 import {
   fetchAccordianData,
-  fetchHeroData,
+  fetchLatestPosts,
 } from "../../js/utils/supabase_methods"
 
-const accordionItems = [
-  {
-    accordionItemTitle: "1. Music",
-    accordionItemIcon: "fas fa-music",
-    accordionItemText:
-      "I have been playing the piano since I was 8. On top of that, I have been a fan of reggae since I was 11, and this genre of music is what I primarily listen to.",
-  },
-  {
-    accordionItemTitle: "2. Workout",
-    accordionItemIcon: "fas fa-bicycle",
-    accordionItemText:
-      "I love to go for a bike ride quite often - either outside, when the weather allows for it or inside, when the weather is bad. Besides that, I work as a delivery guy, which means more time on the bike.",
-  },
-  {
-    accordionItemTitle: "3. Sparetime",
-    accordionItemIcon: "fas fa-hourglass-half",
-    accordionItemText:
-      "In my sparetime, I really like to solve riddles and other puzzles of different types - all from online riddles to escape rooms and anything in between.",
-  },
-]
-
-const latestPosts = [
-  {
-    isBlogPostCard: true,
-    headerText: "How the browser reads CSS",
-    labelText: "CSS",
-    isBlogPostCardText: true,
-    isBlogPostCardHeader: true,
-    textBlockParagraphText:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
-    buttonText: "Read More",
-    href: "#",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    alt: "blog post card image",
-  },
-  {
-    isBlogPostCard: true,
-    headerText: "What is HTML?",
-    labelText: "HTML",
-    isBlogPostCardText: true,
-    isBlogPostCardHeader: true,
-    textBlockParagraphText:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
-    buttonText: "Read More",
-    href: "#",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    alt: "blog post card image",
-  },
-]
-
+// ✅ Fetch data only once here
 const accordianData = await fetchAccordianData()
+const latestPostsData = await fetchLatestPosts()
 
-
+// Log to verify data
+console.log("Latest posts data:", latestPostsData)
 ---
 
 <Layout title="Home">
+  <!-- Hero Section -->
   <Hero
     src="/images/landing_hero/landing_hero_bg.webp"
     alt="landing hero image"
@@ -72,6 +26,8 @@ const accordianData = await fetchAccordianData()
     heroParagraphText="The author of World Wide Web Development"
     hasOverlay={true}
   />
+
+  <!-- About Section -->
   <div class="flex flex-col md:flex-row md:justify-between">
     <div class="space-y-6 mt-8 md:w-1/2">
       <TextBlock
@@ -95,10 +51,11 @@ const accordianData = await fetchAccordianData()
     <AboutSection accordianData={accordianData} />
   </div>
 
+  <!-- Latest Posts Section -->
   <LatestPosts
     headerText="Latest Posts"
     isTextBlockHeader={true}
-    latestPosts={latestPosts}
+    latestPosts={latestPostsData}
     class="mt-4"
   />
 </Layout>

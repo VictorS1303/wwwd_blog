@@ -61,7 +61,7 @@ export const fetchLatestPosts = async () => {
     return postsData || []
 }
 
-// fetchLatestPosts()
+fetchLatestPosts()
 
 // Fetch accordian data
 export const fetchAccordianData = async () => {
