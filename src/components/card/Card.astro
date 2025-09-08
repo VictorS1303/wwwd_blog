@@ -36,7 +36,7 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
         .map((category) => category.toLowerCase())
         .join(",")}
     >
-      <Image src={src} class="h-50 rounded-t-md object-fit" alt={alt} />
+      <Image src={src} class="h-50 rounded-t-md object-fit w-full" alt={alt} />
       <div class="flex justify-start mt-4">
         {categories.length > 0 && (
           <div class="flex gap-2">
@@ -74,7 +74,7 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
         .map((category) => category.toLowerCase())
         .join(",")}
     >
-      <Image src={src} class="h-50 rounded-t-md object-fit" alt={alt} />
+      <Image src={src} class="h-50 rounded-t-md object-fit w-full" alt={alt} />
       <div class="flex justify-start mt-4">
         {categories.length > 0 && (
           <div class="flex gap-2">
