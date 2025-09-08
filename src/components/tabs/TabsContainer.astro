@@ -8,7 +8,7 @@ const posts = await fetchAllPosts()
 const allCategories = posts?.flatMap((post) => post.post_categories) || []
 
 // Deduplicate
-const uniqueCategories = ["All", ...new Set(allCategories)]
+const uniqueCategories = ["ALL", ...new Set(allCategories)]
 
 // Get current category from URL
 const categoryParam = Astro.url.searchParams.get("category")?.toLowerCase()
@@ -17,7 +17,7 @@ const categoryParam = Astro.url.searchParams.get("category")?.toLowerCase()
 <div class="tabs-container flex gap-2 mb-4">
   {
     uniqueCategories.map((category) => {
-      const isAll = category === "All"
+      const isAll = category === "ALL"
       const categoryValue = isAll ? "" : category.toLowerCase()
       const isActive = isAll ? !categoryParam : categoryParam === categoryValue
 
