@@ -27,34 +27,34 @@ const accordionItems = [
   },
 ]
 
-const latestPosts = [
-  {
-    isBlogPostCard: true,
-    headerText: "How the browser reads CSS",
-    labelText: "CSS",
-    isBlogPostCardText: true,
-    isBlogPostCardHeader: true,
-    textBlockParagraphText:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
-    buttonText: "Read More",
-    href: "#",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    alt: "blog post card image",
-  },
-  {
-    isBlogPostCard: true,
-    headerText: "What is HTML?",
-    labelText: "HTML",
-    isBlogPostCardText: true,
-    isBlogPostCardHeader: true,
-    textBlockParagraphText:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
-    buttonText: "Read More",
-    href: "#",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    alt: "blog post card image",
-  },
-]
+// const latestPosts = [
+//   {
+//     isBlogPostCard: true,
+//     headerText: "How the browser reads CSS",
+//     labelText: "CSS",
+//     isBlogPostCardText: true,
+//     isBlogPostCardHeader: true,
+//     textBlockParagraphText:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
+//     buttonText: "Read More",
+//     href: "#",
+//     src: "/images/landing_hero/landing_hero_bg.webp",
+//     alt: "blog post card image",
+//   },
+//   {
+//     isBlogPostCard: true,
+//     headerText: "What is HTML?",
+//     labelText: "HTML",
+//     isBlogPostCardText: true,
+//     isBlogPostCardHeader: true,
+//     textBlockParagraphText:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit sint, vitae fugit culpa earum nostrum nemo odio eligendi aliquam temporibus",
+//     buttonText: "Read More",
+//     href: "#",
+//     src: "/images/landing_hero/landing_hero_bg.webp",
+//     alt: "blog post card image",
+//   },
+// ]
 
 const accordianData = await fetchAccordianData()
 ---
@@ -93,8 +93,6 @@ const accordianData = await fetchAccordianData()
   <LatestPosts
     headerText="Latest Posts"
     isTextBlockHeader={true}
-    latestPosts={latestPosts}
     class="mt-4"
   />
-
 </Layout>

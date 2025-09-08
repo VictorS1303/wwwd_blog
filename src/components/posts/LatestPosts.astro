@@ -7,10 +7,10 @@ import { fetchLatestPosts } from "../../../js/utils/supabase_methods"
 const { class: className, id: id, headerText, isTextBlockHeader } = Astro.props
 
 // Fetch latest posts here
-const latestPosts = await fetchLatestPosts()
+// const latestPosts = await fetchLatestPosts()
 ---
 
 <Section class={`${className} mt-16`} id={id}>
   <Header headerText={headerText} isTextBlockHeader={isTextBlockHeader} />
-  <LatestPostsContainer latestPosts={latestPosts} />
+  <LatestPostsContainer />
 </Section>
