@@ -58,6 +58,7 @@ export const fetchLatestPosts = async () => {
         throw new Error(`Failed to fetch posts: ${postsError.message}`)
     }
 
+    console.log(postsError, postsData)
     return postsData || []
 }
 
