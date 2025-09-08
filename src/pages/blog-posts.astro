@@ -1,5 +1,5 @@
 ---
-import { fetchAllPosts } from "../../js/utils/supabase_methods"
+import { fetchAllPosts, fetchHeroData } from "../../js/utils/supabase_methods"
 import Layout from "../layouts/Layout.astro"
 import Hero from "../components/hero/Hero.astro"
 import BlogPostsSection from "../components/posts/BlogPostsSection.astro"
@@ -15,15 +15,15 @@ const filteredPosts = categoryParam
       )
     })
   : posts
+
+const heroData = await fetchHeroData()
+const heroImage = heroData[0]?.hero_images // e.g., "blog_posts_hero"
+const heroText = heroData[0]?.hero_text
+const heroAlt = heroData[0]?.hero_alt
 ---
 
 <Layout title="Blog Posts">
-  <Hero
-    src="/images/landing_hero/landing_hero_bg.webp"
-    alt="blog posts hero image"
-    headerText="Blog Posts"
-    hasOverlay={true}
-  />
+  <Hero src={heroImage} alt={heroAlt} headerText={heroText} hasOverlay={true} />
 
   <BlogPostsSection
     posts={filteredPosts}

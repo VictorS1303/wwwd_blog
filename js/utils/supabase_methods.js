@@ -124,3 +124,22 @@ export const fetchLandingPageData = async () =>
 }
 
 fetchLandingPageData()
+
+// Fetch hero data
+export const fetchHeroData = async () =>
+{
+  const {data: heroData, error: heroError} = await supabaseClient
+  .from('heroes')
+  .select('*')
+
+  if(heroError)
+  {
+    console.log(heroError.message, heroError.hint)
+  }
+
+  console.log(heroData[0].hero_images)
+
+  return heroData || []
+}
+
+await fetchHeroData()
