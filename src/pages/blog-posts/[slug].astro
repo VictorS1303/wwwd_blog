@@ -3,6 +3,7 @@ import { fetchSinglePostBySlug } from "../../../js/utils/supabase_methods"
 import BlogPostLayout from "../../layouts/BlogPostLayout.astro"
 import { supabaseClient } from "../../../js/supabase/supabase_client"
 import { marked } from "marked"
+import ScrollToTopButton from "../../components/button/ScrollToTopButton.astro"
 
 const { slug } = Astro.params
 
@@ -38,4 +39,6 @@ if (post?.post_text) {
   image={{ src: post.post_image, alt: post.post_image_alt }}
 >
   <div set:html={html} />
+
+  <ScrollToTopButton />
 </BlogPostLayout>

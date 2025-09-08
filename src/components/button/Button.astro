@@ -6,6 +6,7 @@ const {
   buttonText,
   download,
   share,
+  isScrollToTopBtn,
   "data-available": dataAvailable,
 } = Astro.props
 ---
@@ -13,10 +14,10 @@ const {
 {
   share ? (
     <button
-      class={`${className} share-button w-fit text-[var(--secondary-text-color)] cursor-pointer`}
+      class={`${className} share-button text-[var(--secondary-text-color)] cursor-pointer`}
       id={id}
       type="button"
-      data-available={Astro.props["data-available"]}
+      data-available={dataAvailable}
     >
       {buttonText}
       <slot />
@@ -28,6 +29,15 @@ const {
       id={id}
       download={download ? true : undefined}
       data-available={dataAvailable}
+    >
+      {buttonText}
+      <slot />
+    </a>
+  ) : isScrollToTopBtn ? (
+    <a
+      id={id}
+      href="#top"
+      class={`${className} grid place-content-center fixed bottom-6 -right-12 h-[45px] w-[45px] bg-white border-2 border-[var(--secondary-text-color)] rounded-full shadow-md transition-all duration-250 hover:border-2 hover:border-[var(--secondary-text-color)] hover:bg-[#131312]`}
     >
       {buttonText}
       <slot />

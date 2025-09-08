@@ -1,0 +1,28 @@
+---
+import Button from './Button.astro'
+---
+
+<Button id="scroll_to_top_btn" isScrollToTopBtn={true}>
+  <i class="fa-solid fa-arrow-up text-[var(--secondary-text-color)]"></i>
+</Button>
+
+
+<script>
+  const scrollToTopBtn = document.querySelector('#scroll_to_top_btn')
+
+  window.addEventListener('scroll', toggleScrollToTopButton)
+
+  function toggleScrollToTopButton()
+  {
+      if(window.scrollY > 300)
+      {
+        scrollToTopBtn?.classList.remove('-right-12')
+        scrollToTopBtn?.classList.add('right-6')
+      }
+      else
+      {
+        scrollToTopBtn?.classList.remove('right-6')
+        scrollToTopBtn?.classList.add('-right-12')
+      }
+  }
+</script>

@@ -3,6 +3,7 @@ import { fetchAllPosts, fetchHeroData } from "../../js/utils/supabase_methods"
 import Layout from "../layouts/Layout.astro"
 import Hero from "../components/hero/Hero.astro"
 import BlogPostsSection from "../components/posts/BlogPostsSection.astro"
+import ScrollToTopButton from "../components/button/ScrollToTopButton.astro"
 
 const posts = await fetchAllPosts()
 const categoryParam = Astro.url.searchParams.get("category")?.toLowerCase()
@@ -30,4 +31,6 @@ const heroAlt = heroData[0]?.hero_alt
     headerText="Posts"
     isTextBlockHeader={true}
   />
+
+  <ScrollToTopButton />
 </Layout>

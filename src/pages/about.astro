@@ -8,6 +8,7 @@ import {
   fetchAccordianData,
   fetchLatestPosts,
 } from "../../js/utils/supabase_methods"
+import ScrollToTopButton from "../components/button/ScrollToTopButton.astro"
 
 // ✅ Fetch data only once here
 const accordianData = await fetchAccordianData()
@@ -58,4 +59,6 @@ console.log("Latest posts data:", latestPostsData)
     latestPosts={latestPostsData}
     class="mt-4"
   />
+
+  <ScrollToTopButton />
 </Layout>
