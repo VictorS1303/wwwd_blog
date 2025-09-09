@@ -1,13 +1,21 @@
 ---
+import MobileNavToggleButton from "../../button/MobileNavToggleButton.astro"
+
 const { class: className, id: id, navItems = [] } = Astro.props
 const activePage = new URL(Astro.request.url).pathname.replace(/\/$/, "")
 const isHome = activePage === "/"
 ---
 
-<nav class={`${className} sticky z-[1000000] mr-6 pt-4`} id={id}>
+<MobileNavToggleButton id="mobile_nav_toggle_btn" />
+
+<nav
+  class={`${className} absolute top-0 -right-80 bg-white w-[200px] h-full pt-4 z-[1000000] 
+    md:sticky md:top-4 md:right-26 transition-right duration-400 ease-in md:h-auto md:bg-transparent md:mt-0 md:w-full`}
+  id="main_nav"
+>
   {
     navItems.length > 0 && (
-      <ul class="flex gap-4 justify-end text-white text-2xl">
+      <ul class="flex flex-col gap-4 justify-center h-full items-center whitespace-nowrap text-[var(--secondary-text-color)] text-2xl md:text-white md:flex-row md:absolute md:right-8">
         {navItems
           .filter((item) => item.isShown !== false)
           .map((navItem, index) => {
@@ -15,14 +23,15 @@ const isHome = activePage === "/"
               (navItem.href === "/" && isHome) || navItem.href === activePage
 
             return (
-              <li key={index} class="flex justify-center cursor-pointer">
+              <li key={index} class="flex justify-end cursor-pointer">
                 <a
                   href={navItem.href}
                   class={`
-                          relative before:content-[''] before:absolute before:bottom-0 before:left-0 
-                          before:w-full before:h-[2px] before:bg-white 
-                          before:origin-left before:transition-transform before:duration-300
-                          ${navItem.href === activePage ? "before:scale-x-100" : "before:scale-x-0"}`}
+                  relative before:content-[''] before:absolute before:bottom-0 before:left-0 
+                  before:w-full before:h-[2px] before:bg-white 
+                  before:origin-left before:transition-transform before:duration-300
+                  ${isActive ? "before:scale-x-100" : "before:scale-x-0"}
+                `}
                 >
                   {navItem.text}
                 </a>
@@ -34,14 +43,33 @@ const isHome = activePage === "/"
   }
 </nav>
 
-{
-  /* <a
-                  href={navItem.href}
-                  class={`relative before:content-[''] before:absolute before:bottom-0 before:left-0 
-                        before:w-full before:h-[2px] before:bg-white 
-                        before:origin-left before:transition-transform before:duration-300
-                        ${isActive ? "before:scale-x-100" : "before:scale-x-0 hover:before:scale-x-100"}`}
-                >
-                  {navItem.text}
-                </a> */
-}
+<script>
+  const mobileNavToggleBtn = document.querySelector("#mobile_nav_toggle_btn")
+  const mainNav = document.querySelector("#main_nav")
+
+  mobileNavToggleBtn?.addEventListener("click", () => {
+    // Toggle Navbar
+    toggleMobileNav()
+
+    // Toggle Button
+    toggleMobileNavToggleButton()
+  })
+
+  function toggleMobileNav() {
+    mainNav?.classList.toggle("-right-80")
+    mainNav?.classList.toggle("right-0")
+  }
+
+  function toggleMobileNavToggleButton() {
+    mobileNavToggleBtn?.classList.toggle("right-6")
+    mobileNavToggleBtn?.classList.toggle("right-[230px]")
+
+    toggleMobileNavToggleButtonIcon()
+  }
+
+  function toggleMobileNavToggleButtonIcon() {
+    const icon = mobileNavToggleBtn?.querySelector("i")
+    icon?.classList.toggle("fa-bars")
+    icon?.classList.toggle("fa-times")
+  }
+</script>

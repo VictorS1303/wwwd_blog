@@ -1,0 +1,13 @@
+---
+import Button from "./Button.astro"
+
+const { class: className, id: id } = Astro.props
+---
+
+<Button
+  class={`${className} absolute text-white z-[100000] text-2xl right-6 top-6 transition-right duration-400 ease-in md:hidden`}
+  id={id}
+>
+  <i class="fas fa-bars"></i>
+</Button>
+

@@ -39,7 +39,7 @@ const navItems = [
 {
   isSingleView ? (
     <div class="flex flex-col gap-2">
-      <Section class={`${className} relative h-[60vh]`} id={id}>
+      <Section class={`${className} relative h-[60vh] overflow-hidden`} id={id}>
         <img
           src={src}
           alt={alt}
@@ -67,7 +67,7 @@ const navItems = [
       </div>
     </Section>
   ) : (
-    <Section class={`${className} relative h-[60vh]`} id={id}>
+    <Section class={`${className} relative h-[60vh] overflow-hidden`} id={id}>
       <img
         src={src}
         alt={alt}
