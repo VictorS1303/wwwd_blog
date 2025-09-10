@@ -17,7 +17,7 @@ const isHome = activePage === "/"
     navItems.length > 0 && (
       <ul class="flex flex-col gap-4 justify-center h-full items-center whitespace-nowrap text-[var(--secondary-text-color)] text-2xl md:text-white md:flex-row md:absolute md:right-8">
         {navItems
-          .filter((item) => item.isShown !== false)
+          .filter((item) => item.isLoggedIn !== false)
           .map((navItem, index) => {
             const isActive =
               (navItem.href === "/" && isHome) || navItem.href === activePage
