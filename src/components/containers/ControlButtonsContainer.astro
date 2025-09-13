@@ -1,0 +1,16 @@
+---
+import Button from "../button/Button.astro"
+const { class: className, id: id, buttons = [] } = Astro.props
+---
+
+<div class="dashboard-controls-container flex gap-4 mt-3 flex-wrap">
+  {
+    buttons.map((button) => (
+      <Button
+        buttonText={button.buttonText}
+        id={button.id}
+        isDashboardControlButton={button.isDashboardControlButton}
+      />
+    ))
+  }
+</div>

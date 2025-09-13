@@ -6,6 +6,9 @@ const {
   isSingleViewHeader,
   isTextBlockHeader,
   isBlogPostCardHeader,
+  isDashboardHeader,
+  isLikedBlogPostCardHeader,
+  isSavedBlogPostCardHeader,
   isHeroHeader,
 } = Astro.props
 ---
@@ -19,18 +22,41 @@ const {
       <h1>{headerText}</h1>
     </header>
   ) : isBlogPostCardHeader ? (
-    <header class="text-xl font-bolder text-black">{headerText}</header>
+    <header class="text-xl font-bold text-black">
+      <h1>{headerText}</h1>
+    </header>
   ) : isHeroHeader ? (
-    <header class="text-white text-4xl uppercase font-bolder md:text-5xl">
-      {headerText}
+    <header class="text-white text-4xl uppercase font-bold md:text-5xl">
+      <h1>{headerText}</h1>
     </header>
   ) : isSingleViewHeader ? (
-    <header class="absolute z-[100000] top-[50%] left-[50%] -translate-1/2 text-white text-3xl text-center uppercase font-bolder md:text-5xl">
-      {headerText}
+    <header class="absolute z-[100000] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-3xl text-center uppercase font-bold md:text-5xl">
+      <h1>{headerText}</h1>
+    </header>
+  ) : isDashboardHeader ? (
+    <header
+      class="whitespace-nowrap font-bold text-2xl mt-6 mb-4 text-[var(--secondary-text-color)]"
+      id={id}
+    >
+      <h1>{headerText}</h1>
+    </header>
+  ) : isLikedBlogPostCardHeader ? (
+    <header
+      class={`${className} absolute bottom-0 left-0 w-full p-2 text-2xl text-center font-bold text-white line-clamp-1 transition duration-150 ease-in group-hover:line-clamp-none`}
+      id={id}
+    >
+      <h1>{headerText}</h1>
+    </header>
+  ) : isSavedBlogPostCardHeader ? (
+    <header
+      class={`${className} absolute bottom-0 left-0 w-full p-2 text-2xl text-center font-bold text-white line-clamp-1 transition duration-150 ease-in group-hover:line-clamp-none`}
+      id={id}
+    >
+      <h1>{headerText}</h1>
     </header>
   ) : (
     <header
-      class={`${className === "hero-header" ? "text-white" : "text-[#f45b35]"} text-2xl`}
+      class={`${className === "hero-header" ? "text-white" : "text-[var(--secondary-text-color)]"} text-2xl whitespace-nowrap`}
       id={id}
     >
       <h1>{headerText}</h1>

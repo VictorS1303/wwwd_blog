@@ -1,0 +1,26 @@
+---
+const {class: className, id: id, postsSections = []} = Astro.props
+import Section from "./Section.astro";
+import Header from "../../header/Header.astro";
+import DashboardCardsContainer from "../../containers/DashboardCardsContainer.astro"
+import NoReturnMessage from "../../messages/NoReturnMessage.astro";
+---
+
+<div class="sections-container">
+  {
+    postsSections.length > 0 ? (
+      postsSections.map((postSection) => (
+        <Section id={postSection.id}>
+          <Header
+            isDashboardHeader={postSection.isDashboardHeader}
+            headerText={postSection.headerText}
+          />
+          <DashboardCardsContainer
+            posts={postSection.posts}
+            messageText={postSection.messageText}
+          />
+        </Section>
+      ))
+    ) : <slot />
+  }
+</div>

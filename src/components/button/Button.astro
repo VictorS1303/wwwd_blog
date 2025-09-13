@@ -7,6 +7,8 @@ const {
   download,
   share,
   isScrollToTopBtn,
+  isDashboardCardButton,
+  isDashboardControlButton,
   "data-available": dataAvailable,
 } = Astro.props
 ---
@@ -42,9 +44,9 @@ const {
       {buttonText}
       <slot />
     </a>
-  ) : (
+  ) : isDashboardCardButton ? (
     <button
-      class={`${className} w-fit text-[var(--secondary-text-color)] cursor-pointer`}
+      class={`${className} h-[45px] w-[45px] text-lg text-[var(--secondary-text-color)] cursor-pointer hover:border-b-1 border-[var(--secondary-text-color)]`}
       id={id}
       type="button"
       data-available={dataAvailable}
@@ -52,7 +54,13 @@ const {
       {buttonText}
       <slot />
     </button>
-  )
+  ) : isDashboardControlButton ? (
+    <button
+      class={`${className} text-lg text-[var(--secondary-text-color)] cursor-pointer hover:border-b-2 hover:border-[var(--secondary-text-color)] whitespace-nowrap`}
+    >
+      {buttonText}
+    </button>
+  ) : null
 }
 
 <script>

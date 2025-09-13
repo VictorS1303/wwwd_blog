@@ -1,0 +1,22 @@
+---
+const { class: className, id: id, posts = [], messageText } = Astro.props
+import Card from "../card/Card.astro"
+import NoReturnMessage from "../messages/NoReturnMessage.astro"
+---
+
+<div class=`${className} flex flex-col justify-start gap-8 md:flex-row` id={id}>
+  {
+    posts.length > 0
+      ? posts.map((likedPost) => (
+          <Card
+            cardType={likedPost.cardType}
+            src={likedPost.src}
+            headerText={likedPost.headerText}
+            articleHref={likedPost.articleHref}
+          />
+        ))
+      : <NoReturnMessage messageText={messageText} />
+  }
+
+  <!-- <slot /> -->
+</div>

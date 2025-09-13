@@ -1,0 +1,45 @@
+---
+const {src, alt, headerText, isDashboardHeader} = Astro.props
+
+import Section from "./Section.astro"
+import Image from "../../imags/Image.astro"
+import Button from "../../button/Button.astro"
+import Header from "../../header/Header.astro"
+import ControlButtonsContainer from "../../containers/ControlButtonsContainer.astro"
+
+const controlButtons = [
+  {
+    buttonText: "Edit profile",
+    id: "edit_profile_button",
+    isDashboardControlButton: true,
+  },
+  {
+    buttonText: "Sign out",
+    id: "sign_out_button",
+    isDashboardControlButton: true,
+  },
+  {
+    buttonText: "Delete profile",
+    id: "delete_profile_button",
+    isDashboardControlButton: true,
+  },
+]
+
+---
+
+<Section class="hero flex flex-col items-center md:items-start">
+    <Image
+      src={src}
+      alt={alt}
+      class="rounded-full h-[120px] w-[120px] object-cover"
+    />
+    <div class="header-and-dashboard-controls-container">
+      <Header
+        class="w-full"
+        headerText={headerText}
+        isDashboardHeader={isDashboardHeader}
+      />
+
+      <ControlButtonsContainer buttons={controlButtons} />
+    </div>
+</Section>

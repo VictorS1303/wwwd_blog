@@ -1,5 +1,5 @@
 ---
-const { class: className, id: id, src, alt } = Astro.props
+const { class: className, id: id, src, alt, height, width } = Astro.props
 ---
 
-<img src={src} class={className} alt={alt} />
+<img src={src} class={`${className} h-[${height}] w-[${width}]`} alt={alt} />

@@ -1,0 +1,85 @@
+---
+import DashboardLayout from "../layouts/DashboardLayout.astro"
+import Section from "../components/generals/section/Section.astro"
+import Header from "../components/header/Header.astro"
+import Image from "../components/imags/Image.astro"
+import Button from "../components/button/Button.astro"
+import Card from "../components/card/Card.astro"
+import DashboardCardsContainer from "../components/containers/DashboardCardsContainer.astro"
+import DashboardHeroSection from "../components/generals/section/DashbboardHeroSection.astro"
+import DashboardPostsSection from "../components/generals/section/DashboardPostsSection.astro"
+
+const likedPosts = [
+  {
+    cardType: "liked",
+    src: "/images/landing_hero/landing_hero_bg.webp",
+    headerText: "How the browser reads CSS",
+    articleHref: "/blog-posts/how-the-browser-reads-css",
+  },
+  {
+    cardType: "liked",
+    src: "/images/landing_hero/landing_hero_bg.webp",
+    headerText: "How the browser reads CSS",
+    articleHref: "/blog-posts/how-the-browser-reads-css",
+  },
+  {
+    cardType: "liked",
+    src: "/images/landing_hero/landing_hero_bg.webp",
+    headerText: "How the browser reads CSS",
+    articleHref: "/blog-posts/how-the-browser-reads-css",
+  },
+]
+
+const savedPosts = [
+  {
+    cardType: "saved",
+    src: "/images/landing_hero/landing_hero_bg.webp",
+    headerText: "How the browser reads CSS",
+    articleHref: "/blog-posts/how-the-browser-reads-css",
+  },
+  {
+    cardType: "saved",
+    src: "/images/landing_hero/landing_hero_bg.webp",
+    headerText: "How the browser reads CSS",
+    articleHref: "/blog-posts/how-the-browser-reads-css",
+  },
+  {
+    cardType: "saved",
+    src: "/images/landing_hero/landing_hero_bg.webp",
+    headerText: "How the browser reads CSS",
+    articleHref: "/blog-posts/how-the-browser-reads-css",
+  },
+]
+
+const likedPost = [
+  {
+    id: 'liked_posts',
+    headerText: 'Liked Posts',
+    isDashboardHeader: true,
+    messageText: 'No liked posts',
+    posts: likedPosts,
+  }
+]
+
+const savedPost = [
+  {
+    id: 'saved_posts',
+    headerText: 'Saved Posts',
+    isDashboardHeader: true,
+    messageText: 'No saved posts',
+    posts: savedPosts,
+  }
+]
+---
+
+<DashboardLayout title="My Dashboard">
+  <DashboardHeroSection 
+    src="/images/landing_hero/landing_hero_bg.webp" 
+    alt="profile image" 
+    headerText="Welcome, Victor Schweitz!" 
+    isDashboardHeader={true} 
+  />
+
+ <DashboardPostsSection postsSections={likedPost} />
+ <DashboardPostsSection postsSections={savedPost} />
+</DashboardLayout>

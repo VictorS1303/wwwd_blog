@@ -1,0 +1,7 @@
+---
+const {class: className, id: id, messageText} = Astro.props
+---
+
+<p class=`${className} text-xl text-[var(--secondary-text-color)] font-bold` id={id}>
+  {messageText}
+</p>

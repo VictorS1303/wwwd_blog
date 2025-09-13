@@ -6,6 +6,7 @@ import Image from "../imags/Image.astro"
 import Button from "../button/Button.astro"
 import FadeOutOverlay from "../generals/overlay/FadeOutOverlay.astro"
 import Tab from "../tabs/Tab.astro"
+import Overlay from "../generals/overlay/Overlay.astro"
 
 const {
   class: className,
@@ -22,6 +23,8 @@ const {
   src,
   alt,
   categories = [],
+  cardType, // "liked" | "saved" | undefined
+  articleHref,
 } = Astro.props
 
 const categoriesWithoutDuplicates = [...new Set(categories)]
@@ -30,13 +33,14 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
 {
   isBlogPostCard ? (
     <article
-      class="blog-post-card hidden opacity-0 transition-opacity duration-200 flex-col relative w-full md:max-w-[300px]"
+      class="blog-post-card group hidden opacity-0 transition-opacity duration-200 flex-col relative w-full md:max-w-[300px]"
       data-title={headerText}
       data-categories={categories
         .map((category) => category.toLowerCase())
         .join(",")}
     >
       <Image src={src} class="h-50 rounded-t-md object-fit w-full" alt={alt} />
+
       <div class="flex justify-start mt-4">
         {categories.length > 0 && (
           <div class="flex gap-2">
@@ -46,6 +50,7 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
           </div>
         )}
       </div>
+
       <div class="blog-post-card-content-container flex flex-col gap-2 mt-4 flex-1">
         <div class="blog-post-title-and-topic-container flex justify-between gap-8 items-center">
           <Header
@@ -54,11 +59,13 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
             class="w-[80ch]"
           />
         </div>
+
         <TextBlock
           class="excerpt line-clamp-4 text-md mb-4"
           textBlockParagraphText={textBlockParagraphText}
           isBlogPostCardText={isBlogPostCardText}
         />
+
         <Button
           href={href}
           class="relative p-2 mt-auto text-xl rounded-sm bg-[var(--blog-post-card-button-border-color)] text-white"
@@ -68,13 +75,14 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
     </article>
   ) : isLatestBlogPostCard ? (
     <article
-      class="blog-post-card transition-opacity duration-200 flex-col relative w-full md:max-w-[300px]"
+      class="blog-post-card group transition-opacity duration-200 flex-col relative w-full md:max-w-[300px]"
       data-title={headerText}
       data-categories={categories
         .map((category) => category.toLowerCase())
         .join(",")}
     >
       <Image src={src} class="h-50 rounded-t-md object-fit w-full" alt={alt} />
+
       <div class="flex justify-start mt-4">
         {categories.length > 0 && (
           <div class="flex gap-2">
@@ -84,6 +92,7 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
           </div>
         )}
       </div>
+
       <div class="blog-post-card-content-container flex flex-col gap-2 mt-4 flex-1">
         <div class="blog-post-title-and-topic-container flex justify-between gap-8 items-center">
           <Header
@@ -92,11 +101,13 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
             class="w-[80ch]"
           />
         </div>
+
         <TextBlock
-          class="excerpt line-clamp-4 text-md mb-4"
+          class="excerpt line-clamp-4 group-hover:line-clamp-none transition-all duration-300 text-md mb-4"
           textBlockParagraphText={textBlockParagraphText}
           isBlogPostCardText={isBlogPostCardText}
         />
+
         <Button
           href={href}
           class="relative p-2 mt-auto text-xl rounded-sm bg-[var(--blog-post-card-button-border-color)] text-white"
@@ -104,5 +115,45 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
         />
       </div>
     </article>
+  ) : cardType === "liked" || cardType === "saved" ? (
+    <a href={articleHref}>
+      <article class="relative w-[225px] h-[250px] overflow-hidden rounded-md group">
+        <Button
+          class="absolute z-20 bg-white flex items-center justify-center rounded-full right-2 top-2 group w-10 h-10"
+          isDashboardCardButton={true}
+        >
+          {cardType === "liked" ? (
+            <>
+              <div class="md:hidden flex items-center justify-center w-5 h-5">
+                <i class="fas fa-heart-broken" />
+              </div>
+              <div class="hidden md:flex relative items-center justify-center w-5 h-5">
+                <i class="fas fa-heart absolute inset-0 m-auto transition-opacity duration-300 opacity-100 group-hover:opacity-0" />
+                <i class="fas fa-heart-broken absolute inset-0 m-auto transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
+              </div>
+            </>
+          ) : (
+            <div class="flex items-center justify-center w-5 h-5">
+              <i class="fas fa-bookmark" />
+            </div>
+          )}
+        </Button>
+
+        <Image
+          src={src}
+          class="absolute inset-0 w-full h-full object-cover"
+          alt={alt}
+        />
+
+        <Overlay class="absolute inset-0 z-10" />
+
+        <Header
+          headerText={headerText}
+          class="z-20"
+          isLikedBlogPostCardHeader={cardType === "liked"}
+          isSavedBlogPostCardHeader={cardType === "saved"}
+        />
+      </article>
+    </a>
   ) : null
 }
