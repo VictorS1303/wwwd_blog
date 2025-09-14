@@ -6,6 +6,7 @@ const {
   buttonText,
   download,
   share,
+  type,
   isScrollToTopBtn,
   isDashboardCardButton,
   isDashboardControlButton,
@@ -48,7 +49,7 @@ const {
     <button
       class={`${className} h-[45px] w-[45px] text-lg text-[var(--secondary-text-color)] cursor-pointer hover:border-b-1 border-[var(--secondary-text-color)]`}
       id={id}
-      type="button"
+      type={type}
       data-available={dataAvailable}
     >
       {buttonText}
