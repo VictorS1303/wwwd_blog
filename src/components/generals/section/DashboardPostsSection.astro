@@ -1,9 +1,9 @@
 ---
-const {class: className, id: id, postsSections = []} = Astro.props
-import Section from "./Section.astro";
-import Header from "../../header/Header.astro";
+const { class: className, id: id, postsSections = [] } = Astro.props
+import Section from "./Section.astro"
+import Header from "../../header/Header.astro"
 import DashboardCardsContainer from "../../containers/DashboardCardsContainer.astro"
-import NoReturnMessage from "../../messages/NoReturnMessage.astro";
+import NoReturnMessage from "../../messages/NoReturnMessage.astro"
 ---
 
 <div class="sections-container">
@@ -21,6 +21,45 @@ import NoReturnMessage from "../../messages/NoReturnMessage.astro";
           />
         </Section>
       ))
-    ) : <slot />
+    ) : (
+      <slot />
+    )
   }
 </div>
+
+<script>
+  const sectionsContainers = document.querySelectorAll(".sections-container")
+
+  sectionsContainers.forEach((sectionContainer) =>
+    sectionContainer.addEventListener("click", (e) =>
+      determinePostCardAction(e),
+    ),
+  )
+
+  function getClosestButton(e) {
+    const button = e.target.closest("button")
+    return button
+  }
+
+  function determinePostCardAction(e) {
+    const button = getClosestButton(e)
+    if (!button) {
+      return
+    }
+
+    // Check if it's a "like" or "save" button based on its icon or card type
+    if (button.querySelector(".fa-heart, .fa-heart-broken")) {
+      dislikePost()
+    } else if (button.querySelector(".fa-bookmark")) {
+      unsavePost()
+    }
+  }
+
+  function dislikePost() {
+    console.log("Post disliked")
+  }
+
+  function unsavePost() {
+    console.log("Post unsaved")
+  }
+</script>

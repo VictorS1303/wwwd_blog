@@ -116,44 +116,43 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
       </div>
     </article>
   ) : cardType === "liked" || cardType === "saved" ? (
-    <a href={articleHref}>
-      <article class="relative w-[225px] h-[250px] overflow-hidden rounded-md group">
-        <Button
-          class="absolute z-20 bg-white flex items-center justify-center rounded-full right-2 top-2 group w-10 h-10"
-          isDashboardCardButton={true}
-        >
-          {cardType === "liked" ? (
-            <>
-              <div class="md:hidden flex items-center justify-center w-5 h-5">
-                <i class="fas fa-heart-broken" />
-              </div>
-              <div class="hidden md:flex relative items-center justify-center w-5 h-5">
-                <i class="fas fa-heart absolute inset-0 m-auto transition-opacity duration-300 opacity-100 group-hover:opacity-0" />
-                <i class="fas fa-heart-broken absolute inset-0 m-auto transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
-              </div>
-            </>
-          ) : (
-            <div class="flex items-center justify-center w-5 h-5">
-              <i class="fas fa-bookmark" />
+    <article class="post-card relative w-[225px] h-[250px] overflow-hidden rounded-md group">
+      <Button
+        class="absolute z-20 bg-white flex items-center justify-center rounded-full right-2 top-2 group w-10 h-10"
+        isDashboardCardButton={true}
+      >
+        {cardType === "liked" ? (
+          <>
+            <div class="md:hidden flex items-center justify-center w-5 h-5">
+              <i class="fas fa-heart-broken" />
             </div>
-          )}
-        </Button>
+            <div class="hidden md:flex relative items-center justify-center w-5 h-5">
+              <i class="fas fa-heart absolute inset-0 m-auto transition-opacity duration-300 opacity-100 group-hover:opacity-0" />
+              <i class="fas fa-heart-broken absolute inset-0 m-auto transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
+            </div>
+          </>
+        ) : (
+          <div class="flex items-center justify-center w-5 h-5">
+            <i class="fas fa-bookmark" />
+          </div>
+        )}
+      </Button>
 
-        <Image
-          src={src}
-          class="absolute inset-0 w-full h-full object-cover"
-          alt={alt}
-        />
+      <Image
+        src={src}
+        class="absolute inset-0 w-full h-full object-cover"
+        alt={alt}
+      />
 
-        <Overlay class="absolute inset-0 z-10" />
-
+      <Overlay class="absolute inset-0 z-10" />
+      <a href={articleHref}>
         <Header
           headerText={headerText}
-          class="z-20"
+          class="z-20 hover:text-[var(--secondary-text-color)]"
           isLikedBlogPostCardHeader={cardType === "liked"}
           isSavedBlogPostCardHeader={cardType === "saved"}
         />
-      </article>
-    </a>
+      </a>
+    </article>
   ) : null
 }
