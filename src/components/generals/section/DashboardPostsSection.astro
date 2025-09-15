@@ -5,41 +5,7 @@ import Header from "../../header/Header.astro"
 import DashboardCardsContainer from "../../containers/DashboardCardsContainer.astro"
 import NoReturnMessage from "../../messages/NoReturnMessage.astro"
 import Form from "../../form/Form.astro"
-
-const inputs = [
-  {
-    type: "text",
-    label: "First Name",
-    placeholder: "Enter your first name",
-    id: "firstName",
-    required: true,
-  },
-  {
-    type: "text",
-    label: "Last Name",
-    placeholder: "Enter your last name",
-    id: "lastName",
-    required: true,
-  },
-  {
-    type: "file",
-    label: "Last Name",
-    placeholder: "Enter your last name",
-    id: "lastName",
-    required: true,
-  },
-]
 ---
-
-<Form
-  id="edit-profile-form"
-  inputs={inputs}
-  isSubmitButton={true}
-  buttonText="Submit"
-  headerText="Edit Profile"
-  isFormHeader={true}
-  type="submit"
-/>
 
 <div class="sections-container">
   {

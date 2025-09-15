@@ -1,0 +1,40 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Form from "../components/form/Form.astro";
+
+const signUpFormInputs = [
+  {
+    type: 'text',
+    label: 'Username/E-mail',
+    required: true,
+    placeholder: 'Please enter username or e-mail'
+  },
+  {
+    type: 'password',
+    label: 'Password',
+    required: true,
+    placeholder: 'Please enter password'
+  },
+  {
+    type: 'password',
+    label: 'Repeat password',
+    required: true,
+    placeholder: 'Please repeat password'
+  },
+  {
+    type: 'file',
+    label: 'Avatar image',
+  }
+]
+---
+
+<Layout title="Sign up">
+  <Form
+    isFormHeader={true}
+    headerText="Sign up"
+    inputs={signUpFormInputs}
+    isSubmitButton={true}
+    buttonText="Sign up"
+  />
+
+</Layout>
