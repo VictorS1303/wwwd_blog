@@ -20,7 +20,7 @@ const {
 ---
 
 <form
-  class={`${className} bg-white border-2 border-[var(--secondary-text-color)] rounded-md h-fit p-8 shadow-md max-w-[300px]`}
+  class={`${className} bg-white border-2 border-[var(--secondary-text-color)] rounded-md h-fit p-8 min-w-[375px] max-w-[70vw] shadow-md`}
   id={id}
 >
   {headerText && <Header headerText={headerText} isFormHeader={isFormHeader} />}
@@ -32,7 +32,7 @@ const {
           <div key={input.id} class="mb-6">
             <label
               for={input.id}
-              class="block text-sm mb-2 text-black font-medium cursor-pointer"
+              class="block text-md mb-2 text-black font-medium cursor-pointer"
             >
               {input.label}
               {input.required && (
@@ -69,7 +69,7 @@ const {
                   type={input.type}
                   placeholder={input.placeholder}
                   required={input.required}
-                  class="w-full border-b-2 border-[var(--secondary-text-color)] cursor-pointer focus:outline-0 focus:ring-0"
+                  class="w-full border-b-2 border-[var(--secondary-text-color)] text-lg cursor-pointer focus:outline-0 focus:ring-0"
                 />
               )
             }
