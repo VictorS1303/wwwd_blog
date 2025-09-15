@@ -1,0 +1,31 @@
+---
+import LoginSignUpLayout from "../layouts/LoginSignUpLayout.astro";
+import Form from "../components/form/Form.astro";
+import Button from "../components/button/Button.astro";
+
+const loginFormInputs = [
+  {
+    type: 'text',
+    label: 'Username/E-mail',
+    placeholder: 'Enter username or e-mail',
+  },
+  {
+    type: 'password',
+    label: 'Password',
+    placeholder: 'Enter password',
+  }
+]
+---
+
+<LoginSignUpLayout title="Log in">
+  <Form
+    isFormHeader={true}
+    headerText="Sign up"
+    inputs={loginFormInputs}
+    isSubmitButton={true}
+    buttonText="Sign up"
+  />
+  <div class="text-center mt-4">
+    <h4>Not already signed up? Sign up <Button href="/sign-up" buttonText="here." /></h4>
+  </div>
+</LoginSignUpLayout>
