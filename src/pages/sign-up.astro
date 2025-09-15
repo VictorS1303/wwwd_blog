@@ -8,22 +8,26 @@ const signUpFormInputs = [
     type: "text",
     label: "Username/E-mail",
     required: true,
+    name: "username_email",
     placeholder: "Please enter username or e-mail",
   },
   {
     type: "password",
     label: "Password",
+    name: "password",
     required: true,
     placeholder: "Please enter password",
   },
   {
     type: "password",
     label: "Repeat password",
+    name: "repeat_password",
     required: true,
     placeholder: "Please repeat password",
   },
   {
     type: "file",
+    name: "avatar_image",
     label: "Avatar image",
   },
 ]
@@ -35,9 +39,40 @@ const signUpFormInputs = [
     headerText="Sign up"
     inputs={signUpFormInputs}
     isSubmitButton={true}
+    id="sign_up_form"
     buttonText="Sign up"
   />
   <div class="text-center mt-4">
     <h4>Already a user? Log in <Button href="/login" buttonText="here." /></h4>
   </div>
 </LoginSignUpLayout>
+
+<script>
+  import { Result } from "postcss"
+  import { signUpUser } from "../../js/supabase/supabase_methods.js"
+
+  const signUpForm = document.querySelector("#sign_up_form")
+
+  signUpForm?.addEventListener("submit", (e) => createUser(e))
+
+  async function createUser(e) {
+    const formData = new FormData(signUpForm)
+    const usernameEmailInput = formData.get("username_email")
+    const passwordInput = formData.get("password")
+    const repeatPasswordInput = formData.get("repeat_password")
+
+    if (passwordInput !== repeatPasswordInput) {
+      alert("Passwords do not match!")
+      return
+    }
+
+    const result = await signUpUser(usernameEmailInput, passwordInput)
+
+    if (result.success) {
+      alert(`Sign up successful! Welcome, ${result?.user?.email}`)
+      location.href = "/dashboard"
+    } else {
+      alert(`Signup failed: ${result?.error}`)
+    }
+  }
+</script>
