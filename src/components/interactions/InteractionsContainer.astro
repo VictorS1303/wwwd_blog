@@ -3,7 +3,7 @@ import Button from "../../components/button/Button.astro"
 import Header from "../../components/header/Header.astro"
 import Dialog from "../dialog/Dialog.astro"
 
-const { class: className, id: id, interactionButtons = [] } = Astro.props
+const { interactionButtons = [] } = Astro.props
 
 const dialogButtons = [
   {
@@ -24,41 +24,44 @@ const dialogButtons = [
       interactionButtons.length > 0 &&
         interactionButtons.map((interactionButton) => (
           <Button
-            href={interactionButton.href}
+            id={interactionButton.id}
             class={
               interactionButton.class +
-              (interactionButton.isAvailable
+              (interactionButton.isLoggedIn
                 ? ""
                 : " opacity-50 cursor-not-allowed")
             }
-            id={interactionButton.id}
-            disabled={!interactionButton.isAvailable}
+            data-is-logged-in={interactionButton.isLoggedIn ? "true" : "false"}
             download={interactionButton.download}
+            href={interactionButton.href}
             share={interactionButton.share}
-            data-available={interactionButton.isAvailable ? "true" : "false"}
-            buttonText={interactionButton.text}
+            isInteractionButton={[
+              "like_button",
+              "save_button",
+              "share_button",
+            ].includes(interactionButton.id)}
           />
         ))
     }
   </div>
-
-  <!-- Login Warning Modal -->
-  <Dialog
-    id="login_warning_modal"
-    type="login"
-    headerText="YOU ARE NOT LOGGED IN"
-    textBlockParagraphText="You must be logged in to continue."
-    dialogButtons={dialogButtons}
-  />
-
-  <!-- Share Modal -->
-  <Dialog
-    id="share_blog_post_modal"
-    type="login"
-    headerText="URL COPIED TO CLIPBOARD"
-    textBlockParagraphText="The blog post is now ready to be shared wherever and with whomever you want!"
-  />
 </div>
+
+<!-- Login Warning Modal -->
+<Dialog
+  id="login_warning_modal"
+  type="login"
+  headerText="YOU ARE NOT LOGGED IN"
+  textBlockParagraphText="You must be logged in to continue."
+  dialogButtons={dialogButtons}
+/>
+
+<!-- Share Modal -->
+<Dialog
+  id="share_blog_post_modal"
+  type="share"
+  headerText="URL COPIED TO CLIPBOARD"
+  textBlockParagraphText="The blog post is now ready to be shared wherever and with whomever you want!"
+/>
 
 <script>
   const interactionButtonsContainer = document.querySelector(
@@ -74,13 +77,15 @@ const dialogButtons = [
 
   function chooseInteraction(e) {
     const button = e.target.closest("button, a")
-    if (!button) return
+    if (!button) {
+      return
+    }
 
-    const isAvailable = button.dataset.available === "true"
+    const isLoggedIn = button.dataset.isLoggedIn === "true"
 
-    if (!isAvailable) {
+    if (!isLoggedIn) {
       loginWarningModal?.showModal()
-      e.preventDefault() // prevent navigation for <a> tags
+      e.preventDefault()
       return
     }
 
@@ -113,7 +118,6 @@ const dialogButtons = [
   }
   function sharePost() {
     const postUrl = window.location.href
-
     navigator.clipboard.writeText(postUrl).then(() => {
       shareBlogPostModal?.showModal()
     })

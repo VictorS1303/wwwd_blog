@@ -6,33 +6,36 @@ const {
   buttonText,
   download,
   share,
+  isInteractionButton = false,
   type,
   isScrollToTopBtn,
   isDashboardCardButton,
   isDashboardControlButton,
   isSubmitButton,
-  "data-available": dataAvailable,
+  "data-is-logged-in": dataIsLoggedIn,
 } = Astro.props
 ---
 
 {
-  share ? (
+  // Like, Save, Share buttons
+  share || isInteractionButton ? (
     <button
       class={`${className} share-button text-[var(--secondary-text-color)] cursor-pointer`}
       id={id}
       type="button"
-      data-available={dataAvailable}
+      data-is-logged-in={dataIsLoggedIn}
     >
       {buttonText}
       <slot />
     </button>
   ) : href ? (
+    // Download button or regular link
     <a
       href={href}
       class={`${className} w-fit text-[var(--secondary-text-color)] cursor-pointer`}
       id={id}
       download={download ? true : undefined}
-      data-available={dataAvailable}
+      data-is-logged-in={dataIsLoggedIn}
     >
       {buttonText}
       <slot />
@@ -51,7 +54,7 @@ const {
       class={`${className} h-[45px] w-[45px] text-lg text-[var(--secondary-text-color)] cursor-pointer hover:border-b-1 border-[var(--secondary-text-color)]`}
       id={id}
       type={type}
-      data-available={dataAvailable}
+      data-is-logged-in={dataIsLoggedIn}
     >
       {buttonText}
       <slot />
@@ -73,7 +76,6 @@ const {
 
 <script>
   const links = document.querySelectorAll("a")
-
   links.forEach((link) =>
     link.addEventListener("click", (e) => {
       e.stopPropagation()
