@@ -1,0 +1,87 @@
+---
+import Button from "../button/Button.astro"
+import Header from "../header/Header.astro"
+import ImagePreview from "../imags/ImagePreview.astro"
+
+const {
+  class: className,
+  id,
+  type = "submit",
+  inputs = [],
+  headerText,
+  isButtonVisible = true,
+  buttonText = "Submit",
+  isSubmitButton,
+  isFormHeader,
+  imgSrc,
+  imgAlt,
+  imageText,
+} = Astro.props
+---
+
+<form class={`${className} bg-white h-fit p-8 shadow-md`} id={id}>
+  {headerText && <Header headerText={headerText} isFormHeader={isFormHeader} />}
+
+  <div class="my-12">
+    {
+      inputs.length > 0 &&
+        inputs.map((input) => (
+          <div key={input.id} class="mb-6">
+            <label
+              for={input.id}
+              class="block text-sm mb-2 text-black font-medium cursor-pointer"
+            >
+              {input.label}
+              {input.required && (
+                <span class="text-[var(--secondary-text-color)]">*</span>
+              )}
+            </label>
+
+            {
+              // Render different elements depending on the input type
+              input.type === "textarea" ? (
+                <textarea
+                  id={input.id}
+                  name={input.name}
+                  placeholder={input.placeholder}
+                  name={input.name}
+                  required={input.required}
+                  class="w-full border-b-2 border-[var(--secondary-text-color)] focus:outline-none focus:ring-0 placeholder:text-[var(--secondary-text-color)] placeholder:opacity-60"
+                />
+              ) : input.type === "file" ? (
+                <div>
+                  <input
+                    id={input.id}
+                    type={input.type}
+                    name={input.name}
+                    placeholder={input.placeholder}
+                    required={input.required}
+                    class="border-b-2 border-[var(--secondary-text-color)] cursor-pointer focus:outline-0 focus:ring-0"
+                  />
+                </div>
+              ) : (
+                <input
+                  id={input.id}
+                  name={input.name}
+                  type={input.type}
+                  placeholder={input.placeholder}
+                  required={input.required}
+                  class="w-full border-b-2 border-[var(--secondary-text-color)] cursor-pointer focus:outline-0 focus:ring-0"
+                />
+              )
+            }
+          </div>
+        ))
+    }
+  </div>
+
+  {
+    isButtonVisible && (
+      <Button
+        type={type}
+        buttonText={buttonText}
+        isSubmitButton={isSubmitButton}
+      />
+    )
+  }
+</form>

@@ -10,6 +10,7 @@ const {
   isLikedBlogPostCardHeader,
   isSavedBlogPostCardHeader,
   isHeroHeader,
+  isFormHeader,
 } = Astro.props
 ---
 
@@ -50,6 +51,13 @@ const {
   ) : isSavedBlogPostCardHeader ? (
     <header
       class={`${className} absolute bottom-0 left-0 w-full p-2 text-2xl text-center font-bold text-white line-clamp-1 transition duration-150 ease-in group-hover:line-clamp-none`}
+      id={id}
+    >
+      <h1>{headerText}</h1>
+    </header>
+  ) : isFormHeader ? (
+    <header
+      class="text-[var(--secondary-text-color)] text-xl text-center uppercase font-bold tracking-wider"
       id={id}
     >
       <h1>{headerText}</h1>

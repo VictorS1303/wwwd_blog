@@ -10,6 +10,7 @@ const {
   isScrollToTopBtn,
   isDashboardCardButton,
   isDashboardControlButton,
+  isSubmitButton,
   "data-available": dataAvailable,
 } = Astro.props
 ---
@@ -58,6 +59,12 @@ const {
   ) : isDashboardControlButton ? (
     <button
       class={`${className} text-lg text-[var(--secondary-text-color)] cursor-pointer hover:border-b-2 hover:border-[var(--secondary-text-color)] whitespace-nowrap`}
+    >
+      {buttonText}
+    </button>
+  ) : isSubmitButton ? (
+    <button
+      class={`${className} text-lg text-white w-full bg-[var(--secondary-text-color)] px-4 py-1 rounded-md cursor-pointer transition-opacity duration-150 ease-in hover:opacity-85`}
     >
       {buttonText}
     </button>

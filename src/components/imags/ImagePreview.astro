@@ -1,0 +1,10 @@
+---
+const { class: className, id: id, imgSrc, alt, imageText, imgAlt } = Astro.props
+---
+
+<div>
+  <h3 class="block text-lg mb-2 text-[var(--secondary-text-color)] font-medium">
+    Image:
+  </h3>
+  <img src={imgSrc} alt={imgAlt} class="max-w-full h-auto rounded-lg"/>
+</div>
