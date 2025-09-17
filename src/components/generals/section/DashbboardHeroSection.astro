@@ -1,9 +1,8 @@
 ---
-const {src, alt, headerText, isDashboardHeader} = Astro.props
+const { src, alt, isDashboardHeader } = Astro.props
 
 import Section from "./Section.astro"
 import Image from "../../imags/Image.astro"
-import Button from "../../button/Button.astro"
 import Header from "../../header/Header.astro"
 import ControlButtonsContainer from "../../containers/ControlButtonsContainer.astro"
 
@@ -24,22 +23,44 @@ const controlButtons = [
     isDashboardControlButton: true,
   },
 ]
-
 ---
 
 <Section class="hero flex flex-col items-center md:items-start">
-    <Image
-      src={src}
-      alt={alt}
-      class="rounded-full h-[120px] w-[120px] object-cover"
+  <div class="header-and-dashboard-controls-container">
+    <Header
+      id="dashboard-header"
+      class="w-full"
+      isDashboardHeader={isDashboardHeader}
     />
-    <div class="header-and-dashboard-controls-container">
-      <Header
-        class="w-full"
-        headerText={headerText}
-        isDashboardHeader={isDashboardHeader}
-      />
 
-      <ControlButtonsContainer buttons={controlButtons} />
-    </div>
+    <ControlButtonsContainer buttons={controlButtons} />
+  </div>
 </Section>
+
+<script>
+  import { supabaseClient } from "../../../../js/supabase/supabase_client.js"
+
+  // Run on client-side after page loads
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Try to get session from Supabase client
+    const {
+      data: { session },
+    } = await supabaseClient.auth.getSession()
+
+    // Fallback to localStorage if session is null
+    const localData = JSON.parse(
+      localStorage.getItem("sb-lbaohauhywokqbrthwjd-auth-token"),
+    )
+
+    const userName =
+      session?.user?.user_metadata?.name ||
+      localData?.user?.user_metadata?.name ||
+      "User"
+
+    // Update header text dynamically
+    const headerEl = document.querySelector("#dashboard-header")
+    if (headerEl) {
+      headerEl.textContent = `Welcome, ${userName}!`
+    }
+  })
+</script>

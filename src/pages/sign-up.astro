@@ -6,10 +6,17 @@ import Button from "../components/button/Button.astro"
 const signUpFormInputs = [
   {
     type: "text",
-    label: "Username/E-mail",
+    label: "Name",
+    name: "name",
+    placeholder: "Enter your name",
     required: true,
-    name: "username_email",
-    placeholder: "Please enter username or e-mail",
+  },
+  {
+    type: "email",
+    label: "Email",
+    name: "email",
+    placeholder: "Enter your email",
+    required: true,
   },
   {
     type: "password",
@@ -25,16 +32,12 @@ const signUpFormInputs = [
     required: true,
     placeholder: "Please repeat password",
   },
-  {
-    type: "file",
-    name: "avatar_image",
-    label: "Avatar image",
-  },
 ]
 ---
 
 <LoginSignUpLayout title="Sign up">
   <Form
+    id="sign_up_form"
     isFormHeader={true}
     headerText="Sign up"
     inputs={signUpFormInputs}
@@ -48,7 +51,7 @@ const signUpFormInputs = [
 </LoginSignUpLayout>
 
 <script>
-  import { Result } from "postcss"
+  import { supabaseClient } from "../../js/supabase/supabase_client"
   import { signUpUser } from "../../js/supabase/supabase_methods.js"
 
   const signUpForm = document.querySelector("#sign_up_form")
@@ -56,8 +59,11 @@ const signUpFormInputs = [
   signUpForm?.addEventListener("submit", (e) => createUser(e))
 
   async function createUser(e) {
+    e.preventDefault() // prevent default form submission
+
     const formData = new FormData(signUpForm)
-    const usernameEmailInput = formData.get("username_email")
+    const nameInput = formData.get("name")
+    const emailInput = formData.get("email")
     const passwordInput = formData.get("password")
     const repeatPasswordInput = formData.get("repeat_password")
 
@@ -66,13 +72,17 @@ const signUpFormInputs = [
       return
     }
 
-    const result = await signUpUser(usernameEmailInput, passwordInput)
+    // Sign up user
+    const result = await signUpUser(nameInput, emailInput, passwordInput)
 
-    if (result.success) {
-      alert(`Sign up successful! Welcome, ${result?.user?.email}`)
-      location.href = "/dashboard"
-    } else {
-      alert(`Signup failed: ${result?.error}`)
+    // If no success at signing up the user
+    if (!result.success) {
+      alert(`Signup failed: ${result.signUpError}`)
+      return
     }
+
+    alert(`Sign up successful! Welcome, ${nameInput}!`)
+    signUpForm?.reset()
+    // location.href = "/dashboard"
   }
 </script>
