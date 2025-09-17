@@ -1,5 +1,5 @@
 ---
-const {src, alt, headerText, isDashboardHeader} = Astro.props
+const { src, alt, headerText, isDashboardHeader } = Astro.props
 
 import Section from "./Section.astro"
 import Image from "../../imags/Image.astro"
@@ -24,22 +24,21 @@ const controlButtons = [
     isDashboardControlButton: true,
   },
 ]
-
 ---
 
 <Section class="hero flex flex-col items-center md:items-start">
-    <Image
-      src={src}
-      alt={alt}
-      class="rounded-full h-[120px] w-[120px] object-cover"
+  <Image
+    src={src}
+    alt={alt}
+    class="rounded-full h-[120px] w-[120px] object-cover"
+  />
+  <div class="header-and-dashboard-controls-container">
+    <Header
+      class="w-full"
+      headerText={headerText}
+      isDashboardHeader={isDashboardHeader}
     />
-    <div class="header-and-dashboard-controls-container">
-      <Header
-        class="w-full"
-        headerText={headerText}
-        isDashboardHeader={isDashboardHeader}
-      />
 
-      <ControlButtonsContainer buttons={controlButtons} />
-    </div>
+    <ControlButtonsContainer buttons={controlButtons} />
+  </div>
 </Section>
