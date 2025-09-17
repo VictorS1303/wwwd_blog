@@ -1,47 +1,60 @@
 ---
 import MobileNavToggleButton from "../../button/MobileNavToggleButton.astro"
+import Button from "../../button/Button.astro"
 
 const { class: className, id: id, navItems = [] } = Astro.props
 const activePage = new URL(Astro.request.url).pathname.replace(/\/$/, "")
 const isHome = activePage === "/"
+const isDashboard = activePage === "/dashboard"
 ---
 
-<MobileNavToggleButton id="mobile_nav_toggle_btn" />
+{
+  isDashboard ? (
+    /* Show ONLY the back arrow when on /dashboard */
+    <Button href="/blog-posts">
+      <i class="fa-solid fa-arrow-left text-2xl" />
+    </Button>
+  ) : (
+    <>
+      <MobileNavToggleButton id="mobile_nav_toggle_btn" />
 
-<nav
-  class={`${className} absolute top-0 -right-80 bg-white w-[200px] h-full pt-4 z-[1000000] 
-    md:sticky md:top-4 md:right-26 transition-right duration-400 ease-in md:h-auto md:bg-transparent md:mt-0 md:w-full`}
-  id="main_nav"
->
-  {
-    navItems.length > 0 && (
-      <ul class="flex flex-col gap-4 justify-center h-full items-center whitespace-nowrap text-[var(--secondary-text-color)] text-2xl md:text-white md:flex-row md:absolute md:right-8">
-        {navItems
-          .filter((item) => item.isLoggedIn !== false)
-          .map((navItem, index) => {
-            const isActive =
-              (navItem.href === "/" && isHome) || navItem.href === activePage
+      <nav
+        class={`${className} absolute top-0 -right-80 bg-white w-[200px] h-full pt-4 z-[1000000] 
+      md:sticky md:top-4 md:right-26 transition-right duration-400 ease-in md:h-auto md:bg-transparent md:mt-0 md:w-full`}
+        id="main_nav"
+      >
+        {navItems.length > 0 && (
+          <ul class="flex flex-col gap-4 justify-center h-full items-center whitespace-nowrap text-[var(--secondary-text-color)] text-2xl md:text-white md:flex-row md:absolute md:right-8">
+            {navItems
+              .filter((item) => item.isLoggedIn !== false)
+              .map((navItem, index) => {
+                const isActive =
+                  (navItem.href === "/" && isHome) ||
+                  navItem.href === activePage
 
-            return (
-              <li key={index} class="flex justify-end cursor-pointer">
-                <a
-                  href={navItem.href}
-                  class={`
-                  relative before:content-[''] before:absolute before:bottom-0 before:left-0 
-                  before:w-full before:h-[2px] before:bg-white 
-                  before:origin-left before:transition-transform before:duration-300
-                  ${isActive ? "before:scale-x-100" : "before:scale-x-0"}
-                `}
-                >
-                  {navItem.text}
-                </a>
-              </li>
-            )
-          })}
-      </ul>
-    )
-  }
-</nav>
+                return (
+                  <li key={index} class="flex justify-end cursor-pointer">
+                    <a
+                      href={navItem.href}
+                      class={`
+                      relative 
+                      before:content-[''] before:absolute before:bottom-0 before:left-0 
+                      before:w-full before:h-[2px] before:bg-white 
+                      before:origin-left before:transition-transform before:duration-300
+                      ${isActive ? "before:scale-x-100" : "before:scale-x-0"}
+                    `}
+                    >
+                      {navItem.text}
+                    </a>
+                  </li>
+                )
+              })}
+          </ul>
+        )}
+      </nav>
+    </>
+  )
+}
 
 <script>
   const mobileNavToggleBtn = document.querySelector("#mobile_nav_toggle_btn")
