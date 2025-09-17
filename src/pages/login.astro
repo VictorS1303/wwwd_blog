@@ -1,31 +1,70 @@
 ---
-import LoginSignUpLayout from "../layouts/LoginSignUpLayout.astro";
-import Form from "../components/form/Form.astro";
-import Button from "../components/button/Button.astro";
+import LoginSignUpLayout from "../layouts/LoginSignUpLayout.astro"
+import Form from "../components/form/Form.astro"
+import Button from "../components/button/Button.astro"
 
 const loginFormInputs = [
   {
-    type: 'text',
-    label: 'Username/E-mail',
-    placeholder: 'Enter username or e-mail',
+    type: "text",
+    label: "Email",
+    name: "email",
+    placeholder: "Enter username or e-mail",
+    required: true,
   },
   {
-    type: 'password',
-    label: 'Password',
-    placeholder: 'Enter password',
-  }
+    type: "password",
+    label: "Password",
+    name: "password",
+    placeholder: "Enter password",
+    required: true,
+  },
 ]
 ---
 
 <LoginSignUpLayout title="Log in">
   <Form
+    id="login_form"
     isFormHeader={true}
-    headerText="Sign up"
+    headerText="Log in"
     inputs={loginFormInputs}
     isSubmitButton={true}
-    buttonText="Sign up"
+    buttonText="Log in"
   />
   <div class="text-center mt-4">
-    <h4>Not already signed up? Sign up <Button href="/sign-up" buttonText="here." /></h4>
+    <h4>
+      Not already signed up? Sign up <Button
+        href="/sign-up"
+        buttonText="here."
+      />
+    </h4>
   </div>
 </LoginSignUpLayout>
+
+<script>
+  import { loginUser } from "../../js/supabase/supabase_methods"
+
+  const loginForm = document.querySelector("#login_form")
+
+  loginForm?.addEventListener("submit", (e) => login(e))
+
+  async function login(e) {
+    e.preventDefault()
+
+    const formData = new FormData(loginForm)
+    const emailInput = formData.get("email")
+    const passwordInput = formData.get("password")
+
+    const loginResult = await loginUser(emailInput, passwordInput)
+
+    if (!loginResult.success) {
+      alert(`Login failed: ${loginResult.signUpError}`)
+      return
+    }
+
+    alert("Login successful!")
+    console.log(loginResult.data)
+
+    // Optional: redirect after successful login
+    location.href = "/dashboard"
+  }
+</script>

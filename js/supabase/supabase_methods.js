@@ -27,23 +27,22 @@ export const signUpUser = async (name, email, password, avatarUrl = null) => {
   }
 }
 
-// const email = `${email.replace(/\+s/g, '').toLowerCase()}`
+// Login User
+export const loginUser = async (email, password) => {
+  const { data: loginData, error: loginError } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password,
+  })
 
-// const {data: signUpData, error: signUpError} = await supabaseClient.auth.signUp({
-//     email, password
-// })
+  if (loginError) {
+    return {
+      success: false,
+      signUpError: loginError.message,
+    }
+  }
 
-// if(signUpError)
-// {
-//     console.log('Error signing up: ', signUpError.hint, signUpError.message)
-    
-//     return {success: false, signUpError: signUpError.message }
-// }
-
-// const session = supabaseClient.auth.getSession()
-
-// return {
-//     success: true,
-//     user: signUpData.user,
-//     session,
-// }
+  return {
+    success: true,
+    data: loginData,
+  }
+}

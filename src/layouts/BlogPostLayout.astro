@@ -158,3 +158,32 @@ const formattedDate = date ? formatDate(date) : "Unknown date"
     <InteractionsContainer interactionButtons={interactionButtons} />
   </main>
 </Layout>
+
+<script>
+  import { supabaseClient } from "../../js/supabase/supabase_client"
+  const interactionButtons = document.querySelectorAll<HTMLElement>(
+    ".interaction-button",
+  )
+
+  async function enableInteractionButtons() {
+    // Check if logged in
+    const {
+      data: { session },
+    } = await supabaseClient.auth.getSession()
+
+    if (!session) {
+      return
+    }
+
+    interactionButtons.forEach((interactionButton) => {
+      const isLoggedIn = (interactionButton.dataset.isLoggedIn = "true")
+
+      if (!isLoggedIn) {
+        interactionButton.dataset.isLoggedIn = "true"
+        interactionButton.classList.remove("opacity-50", "cursor-not-allowed")
+      }
+    })
+  }
+
+  document.addEventListener("DOMContentLoaded", enableInteractionButtons)
+</script>
