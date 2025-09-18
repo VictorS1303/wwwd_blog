@@ -37,25 +37,21 @@ const interactionButtons = [
   {
     id: "like_button",
     class: "fas fa-heart text-2xl",
-    isLoggedIn: false,
   },
   {
     id: "save_button",
     class: "fas fa-bookmark text-2xl",
-    isLoggedIn: false,
   },
   {
     id: "download_button",
     href: download,
     download: "how_the_browser_reads_css",
     class: "fas fa-download text-2xl",
-    isLoggedIn: true,
   },
   {
     id: "share_button",
     class: "fas fa-share text-[var(--secondary-text-color)] text-2xl",
     share: true,
-    isLoggedIn: true,
   },
 ]
 
@@ -158,32 +154,3 @@ const formattedDate = date ? formatDate(date) : "Unknown date"
     <InteractionsContainer interactionButtons={interactionButtons} />
   </main>
 </Layout>
-
-<script>
-  import { supabaseClient } from "../../js/supabase/supabase_client"
-  const interactionButtons = document.querySelectorAll<HTMLElement>(
-    ".interaction-button",
-  )
-
-  async function enableInteractionButtons() {
-    // Check if logged in
-    const {
-      data: { session },
-    } = await supabaseClient.auth.getSession()
-
-    if (!session) {
-      return
-    }
-
-    interactionButtons.forEach((interactionButton) => {
-      const isLoggedIn = (interactionButton.dataset.isLoggedIn = "true")
-
-      if (!isLoggedIn) {
-        interactionButton.dataset.isLoggedIn = "true"
-        interactionButton.classList.remove("opacity-50", "cursor-not-allowed")
-      }
-    })
-  }
-
-  document.addEventListener("DOMContentLoaded", enableInteractionButtons)
-</script>
