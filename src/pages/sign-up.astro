@@ -42,7 +42,6 @@ const signUpFormInputs = [
     headerText="Sign up"
     inputs={signUpFormInputs}
     isSubmitButton={true}
-    id="sign_up_form"
     buttonText="Sign up"
   />
   <div class="text-center mt-4">
@@ -73,7 +72,7 @@ const signUpFormInputs = [
     }
 
     // Sign up user
-    const result = await signUpUser(nameInput, emailInput, passwordInput)
+    const result = await signUpUser(emailInput, passwordInput)
 
     // If no success at signing up the user
     if (!result.success) {

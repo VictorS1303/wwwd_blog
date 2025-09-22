@@ -178,6 +178,6 @@ export const loginUser = async (email, password) =>
     return {success: false, error: loginError.message}
   }
 
-  console.log('User logged in:', data.user)
-  return { success: true, user: data.user }
+  console.log('User logged in:', loginData.user)
+  return { success: true, user: loginData.user }
 }
