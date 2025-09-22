@@ -1,0 +1,84 @@
+---
+import LoginSignUpLayout from "../layouts/LoginSignUpLayout.astro"
+import Form from "../components/form/Form.astro"
+import Button from "../components/button/Button.astro"
+
+const signUpFormInputs = [
+  {
+    type: "text",
+    label: "Name",
+    name: "name",
+    placeholder: "Enter your name",
+    required: true,
+  },
+  {
+    type: "email",
+    label: "Email",
+    name: "email",
+    placeholder: "Enter your email",
+    required: true,
+  },
+  {
+    type: "password",
+    label: "Password",
+    name: "password",
+    required: true,
+    placeholder: "Please enter password",
+  },
+  {
+    type: "password",
+    label: "Repeat password",
+    name: "repeat_password",
+    required: true,
+    placeholder: "Please repeat password",
+  },
+]
+---
+
+<LoginSignUpLayout title="Sign up">
+  <Form
+    isFormHeader={true}
+    headerText="Sign up"
+    inputs={signUpFormInputs}
+    isSubmitButton={true}
+    id="sign_up_form"
+    buttonText="Sign up"
+  />
+  <div class="text-center mt-4">
+    <h4>
+      Already a user? Log in <Button href="/login" buttonText="here." />
+    </h4>
+  </div>
+</LoginSignUpLayout>
+
+<script>
+  import { signUpUser } from "../../js/utils/supabase_methods"
+
+  const signUpForm = document.querySelector("#sign_up_form")
+
+  signUpForm?.addEventListener("submit", (e) => handleSignUp(e))
+
+  async function handleSignUp(e) {
+    e.preventDefault()
+
+    const formData = new FormData(signUpForm)
+    const nameInput = formData.get("name")
+    const emailInput = formData.get("email")
+    const passwordInput = formData.get("password")
+    const repeatPasswordInput = formData.get("repeat_password")
+
+    if (repeatPasswordInput !== passwordInput) {
+      alert("Invalid password!")
+      return
+    }
+
+    const signUpResult = await signUpUser(emailInput, passwordInput)
+
+    if (!signUpResult.success) {
+      alert(`Sign-up failed: ${signUpResult.error}`);
+      return;
+    }
+
+    alert("Sign up successful!")
+  }
+</script>
