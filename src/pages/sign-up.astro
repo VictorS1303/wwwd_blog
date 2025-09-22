@@ -72,7 +72,7 @@ const signUpFormInputs = [
     }
 
     // Sign up user
-    const result = await signUpUser(emailInput, passwordInput)
+    const result = await signUpUser(nameInput, emailInput, passwordInput)
 
     // If no success at signing up the user
     if (!result.success) {

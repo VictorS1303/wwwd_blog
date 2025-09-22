@@ -145,10 +145,15 @@ export const fetchHeroData = async () =>
 await fetchHeroData()
 
 // Sign up
-export const signUpUser = async (email, password) => {
+export const signUpUser = async (name, email, password) => {
   const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({
     email,
     password,
+    options: {
+      data: {
+        name, // This is saved to user_metadata
+      },
+    },
   });
 
   if (signUpError) {
