@@ -163,3 +163,4 @@ export const signUpUser = async (email, password) => {
     data: signUpData,
   };
 };
+
