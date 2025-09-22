@@ -1,4 +1,6 @@
 ---
+export const prerender = false
+
 import MobileNavToggleButton from "../../button/MobileNavToggleButton.astro"
 import Button from "../../button/Button.astro"
 
@@ -25,6 +27,7 @@ const isDashboard = activePage === "/dashboard"
         {navItems.length > 0 && (
           <ul class="flex flex-col gap-4 justify-center h-full items-center whitespace-nowrap text-[var(--secondary-text-color)] text-2xl md:text-white md:flex-row md:absolute md:right-8">
             {navItems
+              // ✅ Show all items except those explicitly marked isLoggedIn: false
               .filter((item) => item.isLoggedIn !== false)
               .map((navItem, index) => {
                 const isActive =
@@ -32,15 +35,21 @@ const isDashboard = activePage === "/dashboard"
                   navItem.href === activePage
 
                 return (
-                  <li key={index} class="flex justify-end cursor-pointer">
+                  <li
+                    key={index}
+                    class="flex justify-end cursor-pointer"
+                    data-nav-dashboard={
+                      navItem.text === "Dashboard" ? true : undefined
+                    }
+                  >
                     <a
                       href={navItem.href}
                       class={`
-                      relative 
-                      before:content-[''] before:absolute before:bottom-0 before:left-0 
-                      before:w-full before:h-[2px] before:bg-white 
-                      before:origin-left before:transition-transform before:duration-300
-                      ${isActive ? "before:scale-x-100" : "before:scale-x-0"}
+                        relative 
+                        before:content-[''] before:absolute before:bottom-0 before:left-0 
+                        before:w-full before:h-[2px] before:bg-white 
+                        before:origin-left before:transition-transform before:duration-300
+                        ${isActive ? "before:scale-x-100" : "before:scale-x-0"}
                     `}
                     >
                       {navItem.text}
@@ -56,6 +65,8 @@ const isDashboard = activePage === "/dashboard"
 }
 
 <script>
+  import { supabaseClient } from "../../../../js/supabase/supabase_client"
+
   const mobileNavToggleBtn = document.querySelector("#mobile_nav_toggle_btn")
   const mainNav = document.querySelector("#main_nav")
 
@@ -84,4 +95,19 @@ const isDashboard = activePage === "/dashboard"
     icon?.classList.toggle("fa-bars")
     icon?.classList.toggle("fa-times")
   }
+
+  // Listening for login/log out
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+    const dashboardLink = document.querySelector<HTMLElement>(
+      "[data-nav-dashboard]",
+    )
+
+    if (!dashboardLink) {
+      return
+    }
+
+    const isLoggedIn = !!session?.user
+
+    dashboardLink.style.display = isLoggedIn ? "flex" : "none"
+  })
 </script>

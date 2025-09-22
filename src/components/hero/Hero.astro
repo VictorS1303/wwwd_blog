@@ -19,25 +19,14 @@ import Navigation from "../generals/navigation/Navigation.astro"
 import Header from "../header/Header.astro"
 import Section from "../generals/section/Section.astro"
 import BackButton from "../button/BackButton.astro"
+import { getSupabaseServerClient } from "../../../js/supabase/supabase_server"
+import { supabaseClient } from "../../../js/supabase/supabase_client"
 
 const navItems = [
-  {
-    text: "Home",
-    href: "/",
-  },
-  {
-    text: "About",
-    href: "/about",
-  },
-  {
-    text: "Blog Posts",
-    href: "/blog-posts",
-  },
-  {
-    // isLoggedIn: false,
-    text: "Dashboard",
-    href: "/dashboard",
-  },
+  { text: "Home", href: "/" },
+  { text: "About", href: "/about" },
+  { text: "Blog Posts", href: "/blog-posts" },
+  { text: "Dashboard", href: "/dashboard", isLoggedIn: false },
 ]
 ---
 

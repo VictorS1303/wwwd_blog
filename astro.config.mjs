@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'server', // ✅ enable server-side rendering
+  output: 'server',
   vite: {
     plugins: [tailwindcss()],
   },

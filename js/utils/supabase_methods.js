@@ -143,3 +143,78 @@ export const fetchHeroData = async () =>
 }
 
 await fetchHeroData()
+
+
+// Check login session
+// export const checkLoginSession = async () => 
+// {
+//   const {data: loginData, error: loginError} = await supabaseClient.auth.getSession()
+
+//   if(loginError)
+//   {
+//     console.log(loginError.message, loginError.hint)
+//   }
+
+//   const session = loginData.session
+
+//   if(session)
+//   {
+//     console.log('User is logged in', session.user)
+//     return true
+//   }
+//   else
+//   {
+//     console.log('No active session')
+//     return false
+//   }
+// }
+
+// Sign up user
+// export const signUpUser = async (name, email, password, avatarUrl = null) => {
+//   try {
+//     const { data, error } = await supabaseClient.auth.signUp({
+//       email,
+//       password,
+//       options: {
+//         data: {
+//           name,
+//           ...(avatarUrl && { avatarUrl }), // only include if provided
+//         },
+//       },
+//     })
+
+//     console.log("Sign up data:", data)
+//     console.log("Sign up error:", error)
+
+//     if (error) {
+//       return { success: false, signUpError: error.message }
+//     }
+
+//     return { success: true, user: data.user, session: data.session }
+//   } catch (err) {
+//     return { success: false, signUpError: err.message }
+//   }
+// }
+
+// Login User
+// export const loginUser = async (email, password) => {
+//   const { data: loginData, error: loginError } = await supabaseClient.auth.signInWithPassword({
+//     email,
+//     password,
+//     options: {
+//       persistSession: true,
+//     },
+//   })
+
+//   if (loginError) {
+//     return {
+//       success: false,
+//       signUpError: loginError.message,
+//     }
+//   }
+
+//   return {
+//     success: true,
+//     data: loginData,
+//   }
+// }
