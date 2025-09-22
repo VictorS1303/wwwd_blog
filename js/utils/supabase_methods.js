@@ -164,3 +164,20 @@ export const signUpUser = async (email, password) => {
   };
 };
 
+// Login user
+export const loginUser = async (email, password) =>
+{
+  const {data: loginData, error: loginError} = await supabaseClient.auth.signInWithPassword({
+    email,
+    password,
+  })
+
+  if(!loginData || loginError)
+  {
+    console.log('Login error', loginData.error, loginData.message)
+    return {success: false, error: loginError.message}
+  }
+
+  console.log('User logged in:', data.user)
+  return { success: true, user: data.user }
+}

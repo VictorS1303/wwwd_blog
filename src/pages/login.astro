@@ -51,20 +51,21 @@ const loginFormInputs = [
     e.preventDefault()
 
     const formData = new FormData(loginForm)
+
     const emailInput = formData.get("email")
     const passwordInput = formData.get("password")
+
+    if (!emailInput || !passwordInput) {
+      alert("Both fields must be filled out properly!")
+    }
 
     const loginResult = await loginUser(emailInput, passwordInput)
 
     if (!loginResult.success) {
-      alert(`Login failed: ${loginResult.signUpError}`)
+      alert(`Login failed: ${loginResult.error}`)
       return
     }
 
-    alert("Login successful!")
-    console.log(loginResult.data)
-
-    // Optional: redirect after successful login
-    location.href = "/dashboard"
+    alert("Sign up successful!")
   }
 </script>
