@@ -1,10 +1,22 @@
 ---
-const { class: className, id, isBlogFooter } = Astro.props
+const {
+  class: className,
+  id,
+  isIndexFooter,
+  isLoginRegisterFooter,
+} = Astro.props
 const currentYear = new Date().getFullYear()
 ---
 
-<footer class={`${className} grid place-content-center h-[60px] w-screen border-t-2 border-[var(--secondary-text-color)] bg-white`}>
-  <h4>
-    WWWD <span class="text-[var(--secondary-text-color)] px-1">|</span> {currentYear}
-  </h4>
-</footer>
+{
+  (isIndexFooter || isLoginRegisterFooter) && (
+    <footer
+      class={`${className} grid place-content-center h-[60px] w-screen border-t-2 border-[var(--secondary-text-color)] bg-white`}
+    >
+      <h4>
+        WWWD <span class="text-[var(--secondary-text-color)] px-1">|</span>
+        {currentYear}
+      </h4>
+    </footer>
+  )
+}
