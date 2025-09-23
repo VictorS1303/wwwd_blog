@@ -53,33 +53,34 @@ const savedPosts = [
 
 const likedPost = [
   {
-    id: 'liked_posts',
-    headerText: 'Liked Posts',
+    id: "liked_posts",
+    headerText: "Liked Posts",
     isDashboardHeader: true,
-    messageText: 'No liked posts',
+    messageText: "No liked posts",
     posts: likedPosts,
-  }
+  },
 ]
 
 const savedPost = [
   {
-    id: 'saved_posts',
-    headerText: 'Saved Posts',
+    id: "saved_posts",
+    headerText: "Saved Posts",
     isDashboardHeader: true,
-    messageText: 'No saved posts',
+    messageText: "No saved posts",
     posts: savedPosts,
-  }
+  },
 ]
 ---
 
 <DashboardLayout title="My Dashboard">
-  <DashboardHeroSection 
-    src="/images/landing_hero/landing_hero_bg.webp" 
-    alt="profile image" 
-    headerText="Welcome, Victor Schweitz!" 
-    isDashboardHeader={true} 
+  <DashboardHeroSection
+    id="dashboard_username"
+    src="/images/landing_hero/landing_hero_bg.webp"
+    alt="profile image"
+    headerText="Welcome, Victor Schweitz!"
+    isDashboardHeader={true}
   />
 
- <DashboardPostsSection postsSections={likedPost} />
- <DashboardPostsSection postsSections={savedPost} />
+  <DashboardPostsSection postsSections={likedPost} />
+  <DashboardPostsSection postsSections={savedPost} />
 </DashboardLayout>
