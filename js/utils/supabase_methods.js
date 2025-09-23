@@ -165,7 +165,7 @@ await fetchHeroData()
 // };
 
 // Register up and login
-export const registerAndLogin = async (email, password) => {
+export const registerAndLogin = async (name, email, password, repeatPassword) => {
   const { data: registerLoginData, error: registerLoginError } = await supabaseClient.auth.signUp({
     email,
     password,

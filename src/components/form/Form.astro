@@ -50,6 +50,7 @@ const {
                   name={input.name}
                   required={input.required}
                   class="w-full border-b-2 border-[var(--secondary-text-color)] focus:outline-none focus:ring-0 placeholder:text-[var(--secondary-text-color)] placeholder:opacity-60"
+                  autocomplete={input.autocomplete}
                 />
               ) : input.type === "file" ? (
                 <div>
@@ -60,6 +61,7 @@ const {
                     placeholder={input.placeholder}
                     required={input.required}
                     class="w-full border-b-2 border-[var(--secondary-text-color)] cursor-pointer focus:outline-0 focus:ring-0"
+                    autocomplete={input.autocomplete}
                   />
                 </div>
               ) : (
@@ -70,6 +72,7 @@ const {
                   placeholder={input.placeholder}
                   required={input.required}
                   class="w-full border-b-2 border-[var(--secondary-text-color)] text-lg cursor-pointer focus:outline-0 focus:ring-0"
+                  autocomplete={input.autocomplete}
                 />
               )
             }
