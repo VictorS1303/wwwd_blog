@@ -145,44 +145,42 @@ export const fetchHeroData = async () =>
 await fetchHeroData()
 
 // Sign up
-export const signUpUser = async (name, email, password) => {
-  const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        name, // This is saved to user_metadata
-      },
-    },
-  });
+// export const signUpUser = async (email, password) => {
+//   const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({
+//     email,
+//     password,
+//   });
 
-  if (signUpError) {
-    return {
-      success: false,
-      error: signUpError.message,
-    };
-  }
+//   if (signUpError) {
+//     return {
+//       success: false,
+//       error: signUpError.message,
+//     };
+//   }
 
-  return {
-    success: true,
-    data: signUpData,
-  };
-};
+//   return {
+//     success: true,
+//     data: signUpData,
+//   };
+// };
 
-// Login user
-export const loginUser = async (email, password) =>
-{
-  const {data: loginData, error: loginError} = await supabaseClient.auth.signInWithPassword({
+// Register up and login
+export const registerAndLogin = async (email, password) => {
+  const { data: registerLoginData, error: registerLoginError } = await supabaseClient.auth.signUp({
     email,
     password,
   })
 
-  if(!loginData || loginError)
-  {
-    console.log('Login error', loginData.error, loginData.message)
-    return {success: false, error: loginError.message}
+  if (registerLoginError) {
+    console.error('Sign-up error:', registerLoginError.message)
+    return { success: false, error: registerLoginError.message }
   }
 
-  console.log('User logged in:', loginData.user)
-  return { success: true, user: loginData.user }
+  if (registerLoginData.session) {
+    console.log('User signed up and logged in!', registerLoginData.session)
+    return { success: true, session: registerLoginData.session,}
+  } else {
+    console.log('Register succeeded but no session available.')
+    return { success: false, error: 'No session returned' }
+  }
 }

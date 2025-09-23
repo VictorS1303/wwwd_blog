@@ -52,7 +52,7 @@ const signUpFormInputs = [
 </LoginSignUpLayout>
 
 <script>
-  import { signUpUser } from "../../js/utils/supabase_methods"
+  import { registerAndLogin } from "../../js/utils/supabase_methods"
 
   const signUpForm = document.querySelector("#sign_up_form")
 
@@ -68,17 +68,19 @@ const signUpFormInputs = [
     const repeatPasswordInput = formData.get("repeat_password")
 
     if (repeatPasswordInput !== passwordInput) {
-      alert("Invalid password!")
+      alert("Passwords do not match!")
       return
     }
 
-    const signUpResult = await signUpUser(emailInput, passwordInput)
+    const signUpResult = await registerAndLogin(emailInput, passwordInput)
 
     if (!signUpResult.success) {
-      alert(`Sign-up failed: ${signUpResult.error}`);
-      return;
+      alert(`Sign-up failed: ${signUpResult.error}`)
+      return
     }
 
-    alert("Sign up successful!")
+    // Sign-up succeeded, redirect
+    signUpForm?.reset()
+    window.location.href = "/dashboard"
   }
 </script>
