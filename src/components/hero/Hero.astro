@@ -23,10 +23,24 @@ import { getSupabaseServerClient } from "../../../js/supabase/supabase_server"
 import { supabaseClient } from "../../../js/supabase/supabase_client"
 
 const navItems = [
-  { text: "Home", href: "/" },
-  { text: "About", href: "/about" },
-  { text: "Blog Posts", href: "/blog-posts" },
-  { text: "Dashboard", href: "/dashboard", isLoggedIn: false },
+  {
+    text: "Home",
+    href: "/",
+  },
+  {
+    text: "Blog Posts",
+    href: "blog-posts",
+  },
+  {
+    text: "Register",
+    href: "/register",
+    isAuthButton: true,
+  },
+  {
+    text: "Login",
+    href: "/login",
+    isAuthButton: true,
+  },
 ]
 ---
 
