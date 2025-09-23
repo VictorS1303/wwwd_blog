@@ -145,21 +145,42 @@ export const fetchHeroData = async () =>
 await fetchHeroData()
 
 // Sign up
-export const signUpUser = async (email, password) => {
-  const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({
+// export const signUpUser = async (email, password) => {
+//   const { data: signUpData, error: signUpError } = await supabaseClient.auth.signUp({
+//     email,
+//     password,
+//   });
+
+//   if (signUpError) {
+//     return {
+//       success: false,
+//       error: signUpError.message,
+//     };
+//   }
+
+//   return {
+//     success: true,
+//     data: signUpData,
+//   };
+// };
+
+// Register up and login
+export const registerAndLogin = async (email, password) => {
+  const { data: registerLoginData, error: registerLoginError } = await supabaseClient.auth.signUp({
     email,
     password,
-  });
+  })
 
-  if (signUpError) {
-    return {
-      success: false,
-      error: signUpError.message,
-    };
+  if (registerLoginError) {
+    console.error('Sign-up error:', registerLoginError.message)
+    return { success: false, error: registerLoginError.message }
   }
 
-  return {
-    success: true,
-    data: signUpData,
-  };
-};
+  if (registerLoginData.session) {
+    console.log('User signed up and logged in!', registerLoginData.session)
+    return { success: true, session: registerLoginData.session,}
+  } else {
+    console.log('Register succeeded but no session available.')
+    return { success: false, error: 'No session returned' }
+  }
+}
