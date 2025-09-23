@@ -21,3 +21,8 @@ body
 {
     font-family: 'Gabarito', sans-serif;
 }
+
+/* If you're using a separate CSS file */
+.auth-link:first-of-type {
+  margin-left: 4rem; /* same as Tailwind's ml-8 */
+}
