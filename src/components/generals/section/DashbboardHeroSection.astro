@@ -28,7 +28,7 @@ const controlButtons = [
 <Section class="hero flex flex-col items-center md:items-start">
   <div class="header-and-dashboard-controls-container">
     <Header
-      id="dashboard-header"
+      id="dashboard_header"
       class="w-full"
       isDashboardHeader={isDashboardHeader}
     />
@@ -58,7 +58,7 @@ const controlButtons = [
       "User"
 
     // Update header text dynamically
-    const headerEl = document.querySelector("#dashboard-header")
+    const headerEl = document.querySelector("#dashboard_header")
     if (headerEl) {
       headerEl.textContent = `Welcome, ${userName}!`
     }
