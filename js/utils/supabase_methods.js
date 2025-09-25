@@ -165,22 +165,62 @@ await fetchHeroData()
 // };
 
 // Register up and login
-export const registerAndLogin = async (name, email, password, repeatPassword) => {
-  const { data: registerLoginData, error: registerLoginError } = await supabaseClient.auth.signUp({
+export const registerAndLogin = async (name, email, password) => {
+  // 1. Sign up user
+  const { data, error } = await supabaseClient.auth.signUp({
     email,
     password,
+    options: {
+      data: {
+        username: name,
+      },
+    },
+  });
+
+  console.log("Supabase signUp response:", { data, error });
+
+  if (error) {
+    console.error("Sign-up error:", error.message, error.hint);
+    return { success: false, signUpError: error.message };
+  }
+
+  // 2. If session exists after sign-up, user is automatically logged in
+  if (data.session) {
+    console.log("User automatically signed in:", data.session.user);
+    return { success: true, user: data.session.user };
+  }
+
+  // 3. If no session returned (email confirmation required), manually sign in
+  console.warn("No active session after sign-up, attempting manual login...");
+
+  const { data: loginData, error: loginError } =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+  if (loginError) {
+    console.error("Login error:", loginError.message);
+    return { success: false, signUpError: loginError.message };
+  }
+
+  console.log("User logged in successfully:", loginData.session.user);
+
+  return { success: true, user: loginData.session.user };
+};
+
+// Login user
+export async function loginUser(email, password) {
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
   })
 
-  if (registerLoginError) {
-    console.error('Sign-up error:', registerLoginError.message)
-    return { success: false, error: registerLoginError.message }
+  if (error) {
+    console.error("Login error:", error.message)
+    return { success: false, error: error.message }
   }
 
-  if (registerLoginData.session) {
-    console.log('User signed up and logged in!', registerLoginData.session)
-    return { success: true, session: registerLoginData.session,}
-  } else {
-    console.log('Register succeeded but no session available.')
-    return { success: false, error: 'No session returned' }
-  }
+  console.log("User logged in:", data.user)
+  return { success: true, user: data.user }
 }

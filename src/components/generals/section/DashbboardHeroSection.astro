@@ -53,9 +53,11 @@ const controlButtons = [
     )
 
     const userName =
-      session?.user?.user_metadata?.name ||
-      localData?.user?.user_metadata?.name ||
+      session?.user?.user_metadata?.username ||
+      localData?.user?.user_metadata?.username ||
       "User"
+
+    console.log(session)
 
     // Update header text dynamically
     const headerEl = document.querySelector("#dashboard_header")

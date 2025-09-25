@@ -72,8 +72,11 @@ const signUpFormInputs = [
       return
     }
 
-    const signUpResult = await registerAndLogin(emailInput, passwordInput)
-
+    const signUpResult = await registerAndLogin(
+      nameInput,
+      emailInput,
+      passwordInput,
+    )
     if (!signUpResult.success) {
       alert(`Sign-up failed: ${signUpResult.error}`)
       return
