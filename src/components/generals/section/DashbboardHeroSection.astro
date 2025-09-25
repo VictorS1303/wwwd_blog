@@ -10,19 +10,24 @@ const controlButtons = [
   {
     buttonText: "Edit profile",
     id: "edit_profile_button",
+    class: "edit-profile-button",
     isDashboardControlButton: true,
   },
   {
     buttonText: "Log out",
+    class: "log-out-button",
     id: "log_out_button",
     isDashboardControlButton: true,
   },
   {
     buttonText: "Delete profile",
+    class: "delete-profile-button",
     id: "delete_profile_button",
     isDashboardControlButton: true,
   },
 ]
+
+controlButtons.forEach((controlButton, index) => console.log(controlButton.id))
 ---
 
 <Section class="hero flex flex-col items-center md:items-start">
@@ -39,10 +44,6 @@ const controlButtons = [
 
 <script>
   import { supabaseClient } from "../../../../js/supabase/supabase_client.js"
-  import { logOutUser } from "../../../../js/utils/supabase_methods"
-
-  const logOutButton = document.querySelector("#log_out_button")
-  logOutButton?.addEventListener("click", logOutUser)
 
   // Run on client-side after page loads
   document.addEventListener("DOMContentLoaded", async () => {

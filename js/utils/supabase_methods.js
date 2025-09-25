@@ -229,8 +229,7 @@ export async function loginUser(email, password) {
 export const logOutUser = async () => {
   const { error } = await supabaseClient.auth.signOut();
 
-  console.log(error)
+  console.log(error)  
 
-  location.reload()
-  
+  location.href = '/blog-posts'
 }
