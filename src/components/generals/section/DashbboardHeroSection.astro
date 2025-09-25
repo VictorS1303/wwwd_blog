@@ -13,8 +13,8 @@ const controlButtons = [
     isDashboardControlButton: true,
   },
   {
-    buttonText: "Sign out",
-    id: "sign_out_button",
+    buttonText: "Log out",
+    id: "log_out_button",
     isDashboardControlButton: true,
   },
   {
@@ -39,6 +39,10 @@ const controlButtons = [
 
 <script>
   import { supabaseClient } from "../../../../js/supabase/supabase_client.js"
+  import { logOutUser } from "../../../../js/utils/supabase_methods"
+
+  const logOutButton = document.querySelector("#log_out_button")
+  logOutButton?.addEventListener("click", logOutUser)
 
   // Run on client-side after page loads
   document.addEventListener("DOMContentLoaded", async () => {

@@ -224,3 +224,13 @@ export async function loginUser(email, password) {
   console.log("User logged in:", data.user)
   return { success: true, user: data.user }
 }
+
+// Log out user
+export const logOutUser = async () => {
+  const { error } = await supabaseClient.auth.signOut();
+
+  console.log(error)
+
+  location.reload()
+  
+}
