@@ -8,6 +8,13 @@ import Card from "../components/card/Card.astro"
 import DashboardCardsContainer from "../components/containers/DashboardCardsContainer.astro"
 import DashboardHeroSection from "../components/generals/section/DashbboardHeroSection.astro"
 import DashboardPostsSection from "../components/generals/section/DashboardPostsSection.astro"
+import { supabaseClient } from "../../js/supabase/supabase_client"
+
+const {
+  data: { session },
+} = await supabaseClient.auth.getSession()
+
+const isLoggedIn = !!session?.user
 
 const likedPosts = [
   {
@@ -72,14 +79,21 @@ const savedPost = [
 ]
 ---
 
-<DashboardLayout title="My Dashboard">
-  <DashboardHeroSection
-    id="dashboard_username"
-    src="/images/landing_hero/landing_hero_bg.webp"
-    alt="profile image"
-    isDashboardHeader={true}
-  />
+{
+  isLoggedIn ? (
+    <DashboardLayout title="My Dashboard">
+      <DashboardHeroSection
+        src="/images/landing_hero/landing_hero_bg.webp"
+        alt="profile image"
+        headerText="Welcome, Victor Schweitz!"
+        isDashboardHeader={true}
+        isLoggedIn={isLoggedIn}
+      />
 
-  <DashboardPostsSection postsSections={likedPost} />
-  <DashboardPostsSection postsSections={savedPost} />
-</DashboardLayout>
+      <DashboardPostsSection postsSections={likedPost} />
+      <DashboardPostsSection postsSections={savedPost} />
+    </DashboardLayout>
+  ) : (
+    <p>No user</p>
+  )
+}
