@@ -3,6 +3,7 @@ export const prerender = false
 
 import MobileNavToggleButton from "../../button/MobileNavToggleButton.astro"
 import Button from "../../button/Button.astro"
+import { supabaseClient } from "../../../../js/supabase/supabase_client"
 
 const { class: className, id: id, navItems = [] } = Astro.props
 const activePage = new URL(Astro.request.url).pathname.replace(/\/$/, "")
@@ -27,8 +28,13 @@ const isDashboard = activePage === "/dashboard"
         {navItems.length > 0 && (
           <ul class="flex flex-col gap-4 justify-center h-full items-center whitespace-nowrap text-[var(--secondary-text-color)] text-2xl md:text-white md:flex-row md:absolute md:right-8">
             {navItems
-              // ✅ Show all items except those explicitly marked isLoggedIn: false
-              .filter((item) => item.isLoggedIn !== false)
+              .filter((item) => {
+                if (item.requiresAuth && !user) {
+                  return false
+                }
+
+                return true
+              })
               .map((navItem, index) => {
                 const isActive =
                   (navItem.href === "/" && isHome) ||

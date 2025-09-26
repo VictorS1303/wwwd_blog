@@ -1,28 +1,18 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro"
-import Section from "../components/generals/section/Section.astro"
-import Header from "../components/header/Header.astro"
-import Image from "../components/imags/Image.astro"
-import Button from "../components/button/Button.astro"
-import Card from "../components/card/Card.astro"
-import DashboardCardsContainer from "../components/containers/DashboardCardsContainer.astro"
 import DashboardHeroSection from "../components/generals/section/DashbboardHeroSection.astro"
 import DashboardPostsSection from "../components/generals/section/DashboardPostsSection.astro"
-import { supabaseClient } from "../../js/supabase/supabase_client"
+import { supabaseClient } from "../../js/supabase/supabase_client.js"
 
+// Fetch current session on the server
 const {
   data: { session },
 } = await supabaseClient.auth.getSession()
 
 const isLoggedIn = !!session?.user
 
+// Example dashboard content
 const likedPosts = [
-  {
-    cardType: "liked",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    headerText: "How the browser reads CSS",
-    articleHref: "/blog-posts/how-the-browser-reads-css",
-  },
   {
     cardType: "liked",
     src: "/images/landing_hero/landing_hero_bg.webp",
@@ -38,18 +28,6 @@ const likedPosts = [
 ]
 
 const savedPosts = [
-  {
-    cardType: "saved",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    headerText: "How the browser reads CSS",
-    articleHref: "/blog-posts/how-the-browser-reads-css",
-  },
-  {
-    cardType: "saved",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    headerText: "How the browser reads CSS",
-    articleHref: "/blog-posts/how-the-browser-reads-css",
-  },
   {
     cardType: "saved",
     src: "/images/landing_hero/landing_hero_bg.webp",
@@ -79,21 +57,13 @@ const savedPost = [
 ]
 ---
 
-{
-  isLoggedIn ? (
-    <DashboardLayout title="My Dashboard">
-      <DashboardHeroSection
-        src="/images/landing_hero/landing_hero_bg.webp"
-        alt="profile image"
-        headerText="Welcome, Victor Schweitz!"
-        isDashboardHeader={true}
-        isLoggedIn={isLoggedIn}
-      />
+<DashboardLayout title="My Dashboard">
+  <DashboardHeroSection
+    src="/images/landing_hero/landing_hero_bg.webp"
+    alt="profile image"
+    isDashboardHeader={true}
+  />
 
-      <DashboardPostsSection postsSections={likedPost} />
-      <DashboardPostsSection postsSections={savedPost} />
-    </DashboardLayout>
-  ) : (
-    <p>No user</p>
-  )
-}
+  <DashboardPostsSection postsSections={likedPost} />
+  <DashboardPostsSection postsSections={savedPost} />
+</DashboardLayout>

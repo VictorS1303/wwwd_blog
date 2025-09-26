@@ -19,33 +19,19 @@ import Navigation from "../generals/navigation/Navigation.astro"
 import Header from "../header/Header.astro"
 import Section from "../generals/section/Section.astro"
 import BackButton from "../button/BackButton.astro"
-import { getSupabaseServerClient } from "../../../js/supabase/supabase_server"
 import { supabaseClient } from "../../../js/supabase/supabase_client"
 
+
+
+// Get session from request for SSR
+
+// Nav items with booleans flipped based on login
 const navItems = [
-  {
-    text: "Home",
-    href: "/",
-  },
-  {
-    text: "Blog Posts",
-    href: "blog-posts",
-  },
-  {
-    text: "Register",
-    href: "/register",
-    isLoggedIn: true,
-  },
-  {
-    text: "Login",
-    href: "/login",
-    isLoggedIn: true,
-  },
-  {
-    text: "Dashboard",
-    href: "/dashboard",
-    isLoggedIn: true,
-  },
+  { text: "Home", href: "/" },
+  { text: "Blog Posts", href: "/blog-posts" },
+  { text: "Register", href: "/register" },
+  { text: "Login", href: "/login" },
+  { text: "Dashboard", href: "/dashboard" },
 ]
 ---
 

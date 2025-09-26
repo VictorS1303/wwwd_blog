@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^6.3.6",
+    "@astrojs/netlify": "^6.5.11",
+    "@astrojs/node": "^9.4.4",
     "@supabase/supabase-js": "^2.56.0",
     "@tailwindcss/vite": "^4.1.11",
     "astro": "^5.12.9",
