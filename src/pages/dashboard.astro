@@ -2,31 +2,9 @@
 import DashboardLayout from "../layouts/DashboardLayout.astro"
 import DashboardHeroSection from "../components/generals/section/DashbboardHeroSection.astro"
 import DashboardPostsSection from "../components/generals/section/DashboardPostsSection.astro"
-import { supabaseClient } from "../../js/supabase/supabase_client.js"
+import { fetchLikedPosts } from "../../js/utils/supabase_methods"
 
-// Fetch current session on the server
-const {
-  data: { session },
-} = await supabaseClient.auth.getSession()
-
-const isLoggedIn = !!session?.user
-
-// Example dashboard content
-const likedPosts = [
-  {
-    cardType: "liked",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    headerText: "How the browser reads CSS",
-    articleHref: "/blog-posts/how-the-browser-reads-css",
-  },
-  {
-    cardType: "liked",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    headerText: "How the browser reads CSS",
-    articleHref: "/blog-posts/how-the-browser-reads-css",
-  },
-]
-
+// Saved posts (static example)
 const savedPosts = [
   {
     cardType: "saved",
@@ -36,17 +14,17 @@ const savedPosts = [
   },
 ]
 
-const likedPost = [
+// Dashboard sections
+const likedPostSection = [
   {
     id: "liked_posts",
     headerText: "Liked Posts",
     isDashboardHeader: true,
     messageText: "No liked posts",
-    posts: likedPosts,
   },
 ]
 
-const savedPost = [
+const savedPostSection = [
   {
     id: "saved_posts",
     headerText: "Saved Posts",
@@ -64,6 +42,6 @@ const savedPost = [
     isDashboardHeader={true}
   />
 
-  <DashboardPostsSection postsSections={likedPost} />
-  <DashboardPostsSection postsSections={savedPost} />
+  <DashboardPostsSection postsSections={likedPostSection} />
+  <DashboardPostsSection postsSections={savedPostSection} />
 </DashboardLayout>

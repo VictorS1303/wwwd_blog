@@ -14,6 +14,10 @@ import { supabaseClient } from "../../js/supabase/supabase_client"
 
 const { frontmatter, headings } = Astro.props
 
+import { fetchSinglePostBySlug } from "../../js/utils/supabase_methods"
+
+const { slug } = Astro.params
+
 const {
   title,
   download,
@@ -27,7 +31,13 @@ const {
   image: { src, alt },
 } = Astro.props
 
-const currentPostCategories = categories.map((category) => ({
+const post = await fetchSinglePostBySlug(slug)
+
+if (!post) {
+  throw new Error(`No post found for slug "${slug}"`)
+}
+
+const currentPostCategories = (post.categories || []).map((category) => ({
   isBlogPostTab: true,
   href: `/blog-posts?category=${encodeURIComponent(category.toLowerCase())}`,
   tabText: category,
@@ -56,6 +66,8 @@ const interactionButtons = [
 ]
 
 const formattedDate = date ? formatDate(date) : "Unknown date"
+
+console.log("Post: ", post)
 ---
 
 <Layout title={title}>
@@ -151,6 +163,9 @@ const formattedDate = date ? formatDate(date) : "Unknown date"
       </div>
     </div>
 
-    <InteractionsContainer interactionButtons={interactionButtons} />
+    <InteractionsContainer
+      interactionButtons={interactionButtons}
+      post={post}
+    />
   </main>
 </Layout>

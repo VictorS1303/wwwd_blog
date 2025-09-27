@@ -27,10 +27,11 @@ export const fetchSinglePostBySlug = async (slug) =>
 
     if (error)
     {
-        console.log("Error: ", error.hint, error.message, slug)
+      console.log("Error: ", error.hint, error.message, slug)
     }
-    
-    return post || []
+
+    console.log("Fetched post:", post)
+    return post
 }
 
 // Fetch filtered posts
@@ -232,4 +233,35 @@ export const logOutUser = async () => {
   console.log(error)  
 
   location.href = '/blog-posts'
+}
+
+
+// Like post
+export const likePost = async (postId) => {
+  // Get currently logged-in user
+  const { data: { user }, error } = await supabaseClient.auth.getUser();
+
+  if (error || !user) {
+    alert("You must be logged in to like posts");
+    return;
+  }
+
+  try {
+    const { data, error: likeError } = await supabaseClient
+      .from("liked_posts")
+      .insert({ user_id: user.id, post_id: postId })
+      .select();
+
+    if (likeError) {
+      if (likeError.code === "23505") {
+        console.log("You already liked this post");
+      } else {
+        console.error(likeError.message);
+      }
+    } else {
+      console.log("Post liked!", data);
+    }
+  } catch (err) {
+    console.error(err);
+  }
 }

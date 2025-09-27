@@ -5,6 +5,8 @@ import Header from "../../header/Header.astro"
 import DashboardCardsContainer from "../../containers/DashboardCardsContainer.astro"
 import NoReturnMessage from "../../messages/NoReturnMessage.astro"
 import Form from "../../form/Form.astro"
+
+console.log("Posts sections: ", postsSections)
 ---
 
 <div class="sections-container">
@@ -44,11 +46,8 @@ import Form from "../../form/Form.astro"
 
   function determinePostCardAction(e) {
     const button = getClosestButton(e)
-    if (!button) {
-      return
-    }
+    if (!button) return
 
-    // Check if it's a "like" or "save" button based on its icon or card type
     if (button.querySelector(".fa-heart, .fa-heart-broken")) {
       dislikePost()
     } else if (button.querySelector(".fa-bookmark")) {

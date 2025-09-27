@@ -11,6 +11,10 @@ const { slug } = Astro.params
 // Fetch full post (includes categories already)
 const post = await fetchSinglePostBySlug(slug)
 
+if (!post) {
+  throw new Error(`No post found for slug "${slug}"`)
+}
+
 // File download handling
 const fileKey = `${post.post_download_url}.pdf`
 

@@ -1,8 +1,18 @@
 ---
-import { supabaseClient } from "../../../js/supabase/supabase_client"
 import Button from "../../components/button/Button.astro"
 import Header from "../../components/header/Header.astro"
 import Dialog from "../dialog/Dialog.astro"
+import { fetchSinglePostBySlug } from "../../../js/utils/supabase_methods"
+
+const { slug } = Astro.params
+
+const post = await fetchSinglePostBySlug(slug)
+
+console.log("Astro.params.slug:", Astro.params.slug)
+
+if (!post) {
+  throw new Error(`Post with ${slug} not found!`)
+}
 
 const { interactionButtons = [] } = Astro.props
 
@@ -16,6 +26,15 @@ const dialogButtons = [
     href: "/login",
   },
 ]
+
+console.log("Post object in Astro:", post)
+
+{
+  console.log("Post object in InteractionsContainer:", post)
+}
+{
+  console.log("Post ID:", post?.id)
+}
 ---
 
 <div class="interaction-buttons-container mt-12">
@@ -25,6 +44,7 @@ const dialogButtons = [
       interactionButtons.length > 0 &&
         interactionButtons.map((interactionButton) => (
           <Button
+            data-post-id={post.id}
             id={interactionButton.id}
             class={interactionButton.class}
             href={interactionButton.href}
@@ -59,6 +79,7 @@ const dialogButtons = [
 />
 
 <script>
+  import { likePost } from "../../../js/utils/supabase_methods"
   const interactionButtonsContainer = document.querySelector(
     ".interaction-buttons-container",
   )
@@ -78,7 +99,9 @@ const dialogButtons = [
 
     switch (button.id) {
       case "like_button":
-        likePost()
+        const postId = button.dataset.postId
+        console.log("Clicked postId", postId)
+        handleLike(postId)
         break
       case "save_button":
         savePost()
@@ -94,9 +117,14 @@ const dialogButtons = [
     }
   }
 
-  function likePost() {
-    console.log("Post liked!")
+  function handleLike(postId) {
+    if (!postId) {
+      console.error("Post ID is not defined: ", postId)
+    }
+
+    likePost(postId)
   }
+
   function savePost() {
     console.log("Post saved!")
   }

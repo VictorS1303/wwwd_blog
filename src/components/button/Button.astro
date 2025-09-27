@@ -13,6 +13,7 @@ const {
   isDashboardControlButton,
   isSubmitButton,
   "data-is-logged-in": dataIsLoggedIn,
+  "data-post-id": dataPostId,
 } = Astro.props
 ---
 
@@ -24,6 +25,7 @@ const {
       id={id}
       type="button"
       data-is-logged-in={dataIsLoggedIn}
+      data-post-id={dataPostId}
     >
       {buttonText}
       <slot />
