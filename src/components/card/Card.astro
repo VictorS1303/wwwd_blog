@@ -1,4 +1,6 @@
 ---
+export const customElement = true
+
 import Label from "../label/Label.astro"
 import Header from "../header/Header.astro"
 import TextBlock from "../text_block/TextBlock.astro"
@@ -116,7 +118,10 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
       </div>
     </article>
   ) : cardType === "liked" || cardType === "saved" ? (
-    <article class="post-card relative w-[225px] h-[250px] overflow-hidden rounded-md group">
+    <article
+      class="post-card relative w-[225px] h-[250px] overflow-hidden rounded-md group"
+      id={`${cardType}-card`}
+    >
       <Button
         class="absolute z-20 bg-white flex items-center justify-center rounded-full right-2 top-2 group w-10 h-10"
         isDashboardCardButton={true}

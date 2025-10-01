@@ -1,0 +1,40 @@
+---
+import DashboardPostsSection from "./DashboardPostsSection.astro";
+import { fetchLikedPosts } from "../../../../js/utils/supabase_methods";
+
+let postsSections = [];
+---
+<DashboardPostsSection client:load postsSections={postsSections} />
+
+<script type="module" client:load>
+  import { fetchLikedPosts } from "../../../../js/utils/supabase_methods";
+
+  async function init() {
+    const likedPostsRaw = await fetchLikedPosts();
+
+    const likedPosts = likedPostsRaw.map(likedPost => ({
+      cardType: "liked",
+      src: likedPost.blog_posts.post_image,
+      headerText: likedPost.blog_posts.post_title,
+      articleHref: `/blog-posts/${likedPost.blog_posts.post_slug}`,
+    }));
+
+    const sections = [
+      {
+        id: "liked_posts",
+        headerText: "Liked Posts",
+        isDashboardHeader: true,
+        messageText: "No liked posts",
+        posts: likedPosts,
+      },
+    ];
+
+    // Find the DashboardPostsSection component in the DOM and set its prop
+    const sectionEl = document.querySelector('dashboardpostssection');
+    if (sectionEl) {
+      sectionEl.postsSections = sections;
+    }
+  }
+
+  init();
+</script>

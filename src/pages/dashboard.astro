@@ -2,28 +2,26 @@
 import DashboardLayout from "../layouts/DashboardLayout.astro"
 import DashboardHeroSection from "../components/generals/section/DashbboardHeroSection.astro"
 import DashboardPostsSection from "../components/generals/section/DashboardPostsSection.astro"
-import { supabaseClient } from "../../js/supabase/supabase_client.js"
+import { fetchLikedPosts } from "../../js/utils/supabase_methods"
 
-// Fetch current session on the server
-const {
-  data: { session },
-} = await supabaseClient.auth.getSession()
+const likedPostsRaw = await fetchLikedPosts()
 
-const isLoggedIn = !!session?.user
+console.log("Liked posts raw: ", likedPostsRaw)
 
-// Example dashboard content
-const likedPosts = [
+const likedPosts = likedPostsRaw.map((likedPost) => ({
+  cardType: "liked",
+  src: likedPost.blog_posts.post_image,
+  headerText: likedPost.blog_posts.post_title,
+  articleHref: `/blog-posts/${likedPost.blog_posts.post_slug}`,
+}))
+
+const likedPostSection = [
   {
-    cardType: "liked",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    headerText: "How the browser reads CSS",
-    articleHref: "/blog-posts/how-the-browser-reads-css",
-  },
-  {
-    cardType: "liked",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    headerText: "How the browser reads CSS",
-    articleHref: "/blog-posts/how-the-browser-reads-css",
+    id: "liked_posts",
+    headerText: "Liked Posts",
+    isDashboardHeader: true,
+    messageText: "No liked posts",
+    posts: likedPosts,
   },
 ]
 
@@ -36,17 +34,7 @@ const savedPosts = [
   },
 ]
 
-const likedPost = [
-  {
-    id: "liked_posts",
-    headerText: "Liked Posts",
-    isDashboardHeader: true,
-    messageText: "No liked posts",
-    posts: likedPosts,
-  },
-]
-
-const savedPost = [
+const savedPostSection = [
   {
     id: "saved_posts",
     headerText: "Saved Posts",
@@ -64,6 +52,7 @@ const savedPost = [
     isDashboardHeader={true}
   />
 
-  <DashboardPostsSection postsSections={likedPost} />
-  <DashboardPostsSection postsSections={savedPost} />
+  <!-- Pass the cleaned sections -->
+  <DashboardPostsSection postsSections={likedPostSection} />
+  <DashboardPostsSection postsSections={savedPostSection} />
 </DashboardLayout>

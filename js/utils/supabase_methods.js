@@ -233,3 +233,113 @@ export const logOutUser = async () => {
 
   location.href = '/blog-posts'
 }
+
+
+// Fetch liked posts
+export const fetchLikedPosts = async () =>
+{
+  const {data: {user}, error: userError} = await supabaseClient.auth.getUser()
+
+  if(userError || !user)
+  {
+    console.log(`No logged in user or error fetching user: ${userError.hint, userError.message}`)
+    return []
+  }
+
+  // Fetch liked posts with blog post details
+  const {data: likedPostsData, error: likedPostsError} = await supabaseClient
+    .from('liked_posts')
+    .select(`id, user_id, created_at, blog_posts(id, post_title, post_slug, post_image)`)
+    .eq('user_id', user.id)
+
+  if(likedPostsError)
+  {
+    console.log(`Error fetching liked posts: ${likedPostsError.message, likedPostsError.hint}`)
+  }
+
+  // Log fetched data
+  console.log('Liked posts fetched: ', likedPostsData)
+
+  return likedPostsData || []
+}
+
+// Like post
+export const likePost = async (postId) => {
+  if (!postId) {
+    console.log('Post ID is missing')
+    return
+  }
+
+  try {
+    // Get current logged-in user
+    const {
+      data: { user },
+      error: userError
+    } = await supabaseClient.auth.getUser()
+
+    if (userError || !user) {
+      console.log("You must be logged in to like posts")
+      return
+    }
+
+    const { data, error } = await supabaseClient
+      .from("liked_posts")
+      .insert([{ user_id: user.id, post_id: postId }]) // use post_id column
+
+    if (error) {
+      console.error("Error liking post:", error)
+    } else {
+      console.log("Post liked successfully!", data)
+    }
+  } catch (err) {
+    console.error("Unexpected error:", err)
+  }
+}
+
+// Dislike post
+export const dislikePost = async (postId) => {
+    if (!postId) {
+      console.error("No post ID provided for deletion")
+      return
+    }
+
+    // Delete the post
+    const { data, error } = await supabaseClient
+      .from("liked_posts")
+      .delete()
+      .eq("id", postId) // ensure postId is a valid UUID string
+
+    if (error) {
+      console.error("Error deleting liked post:", error)
+      return
+    }
+
+    console.log("Deleted liked post:", data)
+
+    // Realtime: Remove the card from the DOM immediately
+    const actionButton = document.querySelector(
+      `button[data-post-id="${postId}"]`,
+    )
+    if (actionButton) {
+      const postCard = actionButton.closest("article.post-card")
+      postCard?.remove()
+    }
+
+    // Real time
+    supabaseClient
+        .channel("public:liked_posts")
+        .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "public", table: "liked_posts" },
+        (payload) => {
+            console.log("Realtime delete detected:", payload)
+            const deletedId = payload.old.id
+            const card = document
+            .querySelector(`button[data-post-id="${deletedId}"]`)
+            ?.closest("article.post-card")
+            card?.remove()
+        },
+        )
+    .subscribe()
+}
+  

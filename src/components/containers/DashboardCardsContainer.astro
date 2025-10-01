@@ -2,21 +2,180 @@
 const { class: className, id: id, posts = [], messageText } = Astro.props
 import Card from "../card/Card.astro"
 import NoReturnMessage from "../messages/NoReturnMessage.astro"
+import { fetchLikedPosts } from "../../../js/utils/supabase_methods"
+
+const likedPosts = await fetchLikedPosts()
+
+console.log("Liked posts: ", likedPosts)
 ---
 
-<div class=`${className} flex flex-col justify-start gap-8 md:flex-row` id={id}>
-  {
-    posts.length > 0
-      ? posts.map((likedPost) => (
-          <Card
-            cardType={likedPost.cardType}
-            src={likedPost.src}
-            headerText={likedPost.headerText}
-            articleHref={likedPost.articleHref}
-          />
-        ))
-      : <NoReturnMessage messageText={messageText} />
+<div
+  class=`${className} dashboard-cards-container flex flex-col justify-start gap-8 md:flex-row`
+  id="liked_posts_container"
+>
+  <slot />
+</div>
+
+<script>
+  import { fetchLikedPosts } from "../../../js/utils/supabase_methods"
+
+  const dashboardCardsContainer = document.querySelector(
+    ".dashboard-cards-container",
+  )
+  const likedPosts = await fetchLikedPosts()
+
+  function createCardTemplate(
+    cardTemplateClasses,
+    actionButton,
+    overlay,
+    image,
+    link,
+  ) {
+    const postCard = document.createElement("article")
+    postCard.className = cardTemplateClasses
+
+    // Order: image at the bottom, overlay above it, header and button on top
+    postCard.append(image, overlay, link, actionButton)
+    dashboardCardsContainer?.appendChild(postCard)
   }
 
-  <!-- <slot /> -->
-</div>
+  // Create button template based on type
+  function createActionButtonTemplate(
+    actionButtonTemplateClasses,
+    type = "like",
+  ) {
+    const actionButton = document.createElement("button")
+    actionButton.className = actionButtonTemplateClasses
+
+    if (type === "like") {
+      const heartIcon = createActionButtonIcon(
+        "fas fa-heart absolute inset-0 m-auto text-2xl text-[var(--secondary-text-color)] transition-opacity duration-300 opacity-100",
+      )
+      const brokenHeartIcon = createActionButtonIcon(
+        "fas fa-heart-broken absolute inset-0 m-auto text-2xl text-[var(--secondary-text-color)] transition-opacity duration-300 opacity-0",
+      )
+
+      const iconWrapper = document.createElement("div")
+      iconWrapper.className =
+        "hidden md:flex relative items-center justify-center w-5 h-5 group-hover-none"
+      iconWrapper.addEventListener("mouseenter", () => {
+        heartIcon.style.opacity = "0"
+        brokenHeartIcon.style.opacity = "1"
+      })
+      iconWrapper.addEventListener("mouseleave", () => {
+        heartIcon.style.opacity = "1"
+        brokenHeartIcon.style.opacity = "0"
+      })
+      iconWrapper.appendChild(heartIcon)
+      iconWrapper.appendChild(brokenHeartIcon)
+
+      const mobileWrapper = document.createElement("div")
+      mobileWrapper.className =
+        "md:hidden flex items-center justify-center w-5 h-5"
+      const mobileIcon = createActionButtonIcon("fas fa-heart-broken")
+      mobileWrapper.appendChild(mobileIcon)
+
+      actionButton.appendChild(mobileWrapper)
+      actionButton.appendChild(iconWrapper)
+    }
+
+    if (type === "save") {
+      const bookmarkIcon = createActionButtonIcon(
+        "fas fa-bookmark absolute inset-0 top-[50%] -translate-y-[50%] m-auto text-2xl text-[var(--secondary-text-color)]",
+      )
+      actionButton.appendChild(bookmarkIcon)
+    }
+
+    return actionButton
+  }
+
+  function createActionButtonIcon(actionButtonIconClasses) {
+    const actionButtonIcon = document.createElement("i")
+    actionButtonIcon.className = actionButtonIconClasses
+    return actionButtonIcon
+  }
+
+  function createOverlay(overlayClasses) {
+    const overlay = document.createElement("article")
+    overlay.className = overlayClasses
+    return overlay
+  }
+
+  function createImage(imageClasses, post) {
+    const postCardImage = document.createElement("img")
+    postCardImage.className = imageClasses
+    postCardImage.src = `${post.blog_posts.post_image}.webp`
+    return postCardImage
+  }
+
+  function createHeading(headerClasses, text) {
+    const header = document.createElement("header")
+    header.className = headerClasses
+
+    const headerSize = document.createElement("h2")
+    headerSize.textContent = text
+    headerSize.className = "text-white transition-colors duration-300"
+
+    headerSize.addEventListener("mouseenter", () => {
+      headerSize.style.color = "var(--secondary-text-color)"
+    })
+    headerSize.addEventListener("mouseleave", () => {
+      headerSize.style.color = "white"
+    })
+
+    header.appendChild(headerSize)
+    return header
+  }
+
+  function createLink(linkClasses, header, href, target) {
+    const link = document.createElement("a")
+    link.className = linkClasses
+    link.setAttribute("href", href)
+    link.setAttribute("target", target)
+    link.appendChild(header)
+    return link
+  }
+
+  function createLikedPostCard(post, type) {
+    const actionButton = createActionButtonTemplate(
+      "absolute z-20 bg-white flex items-center justify-center rounded-full right-2 top-2 group w-10 h-10 cursor-pointer",
+      type,
+    )
+
+    actionButton.dataset.postId = post.id
+
+    const overlay = createOverlay(
+      "rounded-md absolute top-0 left-0 w-full h-full bg-black opacity-30",
+    )
+
+    const postImage = createImage(
+      "absolute top-0 left-0 w-full h-full object-cover",
+      post,
+    )
+
+    const header = createHeading(
+      "absolute bottom-0 left-0 w-full p-2 text-2xl text-center font-bold line-clamp-1 transition duration-150 ease-in group-hover:line-clamp-none",
+      post.blog_posts.post_title,
+    )
+
+    const link = createLink(
+      "cursor-pointer group hover:text-[var(--secondary-text-color)]",
+      header,
+      `/blog-posts/${post.blog_posts.post_slug}`,
+      "_blank",
+    )
+
+    createCardTemplate(
+      "post-card relative w-[225px] h-[250px] overflow-hidden rounded-md group",
+      actionButton,
+      overlay,
+      postImage,
+      link,
+    )
+  }
+
+  // Liked Posts
+  likedPosts.forEach((post) => createLikedPostCard(post, "like"))
+
+  // Saved Posts
+</script>

@@ -5,6 +5,8 @@ import Header from "../../header/Header.astro"
 import DashboardCardsContainer from "../../containers/DashboardCardsContainer.astro"
 import NoReturnMessage from "../../messages/NoReturnMessage.astro"
 import Form from "../../form/Form.astro"
+
+console.log("Posts sections received: ", Astro.props.postsSections)
 ---
 
 <div class="sections-container">
@@ -29,6 +31,9 @@ import Form from "../../form/Form.astro"
 </div>
 
 <script>
+  import { supabaseClient } from "../../../../js/supabase/supabase_client"
+  import { dislikePost } from "../../../../js/utils/supabase_methods"
+
   const sectionsContainers = document.querySelectorAll(".sections-container")
 
   sectionsContainers.forEach((sectionContainer) =>
@@ -44,20 +49,20 @@ import Form from "../../form/Form.astro"
 
   function determinePostCardAction(e) {
     const button = getClosestButton(e)
-    if (!button) {
+    if (!button) return
+
+    const postId = button.dataset.postId
+    if (!postId) {
+      console.error("No post ID found for this button")
       return
     }
 
-    // Check if it's a "like" or "save" button based on its icon or card type
+    // Check if it's a "like" button
     if (button.querySelector(".fa-heart, .fa-heart-broken")) {
-      dislikePost()
+      dislikePost(postId)
     } else if (button.querySelector(".fa-bookmark")) {
       unsavePost()
     }
-  }
-
-  function dislikePost() {
-    console.log("Post disliked")
   }
 
   function unsavePost() {

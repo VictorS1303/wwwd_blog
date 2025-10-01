@@ -11,6 +11,11 @@ import InteractionsContainer from "../components/interactions/InteractionsContai
 import TableOfContents from "../components/table_of_contents/TableOfContents.astro"
 import { formatDate } from "../../js/formatting.js"
 import { supabaseClient } from "../../js/supabase/supabase_client"
+import { fetchSinglePostBySlug } from "../../js/utils/supabase_methods"
+
+const { slug } = Astro.params
+
+const post = await fetchSinglePostBySlug(slug)
 
 const { frontmatter, headings } = Astro.props
 
@@ -27,7 +32,7 @@ const {
   image: { src, alt },
 } = Astro.props
 
-const currentPostCategories = categories.map((category) => ({
+const currentPostCategories = categories?.map((category) => ({
   isBlogPostTab: true,
   href: `/blog-posts?category=${encodeURIComponent(category.toLowerCase())}`,
   tabText: category,
@@ -91,7 +96,7 @@ const formattedDate = date ? formatDate(date) : "Unknown date"
 
         <div class="tabs-container flex gap-2 mb-4">
           {
-            currentPostCategories.map((tab) => (
+            currentPostCategories?.map((tab) => (
               <Tab
                 tabText={tab.tabText}
                 isBlogPostTab={tab.isBlogPostTab}
@@ -151,6 +156,9 @@ const formattedDate = date ? formatDate(date) : "Unknown date"
       </div>
     </div>
 
-    <InteractionsContainer interactionButtons={interactionButtons} />
+    <InteractionsContainer
+      interactionButtons={interactionButtons}
+      post={post}
+    />
   </main>
 </Layout>

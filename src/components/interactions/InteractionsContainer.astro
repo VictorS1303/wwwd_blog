@@ -4,7 +4,7 @@ import Button from "../../components/button/Button.astro"
 import Header from "../../components/header/Header.astro"
 import Dialog from "../dialog/Dialog.astro"
 
-const { interactionButtons = [] } = Astro.props
+const { interactionButtons = [], post } = Astro.props
 
 const dialogButtons = [
   {
@@ -25,6 +25,7 @@ const dialogButtons = [
       interactionButtons.length > 0 &&
         interactionButtons.map((interactionButton) => (
           <Button
+            data-post-id={post.id}
             id={interactionButton.id}
             class={interactionButton.class}
             href={interactionButton.href}
@@ -59,6 +60,8 @@ const dialogButtons = [
 />
 
 <script>
+  import { likePost } from "../../../js/utils/supabase_methods.js"
+
   const interactionButtonsContainer = document.querySelector(
     ".interaction-buttons-container",
   )
@@ -72,13 +75,13 @@ const dialogButtons = [
 
   function chooseInteraction(e) {
     const button = e.target.closest("button, a")
-    if (!button) {
-      return
-    }
+    if (!button) return
+
+    const postId = button.dataset.postId // <- corrected
 
     switch (button.id) {
       case "like_button":
-        likePost()
+        handlePostLike(postId) // <- corrected
         break
       case "save_button":
         savePost()
@@ -94,15 +97,22 @@ const dialogButtons = [
     }
   }
 
-  function likePost() {
-    console.log("Post liked!")
+  function handlePostLike(postId) {
+    if (!postId) {
+      console.error("No post ID found")
+      return
+    }
+    likePost(postId)
   }
+
   function savePost() {
     console.log("Post saved!")
   }
+
   function downloadPost() {
     console.log("Post downloaded!")
   }
+
   function sharePost() {
     const postUrl = window.location.href
     navigator.clipboard.writeText(postUrl).then(() => {
