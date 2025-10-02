@@ -10,7 +10,7 @@ console.log("Liked posts: ", likedPosts)
 ---
 
 <div
-  class="liked-cards-container dashboard-cards-container flex flex-col justify-start gap-8  md:flex-row"
+  class="liked-cards-container dashboard-cards-container flex flex-col justify-start gap-8 md:flex-row"
   id="liked_posts_container"
 >
 </div>
@@ -255,7 +255,6 @@ console.log("Liked posts: ", likedPosts)
 
   // Saved Posts
   savedPosts.forEach((post) =>
-  console.log(post)
     createSavedPostCard(post, "save", savedPostsContainer),
   )
 </script>
