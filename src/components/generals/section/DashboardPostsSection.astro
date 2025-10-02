@@ -1,71 +1,161 @@
 ---
-const { class: className, id: id, postsSections = [] } = Astro.props
 import Section from "./Section.astro"
 import Header from "../../header/Header.astro"
-import DashboardCardsContainer from "../../containers/DashboardCardsContainer.astro"
-import NoReturnMessage from "../../messages/NoReturnMessage.astro"
-import Form from "../../form/Form.astro"
-
-console.log("Posts sections received: ", Astro.props.postsSections)
 ---
 
 <div class="sections-container">
-  {
-    postsSections.length > 0 ? (
-      postsSections.map((postSection) => (
-        <Section id={postSection.id}>
-          <Header
-            isDashboardHeader={postSection.isDashboardHeader}
-            headerText={postSection.headerText}
-          />
-          <DashboardCardsContainer
-            posts={postSection.posts}
-            messageText={postSection.messageText}
-          />
-        </Section>
-      ))
-    ) : (
-      <slot />
-    )
-  }
+  <Section id="liked_posts">
+    <Header isDashboardHeader={true} headerText="Liked Posts" />
+    <div
+      class="liked-cards-container dashboard-cards-container flex flex-col justify-start gap-8 md:flex-row"
+      id="liked_posts_container"
+    >
+    </div>
+  </Section>
+
+  <Section id="saved_posts">
+    <Header isDashboardHeader={true} headerText="Saved Posts" />
+    <div
+      class="saved-cards-container dashboard-cards-container flex flex-col justify-start gap-8 md:flex-row"
+      id="saved_posts_container"
+    >
+    </div>
+  </Section>
 </div>
 
 <script>
-  import { supabaseClient } from "../../../../js/supabase/supabase_client"
-  import { dislikePost } from "../../../../js/utils/supabase_methods"
+  import {
+    fetchLikedPosts,
+    fetchSavedPosts,
+    dislikePost,
+  } from "../../../../js/utils/supabase_methods"
 
-  const sectionsContainers = document.querySelectorAll(".sections-container")
+  const likedPostsContainer = document.querySelector("#liked_posts_container")
+  const savedPostsContainer = document.querySelector("#saved_posts_container")
 
-  sectionsContainers.forEach((sectionContainer) =>
-    sectionContainer.addEventListener("click", (e) =>
-      determinePostCardAction(e),
-    ),
-  )
+  // Fetch Posts from Supabase
+  const likedPosts = await fetchLikedPosts()
+  const savedPosts = await fetchSavedPosts()
 
-  function getClosestButton(e) {
-    const button = e.target.closest("button")
+  // Card Template Creation
+  function createCardTemplate(
+    container,
+    classes,
+    actionButton,
+    overlay,
+    image,
+    link,
+  ) {
+    const postCard = document.createElement("article")
+    postCard.className = classes
+    postCard.append(image, overlay, link, actionButton)
+    container?.appendChild(postCard)
+  }
+
+  function createActionButton(type = "like") {
+    const button = document.createElement("button")
+    button.className =
+      "absolute z-20 bg-white flex items-center justify-center rounded-full right-2 top-2 group w-10 h-10 cursor-pointer"
+
+    if (type === "like") {
+      const heart = document.createElement("i")
+      heart.className =
+        "fas fa-heart text-2xl text-[var(--secondary-text-color)]"
+      button.appendChild(heart)
+    } else if (type === "save") {
+      const bookmark = document.createElement("i")
+      bookmark.className =
+        "fas fa-bookmark text-2xl text-[var(--secondary-text-color)]"
+      button.appendChild(bookmark)
+    }
+
     return button
   }
 
-  function determinePostCardAction(e) {
-    const button = getClosestButton(e)
-    if (!button) return
-
-    const postId = button.dataset.postId
-    if (!postId) {
-      console.error("No post ID found for this button")
-      return
-    }
-
-    // Check if it's a "like" button
-    if (button.querySelector(".fa-heart, .fa-heart-broken")) {
-      dislikePost(postId)
-    } else if (button.querySelector(".fa-bookmark")) {
-      unsavePost()
-    }
+  function createOverlay() {
+    const overlay = document.createElement("div")
+    overlay.className =
+      "rounded-md absolute top-0 left-0 w-full h-full bg-black opacity-30"
+    return overlay
   }
 
-  function unsavePost() {
-    console.log("Post unsaved")
+  function createImage(post) {
+    const img = document.createElement("img")
+    img.className = "absolute top-0 left-0 w-full h-full object-cover"
+    img.src = `${post.blog_posts.post_image}.webp`
+    return img
   }
+
+  function createHeading(title) {
+    const header = document.createElement("header")
+    header.className =
+      "absolute bottom-0 left-0 w-full p-2 text-2xl text-center font-bold line-clamp-1 text-white"
+    header.textContent = title
+    return header
+  }
+
+  function createLink(href, child) {
+    const link = document.createElement("a")
+    link.href = href
+    link.target = "_blank"
+    link.className =
+      "cursor-pointer group hover:text-[var(--secondary-text-color)]"
+    link.appendChild(child)
+    return link
+  }
+
+  function createLikedPostCard(post) {
+    const button = createActionButton("like")
+    button.dataset.postId = post.id
+    const overlay = createOverlay()
+    const img = createImage(post)
+    const heading = createHeading(post.blog_posts.post_title)
+    const link = createLink(`/blog-posts/${post.blog_posts.post_slug}`, heading)
+
+    createCardTemplate(
+      likedPostsContainer,
+      "post-card relative w-[225px] h-[250px] overflow-hidden rounded-md group",
+      button,
+      overlay,
+      img,
+      link,
+    )
+  }
+
+  function createSavedPostCard(post) {
+    const button = createActionButton("save")
+    button.dataset.postId = post.id
+    const overlay = createOverlay()
+    const img = createImage(post)
+    const heading = createHeading(post.blog_posts.post_title)
+    const link = createLink(`/blog-posts/${post.blog_posts.post_slug}`, heading)
+
+    createCardTemplate(
+      savedPostsContainer,
+      "post-card relative w-[225px] h-[250px] overflow-hidden rounded-md group",
+      button,
+      overlay,
+      img,
+      link,
+    )
+  }
+
+  // Render Cards
+  likedPosts.forEach(createLikedPostCard)
+  savedPosts.forEach(createSavedPostCard)
+
+  // Button Actions
+  document
+    .querySelector(".sections-container")
+    ?.addEventListener("click", (e) => {
+      const button = e.target.closest("button")
+      if (!button) return
+      const postId = button.dataset.postId
+
+      if (button.querySelector(".fa-heart")) {
+        dislikePost(postId)
+      } else if (button.querySelector(".fa-bookmark")) {
+        unsavePost(postId)
+      }
+    })
 </script>

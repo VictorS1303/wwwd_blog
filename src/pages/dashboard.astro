@@ -2,47 +2,6 @@
 import DashboardLayout from "../layouts/DashboardLayout.astro"
 import DashboardHeroSection from "../components/generals/section/DashbboardHeroSection.astro"
 import DashboardPostsSection from "../components/generals/section/DashboardPostsSection.astro"
-import { fetchLikedPosts } from "../../js/utils/supabase_methods"
-
-const likedPostsRaw = await fetchLikedPosts()
-
-console.log("Liked posts raw: ", likedPostsRaw)
-
-const likedPosts = likedPostsRaw.map((likedPost) => ({
-  cardType: "liked",
-  src: likedPost.blog_posts.post_image,
-  headerText: likedPost.blog_posts.post_title,
-  articleHref: `/blog-posts/${likedPost.blog_posts.post_slug}`,
-}))
-
-const likedPostSection = [
-  {
-    id: "liked_posts",
-    headerText: "Liked Posts",
-    isDashboardHeader: true,
-    messageText: "No liked posts",
-    posts: likedPosts,
-  },
-]
-
-const savedPosts = [
-  {
-    cardType: "saved",
-    src: "/images/landing_hero/landing_hero_bg.webp",
-    headerText: "How the browser reads CSS",
-    articleHref: "/blog-posts/how-the-browser-reads-css",
-  },
-]
-
-const savedPostSection = [
-  {
-    id: "saved_posts",
-    headerText: "Saved Posts",
-    isDashboardHeader: true,
-    messageText: "No saved posts",
-    posts: savedPosts,
-  },
-]
 ---
 
 <DashboardLayout title="My Dashboard">
@@ -52,7 +11,5 @@ const savedPostSection = [
     isDashboardHeader={true}
   />
 
-  <!-- Pass the cleaned sections -->
-  <DashboardPostsSection postsSections={likedPostSection} />
-  <DashboardPostsSection postsSections={savedPostSection} />
+  <DashboardPostsSection />
 </DashboardLayout>

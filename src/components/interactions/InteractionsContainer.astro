@@ -60,7 +60,7 @@ const dialogButtons = [
 />
 
 <script>
-  import { likePost } from "../../../js/utils/supabase_methods.js"
+  import { likePost, savePost } from "../../../js/utils/supabase_methods.js"
 
   const interactionButtonsContainer = document.querySelector(
     ".interaction-buttons-container",
@@ -81,10 +81,10 @@ const dialogButtons = [
 
     switch (button.id) {
       case "like_button":
-        handlePostLike(postId) // <- corrected
+        handlePostLike(postId)
         break
       case "save_button":
-        savePost()
+        handleSavePost(postId)
         break
       case "download_button":
         downloadPost()
@@ -105,8 +105,12 @@ const dialogButtons = [
     likePost(postId)
   }
 
-  function savePost() {
-    console.log("Post saved!")
+  function handleSavePost(postId) {
+    if (!postId) {
+      console.error("No post ID found")
+      return
+    }
+    savePost(postId)
   }
 
   function downloadPost() {

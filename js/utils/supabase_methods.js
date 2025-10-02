@@ -263,6 +263,36 @@ export const fetchLikedPosts = async () =>
   return likedPostsData || []
 }
 
+// Fetch saved posts
+export const fetchSavedPosts = async () =>
+{
+  const {data: {user}, error: userError} = await supabaseClient.auth.getUser()
+
+  const {data: savedPostsData, error: savedPostsError} = await supabaseClient
+    .from('saved_posts')
+    .select(`
+      id,
+      user_id,
+      created_at,
+      blog_posts (
+        id,
+        post_title,
+        post_slug,
+        post_image
+      )
+    `)
+    .eq("user_id", user.id)
+
+
+  if(savedPostsError)
+  {
+    console.log('Error fetching posts: ', savedPostsError.hint, savedPostsError.message)
+  }
+
+  console.log(savedPostsData)
+  return savedPostsData || []
+}
+
 // Like post
 export const likePost = async (postId) => {
   if (!postId) {
@@ -307,7 +337,7 @@ export const dislikePost = async (postId) => {
     const { data, error } = await supabaseClient
       .from("liked_posts")
       .delete()
-      .eq("id", postId) // ensure postId is a valid UUID string
+      .eq("id", postId)
 
     if (error) {
       console.error("Error deleting liked post:", error)
@@ -342,4 +372,33 @@ export const dislikePost = async (postId) => {
         )
     .subscribe()
 }
-  
+
+
+// Save Post
+export const savePost = async (postId) => {
+  if (!postId) {
+    console.log('Post ID is missing')
+    return
+  }
+
+  try {
+    const { data: { user }, error } = await supabaseClient.auth.getUser()
+
+    if (!user) {
+      document.querySelector("#login_warning_modal")?.showModal()
+      return
+    }
+
+    const { data: savePostData, error: savePostError } = await supabaseClient
+      .from("saved_posts")
+      .insert([{ user_id: user.id, post_id: postId }])
+
+    if (savePostError) {
+      console.error("Error saving post:", savePostError)
+    } else {
+      console.log("Post saved successfully!", savePostData)
+    }
+  } catch (err) {
+    console.error("Unexpected error:", err)
+  }
+}

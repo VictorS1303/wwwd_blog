@@ -10,21 +10,31 @@ console.log("Liked posts: ", likedPosts)
 ---
 
 <div
-  class=`${className} dashboard-cards-container flex flex-col justify-start gap-8 md:flex-row`
+  class="liked-cards-container dashboard-cards-container flex flex-col justify-start gap-8 md:flex-row"
   id="liked_posts_container"
 >
-  <slot />
+</div>
+
+<div
+  class="saved-cards-container dashboard-cards-container flex flex-col justify-start gap-8 md:flex-row"
+  id="saved_posts_container"
+>
 </div>
 
 <script>
   import { fetchLikedPosts } from "../../../js/utils/supabase_methods"
+  import { fetchSavedPosts } from "../../../js/utils/supabase_methods"
 
-  const dashboardCardsContainer = document.querySelector(
-    ".dashboard-cards-container",
-  )
+  const likedPostsContainer = document.querySelector("#liked_posts_container")
+  const savedPostsContainer = document.querySelector("#saved_posts_container")
+
   const likedPosts = await fetchLikedPosts()
+  const savedPosts = await fetchSavedPosts()
+
+  console.log("Liked posts: ", likedPosts, "Saved posts: ", savedPosts)
 
   function createCardTemplate(
+    container,
     cardTemplateClasses,
     actionButton,
     overlay,
@@ -33,10 +43,21 @@ console.log("Liked posts: ", likedPosts)
   ) {
     const postCard = document.createElement("article")
     postCard.className = cardTemplateClasses
-
-    // Order: image at the bottom, overlay above it, header and button on top
     postCard.append(image, overlay, link, actionButton)
-    dashboardCardsContainer?.appendChild(postCard)
+
+    // If container is not explicitly passed, determine it automatically
+    if (!container) {
+      if (cardTemplateClasses.includes("liked")) {
+        container = document.querySelector("#liked_posts_container")
+      } else if (cardTemplateClasses.includes("saved")) {
+        container = document.querySelector("#saved_posts_container")
+      } else {
+        // fallback
+        container = document.querySelector("#liked_posts_container")
+      }
+    }
+
+    container?.append(postCard)
   }
 
   // Create button template based on type
@@ -136,7 +157,7 @@ console.log("Liked posts: ", likedPosts)
     return link
   }
 
-  function createLikedPostCard(post, type) {
+  function createLikedPostCard(post, type, container) {
     const actionButton = createActionButtonTemplate(
       "absolute z-20 bg-white flex items-center justify-center rounded-full right-2 top-2 group w-10 h-10 cursor-pointer",
       type,
@@ -166,6 +187,59 @@ console.log("Liked posts: ", likedPosts)
     )
 
     createCardTemplate(
+      container,
+      "post-card relative w-[225px] h-[250px] overflow-hidden rounded-md group",
+      actionButton,
+      overlay,
+      postImage,
+      link,
+    )
+  }
+
+  function createSectionHeading(sectionHeadingClasses, headingText) {
+    const sectionHeading = document.createElement("header")
+    const sectionHeadingSize = document.createElement("h2")
+    sectionHeading.className = sectionHeadingClasses
+
+    const sectionHeadingText = headingText
+
+    console.log(sectionHeading)
+    sectionHeading.append(sectionHeadingSize, sectionHeadingText)
+  }
+
+  createSectionHeading(likedPostsContainer, "Liked Posts")
+
+  function createSavedPostCard(post, type, container) {
+    const actionButton = createActionButtonTemplate(
+      "absolute z-20 bg-white flex items-center justify-center rounded-full right-2 top-2 group w-10 h-10 cursor-pointer",
+      type,
+    )
+
+    actionButton.dataset.postId = post.id
+
+    const overlay = createOverlay(
+      "rounded-md absolute top-0 left-0 w-full h-full bg-black opacity-30",
+    )
+
+    const postImage = createImage(
+      "absolute top-0 left-0 w-full h-full object-cover",
+      post,
+    )
+
+    const header = createHeading(
+      "absolute bottom-0 left-0 w-full p-2 text-2xl text-center font-bold line-clamp-1 transition duration-150 ease-in group-hover:line-clamp-none",
+      post.blog_posts.post_title,
+    )
+
+    const link = createLink(
+      "cursor-pointer group hover:text-[var(--secondary-text-color)]",
+      header,
+      `/blog-posts/${post.blog_posts.post_slug}`,
+      "_blank",
+    )
+
+    createCardTemplate(
+      container,
       "post-card relative w-[225px] h-[250px] overflow-hidden rounded-md group",
       actionButton,
       overlay,
@@ -175,7 +249,13 @@ console.log("Liked posts: ", likedPosts)
   }
 
   // Liked Posts
-  likedPosts.forEach((post) => createLikedPostCard(post, "like"))
+  likedPosts.forEach((post) =>
+    createLikedPostCard(post, "like", likedPostsContainer),
+  )
 
   // Saved Posts
+  savedPosts.forEach((post) =>
+  console.log(post)
+    createSavedPostCard(post, "save", savedPostsContainer),
+  )
 </script>
