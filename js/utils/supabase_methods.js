@@ -448,3 +448,30 @@ export const savePost = async (postId) => {
     console.error("Unexpected error:", err)
   }
 }
+
+// Prevent multiple saves
+export const isPostSaved = async (postId) =>
+{
+    const {data: {user}, error} = await supabaseClient.auth.getUser()
+
+    if(!user)
+    {
+      return false
+    } 
+
+    const {data: savedPostData, error: savedPostError} = await supabaseClient
+      .from('saved_posts')
+      .select('*')
+      .eq('post_id', postId)
+      .eq('user_id', user.id)
+    
+
+    if(savedPostError)  
+    {
+      console.log('Error saving post: ', savedPostError.hint, savedPostError)
+      return
+    }
+
+    console.log(savedPostData)
+    return !!savedPostData
+}
