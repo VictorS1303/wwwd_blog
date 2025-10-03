@@ -1,13 +1,12 @@
 ---
-const {
-  class: className,
-  id: id,
-  href,
-  interactionButtonIconClass,
-} = Astro.props
-import Button from "../../components/button/Button.astro"
+const { id, class: iconClass, liked = false, post } = Astro.props
 ---
 
-<Button class=`${className} text-3xl` id={id} href={href}>
-  <i class={interactionButtonIconClass}></i>
-</Button>
+<button id={id} class="interaction-btn">
+  <i class={iconClass + (liked ? " text-red-500" : "")}></i>
+</button>
+
+<script>
+  import { likePost } from "../../../js/utils/supabase_methods"
+
+</script>

@@ -312,9 +312,29 @@ export const likePost = async (postId) => {
       return
     }
 
+    // Check if this user already liked this post
+    const { data: existingLike, error: checkError } = await supabaseClient
+      .from("liked_posts")
+      .select("*")
+      .eq("user_id", user.id)
+      .eq("post_id", postId)
+      .single()
+
+    if (checkError && checkError.code !== "PGRST116") {
+      // Not the "no rows found" error
+      console.error("Error checking like:", checkError)
+      return
+    }
+
+    if (existingLike) {
+      console.log("User already liked this post")
+      return
+    }
+
+    // If no like found, insert a new one
     const { data, error } = await supabaseClient
       .from("liked_posts")
-      .insert([{ user_id: user.id, post_id: postId }]) // use post_id column
+      .insert([{ user_id: user.id, post_id: postId }])
 
     if (error) {
       console.error("Error liking post:", error)
@@ -373,6 +393,32 @@ export const dislikePost = async (postId) => {
     .subscribe()
 }
 
+// Prevent multiple likes
+export const isPostLiked = async (postId) =>
+{
+    const {data: {user}, error} = await supabaseClient.auth.getUser()
+
+    if(!user)
+    {
+      return false
+    } 
+
+    const {data: likedPostData, error: likedPostError} = await supabaseClient
+      .from('liked_posts')
+      .select('*')
+      .eq('post_id', postId)
+      .eq('user_id', user.id)
+    
+
+    if(likedPostError)  
+    {
+      console.log('Error liking post: ', likedPostError.hint, likedPostError)
+      return
+    }
+
+    console.log(likedPostData)
+    return !!likedPostData
+}
 
 // Save Post
 export const savePost = async (postId) => {

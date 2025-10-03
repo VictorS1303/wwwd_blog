@@ -69,9 +69,15 @@ const dialogButtons = [
   const loginWarningModal = document.querySelector("#login_warning_modal")
   const shareBlogPostModal = document.querySelector("#share_blog_post_modal")
 
+  const likeButton = document.querySelector<HTMLButtonElement>("#like_button")
+  const likeButtonIcon = likeButton?.querySelector("i")
+  let isLiked = likeButton?.dataset.isLiked === "true"
+
   interactionButtonsContainer?.addEventListener("click", (e) =>
     chooseInteraction(e),
   )
+
+  likeButton?.addEventListener("click", updateLikeButtonState)
 
   function chooseInteraction(e) {
     const button = e.target.closest("button, a")

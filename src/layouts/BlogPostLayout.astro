@@ -12,10 +12,14 @@ import TableOfContents from "../components/table_of_contents/TableOfContents.ast
 import { formatDate } from "../../js/formatting.js"
 import { supabaseClient } from "../../js/supabase/supabase_client"
 import { fetchSinglePostBySlug } from "../../js/utils/supabase_methods"
+import { isPostLiked } from "../../js/utils/supabase_methods"
 
 const { slug } = Astro.params
-
 const post = await fetchSinglePostBySlug(slug)
+
+const isLiked = await isPostLiked(post.id)
+
+console.log(isLiked)
 
 const { frontmatter, headings } = Astro.props
 
