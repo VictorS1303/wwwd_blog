@@ -28,6 +28,7 @@ import Header from "../../header/Header.astro"
     fetchLikedPosts,
     fetchSavedPosts,
     dislikePost,
+    unsavePost,
   } from "../../../../js/utils/supabase_methods"
 
   const likedPostsContainer = document.querySelector("#liked_posts_container")
@@ -149,7 +150,10 @@ import Header from "../../header/Header.astro"
     .querySelector(".sections-container")
     ?.addEventListener("click", (e) => {
       const button = e.target.closest("button")
-      if (!button) return
+      if (!button) {
+        return
+      }
+
       const postId = button.dataset.postId
 
       if (button.querySelector(".fa-heart")) {
