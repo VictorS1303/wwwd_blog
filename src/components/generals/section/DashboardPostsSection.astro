@@ -83,7 +83,7 @@ const dialogButtons = [
     const likedPostId = button.dataset.likedPostId
     const postId = button.dataset.postId
 
-    if (button.querySelector(".fa-heart")) {
+    if (button.querySelector(".fa-heart-broken")) {
       // Store the correct liked_posts.id for deletion
       deletePostButton?.setAttribute("data-liked-post-id", likedPostId)
       dislikePostModal?.showModal()
@@ -128,12 +128,12 @@ const dialogButtons = [
     if (type === "like") {
       const heart = document.createElement("i")
       heart.className =
-        "fas fa-heart text-2xl text-[var(--secondary-text-color)]"
+        "fas fa-heart-broken text-2xl text-[var(--secondary-text-color)]"
       button.appendChild(heart)
     } else if (type === "save") {
       const bookmark = document.createElement("i")
       bookmark.className =
-        "fas fa-bookmark text-2xl text-[var(--secondary-text-color)]"
+        "fas fa-trash-alt text-2xl text-[var(--secondary-text-color)]"
       button.appendChild(bookmark)
     }
 
@@ -175,8 +175,7 @@ const dialogButtons = [
   function createLikedPostCard(post) {
     const button = createActionButton("like")
 
-    // 🔑 This must match the row ID Supabase deletes
-    button.dataset.likedPostId = post.id // liked_posts.id
+    button.dataset.likedPostId = post.id
 
     const overlay = createOverlay()
     const img = createImage(post)
