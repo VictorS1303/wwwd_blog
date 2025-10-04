@@ -15,7 +15,7 @@ const {
   isConfirmButton,
   "data-is-logged-in": dataIsLoggedIn,
   "data-post-id": dataPostId,
-  "data-liked-post-id": likedPostId,
+  "data-dashboard-post-id": dashboardPostId,
 } = Astro.props
 ---
 
@@ -80,7 +80,7 @@ const {
     <button
       class={`${className} text-lg text-white w-full bg-[var(--secondary-text-color)] px-4 py-1 rounded-md cursor-pointer transition-opacity duration-150 ease-in hover:opacity-85`}
       id={id}
-      data-liked-post-id={likedPostId}
+      data-dashboard-post-id={dashboardPostId}
     >
       {buttonText}
     </button>

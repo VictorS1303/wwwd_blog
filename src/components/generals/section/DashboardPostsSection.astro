@@ -3,7 +3,7 @@ import Section from "./Section.astro"
 import Header from "../../header/Header.astro"
 import Dialog from "../../dialog/Dialog.astro"
 
-const dialogButtons = [
+const dislikePostDialogButtons = [
   {
     id: "delete_post_btn",
     buttonText: "Yes",
@@ -15,14 +15,35 @@ const dialogButtons = [
     isConfirmButton: true,
   },
 ]
+
+const unsavePostDialogButtons = [
+  {
+    id: "unsave_post_btn",
+    buttonText: "Yes",
+    isConfirmButton: true,
+  },
+  {
+    id: "cancel_post_unsaving_btn",
+    buttonText: "No",
+    isConfirmButton: true,
+  },
+]
 ---
 
 <Dialog
   id="dislike_post_modal"
   headerText="DELETE POST"
   type="warning"
-  textBlockParagraphText="Are you sure you want to dislike this post? It cannot be undone."
-  dialogButtons={dialogButtons}
+  textBlockParagraphText="Are you sure you want to delete this post? It cannot be undone."
+  dialogButtons={dislikePostDialogButtons}
+/>
+
+<Dialog
+  id="unsave_post_modal"
+  headerText="UNSAVE POST"
+  type="warning"
+  textBlockParagraphText="Are you sure you want to unsave this post? It cannot be undone."
+  dialogButtons={unsavePostDialogButtons}
 />
 
 <div class="sections-container">
@@ -58,21 +79,39 @@ const dialogButtons = [
   const likedPostsContainer = document.querySelector("#liked_posts_container")
   const savedPostsContainer = document.querySelector("#saved_posts_container")
   const dislikePostModal = document.querySelector("#dislike_post_modal")
+  const unsavePostModal = document.querySelector("#unsave_post_modal")
+  const unsavePostButton = document.querySelector("#unsave_post_btn")
+  const cancelUnsavePostButton = document.querySelector(
+    "#cancel_post_unsaving_btn",
+  )
   const deletePostButton = document.querySelector("#delete_post_btn")
   const cancelDeleteButton = document.querySelector("#cancel_post_deletion_btn")
   const sectionsContainer = document.querySelector(".sections-container")
 
   // --- Modal button handlers ---
   deletePostButton?.addEventListener("click", () => {
-    const likedPostId = deletePostButton.dataset.likedPostId
+    const likedPostId = deletePostButton?.dataset?.dashboardPostId
     if (!likedPostId) return
 
     dislikePost(likedPostId) // only call the function
     location.reload()
     dislikePostModal?.close() // close modal
   })
+
   cancelDeleteButton?.addEventListener("click", () => {
     dislikePostModal?.close()
+  })
+
+  unsavePostButton?.addEventListener("click", () => {
+    const savedPostId = unsavePostButton.dataset.dashboardPostId
+    if (!savedPostId) return
+    unsavePost(savedPostId)
+    unsavePostModal?.close()
+    location.reload()
+  })
+
+  cancelUnsavePostButton?.addEventListener("click", () => {
+    unsavePostModal?.close()
   })
 
   // --- Card button delegation ---
@@ -80,25 +119,25 @@ const dialogButtons = [
     const button = e.target.closest("button")
     if (!button) return
 
-    const likedPostId = button.dataset.likedPostId
-    const postId = button.dataset.postId
+    const dashboardPostId = button.dataset.dashboardPostId
 
     if (button.querySelector(".fa-heart-broken")) {
-      // Store the correct liked_posts.id for deletion
-      deletePostButton?.setAttribute("data-liked-post-id", likedPostId)
+      // Liked posts → open delete modal
+      deletePostButton?.setAttribute("data-dashboard-post-id", dashboardPostId)
       dislikePostModal?.showModal()
-    } else if (button.querySelector(".fa-bookmark")) {
-      // Unsaving works off the saved_posts.id
-      unsavePost(postId)
+    } else if (button.querySelector(".fa-trash-alt")) {
+      // Saved posts → open unsave modal
+      unsavePostButton?.setAttribute("data-dashboard-post-id", dashboardPostId)
+      unsavePostModal?.showModal()
     }
   })
 
   deletePostButton?.addEventListener("click", () => {
-    const likedPostId = deletePostButton.dataset.likedPostId
+    const likedPostId = deletePostButton.dataset.dashboardPostId
     if (!likedPostId) return
-
-    dislikePost(likedPostId) // removes from DB
-    dislikePostModal?.close() // realtime handler takes care of UI
+    dislikePost(likedPostId)
+    dislikePostModal?.close()
+    location.reload()
   })
 
   // --- Fetch Posts from Supabase ---
@@ -175,7 +214,7 @@ const dialogButtons = [
   function createLikedPostCard(post) {
     const button = createActionButton("like")
 
-    button.dataset.likedPostId = post.id
+    button.dataset.dashboardPostId = post.id
 
     const overlay = createOverlay()
     const img = createImage(post)
@@ -194,7 +233,7 @@ const dialogButtons = [
 
   function createSavedPostCard(post) {
     const button = createActionButton("save")
-    button.dataset.likedPostId = post.id
+    button.dataset.dashboardPostId = post.id
     const overlay = createOverlay()
     const img = createImage(post)
     const heading = createHeading(post.blog_posts.post_title)
