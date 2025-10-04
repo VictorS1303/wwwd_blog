@@ -1,7 +1,29 @@
 ---
 import Section from "./Section.astro"
 import Header from "../../header/Header.astro"
+import Dialog from "../../dialog/Dialog.astro"
+
+const dialogButtons = [
+  {
+    id: "delete_post_btn",
+    buttonText: "Yes",
+    isConfirmButton: true,
+  },
+  {
+    id: "cancel_post_deletion_btn",
+    buttonText: "No",
+    isConfirmButton: true,
+  },
+]
 ---
+
+<Dialog
+  id="dislike_post_modal"
+  headerText="DELETE POST"
+  type="warning"
+  textBlockParagraphText="Are you sure you want to dislike this post? It cannot be undone."
+  dialogButtons={dialogButtons}
+/>
 
 <div class="sections-container">
   <Section id="liked_posts">
@@ -31,14 +53,59 @@ import Header from "../../header/Header.astro"
     unsavePost,
   } from "../../../../js/utils/supabase_methods"
 
+  import { supabaseClient } from "../../../../js/supabase/supabase_client"
+
   const likedPostsContainer = document.querySelector("#liked_posts_container")
   const savedPostsContainer = document.querySelector("#saved_posts_container")
+  const dislikePostModal = document.querySelector("#dislike_post_modal")
+  const deletePostButton = document.querySelector("#delete_post_btn")
+  const cancelDeleteButton = document.querySelector("#cancel_post_deletion_btn")
+  const sectionsContainer = document.querySelector(".sections-container")
 
-  // Fetch Posts from Supabase
+  // --- Modal button handlers ---
+  deletePostButton?.addEventListener("click", () => {
+    const likedPostId = deletePostButton.dataset.likedPostId
+    if (!likedPostId) return
+
+    dislikePost(likedPostId) // only call the function
+    location.reload()
+    dislikePostModal?.close() // close modal
+  })
+  cancelDeleteButton?.addEventListener("click", () => {
+    dislikePostModal?.close()
+  })
+
+  // --- Card button delegation ---
+  sectionsContainer?.addEventListener("click", (e) => {
+    const button = e.target.closest("button")
+    if (!button) return
+
+    const likedPostId = button.dataset.likedPostId
+    const postId = button.dataset.postId
+
+    if (button.querySelector(".fa-heart")) {
+      // Store the correct liked_posts.id for deletion
+      deletePostButton?.setAttribute("data-liked-post-id", likedPostId)
+      dislikePostModal?.showModal()
+    } else if (button.querySelector(".fa-bookmark")) {
+      // Unsaving works off the saved_posts.id
+      unsavePost(postId)
+    }
+  })
+
+  deletePostButton?.addEventListener("click", () => {
+    const likedPostId = deletePostButton.dataset.likedPostId
+    if (!likedPostId) return
+
+    dislikePost(likedPostId) // removes from DB
+    dislikePostModal?.close() // realtime handler takes care of UI
+  })
+
+  // --- Fetch Posts from Supabase ---
   const likedPosts = await fetchLikedPosts()
   const savedPosts = await fetchSavedPosts()
 
-  // Card Template Creation
+  // --- Card Template Creation ---
   function createCardTemplate(
     container,
     classes,
@@ -107,7 +174,10 @@ import Header from "../../header/Header.astro"
 
   function createLikedPostCard(post) {
     const button = createActionButton("like")
-    button.dataset.postId = post.id
+
+    // 🔑 This must match the row ID Supabase deletes
+    button.dataset.likedPostId = post.id // liked_posts.id
+
     const overlay = createOverlay()
     const img = createImage(post)
     const heading = createHeading(post.blog_posts.post_title)
@@ -125,7 +195,7 @@ import Header from "../../header/Header.astro"
 
   function createSavedPostCard(post) {
     const button = createActionButton("save")
-    button.dataset.postId = post.id
+    button.dataset.likedPostId = post.id
     const overlay = createOverlay()
     const img = createImage(post)
     const heading = createHeading(post.blog_posts.post_title)
@@ -141,25 +211,7 @@ import Header from "../../header/Header.astro"
     )
   }
 
-  // Render Cards
+  // --- Render Cards ---
   likedPosts.forEach(createLikedPostCard)
   savedPosts.forEach(createSavedPostCard)
-
-  // Button Actions
-  document
-    .querySelector(".sections-container")
-    ?.addEventListener("click", (e) => {
-      const button = e.target.closest("button")
-      if (!button) {
-        return
-      }
-
-      const postId = button.dataset.postId
-
-      if (button.querySelector(".fa-heart")) {
-        dislikePost(postId)
-      } else if (button.querySelector(".fa-bookmark")) {
-        unsavePost(postId)
-      }
-    })
 </script>

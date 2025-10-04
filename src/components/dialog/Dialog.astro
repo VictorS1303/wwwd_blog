@@ -8,8 +8,8 @@ const {
   id,
   headerText,
   textBlockParagraphText,
-  type, // single type prop: "login" | "share" | "download" | undefined
-  dialogButtons = [],
+  type, // "login" | "share" | "download" | "warning"
+  dialogButtons = [], // single prop
 } = Astro.props
 
 let dialogType = type || "default"
@@ -36,10 +36,12 @@ let dialogType = type || "default"
           <Header class="text-2xl font-bold" headerText={headerText} />
           <TextBlock textBlockParagraphText={textBlockParagraphText} />
           <div class="mt-12 mb-4 space-x-4">
-            {dialogButtons.map((dialogButton) => (
+            {dialogButtons.map((btn) => (
               <Button
-                href={dialogButton.href}
-                buttonText={dialogButton.buttonText}
+                id={btn.id}
+                href={btn.href}
+                buttonText={btn.buttonText}
+                isConfirmButton={true}
                 class="bg-[var(--secondary-text-color)] text-white px-4 py-2 text-xl rounded-md transition-opacity duration-150 ease-in hover:opacity-90"
               />
             ))}
@@ -59,6 +61,22 @@ let dialogType = type || "default"
         <Header headerText={headerText} />
         <TextBlock textBlockParagraphText={textBlockParagraphText} />
         <slot />
+      </>
+    ) : dialogType === "warning" ? (
+      <>
+        <Header headerText={headerText} />
+        <TextBlock textBlockParagraphText={textBlockParagraphText} />
+        <div class="mt-8 flex justify-center gap-4">
+          {dialogButtons.map((btn) => (
+            <Button
+              id={btn.id}
+              data-post-id={btn.dataPostId}
+              buttonText={btn.buttonText}
+              isConfirmButton={true}
+              class="px-4 py-2 text-lg rounded-md text-white bg-[var(--secondary-text-color)] hover:opacity-85 transition-opacity"
+            />
+          ))}
+        </div>
       </>
     ) : (
       <>
@@ -81,7 +99,7 @@ let dialogType = type || "default"
   // Close button logic
   document.querySelectorAll(".close-dialog-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      e.stopPropagation() // prevent parent click listeners from triggering
+      e.stopPropagation()
       const dialog = e.currentTarget.closest("dialog")
       dialog?.close()
     })
