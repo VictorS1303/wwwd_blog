@@ -23,6 +23,7 @@ const unsavePostDialogButtons = [
     isConfirmButton: true,
   },
   {
+    className: "cancel-btn",
     id: "cancel_post_unsaving_btn",
     buttonText: "No",
     isConfirmButton: true,
@@ -88,26 +89,33 @@ const unsavePostDialogButtons = [
   const cancelDeleteButton = document.querySelector("#cancel_post_deletion_btn")
   const sectionsContainer = document.querySelector(".sections-container")
 
-  // --- Modal button handlers ---
-  deletePostButton?.addEventListener("click", () => {
-    const likedPostId = deletePostButton?.dataset?.dashboardPostId
-    if (!likedPostId) return
+  // Modal Button Handlers
+  deletePostButton?.addEventListener("click", removeLikedPostFromDashboard)
+  unsavePostButton?.addEventListener("click", removeSavedPostFromDashboard)
 
-    dislikePost(likedPostId) // only call the function
+  async function removeLikedPostFromDashboard() {
+    const likedPostId = deletePostButton?.dataset?.dashboardPostId
+    if (!likedPostId) {
+      return
+    }
+
+    await dislikePost(likedPostId)
     location.reload()
-    dislikePostModal?.close() // close modal
-  })
+    dislikePostModal?.close()
+  }
+
+  async function removeSavedPostFromDashboard() {
+    const savedPostId = unsavePostButton.dataset.dashboardPostId
+    if (!savedPostId) {
+      return
+    }
+    await unsavePost(savedPostId)
+    unsavePostModal?.close()
+    location.reload()
+  }
 
   cancelDeleteButton?.addEventListener("click", () => {
     dislikePostModal?.close()
-  })
-
-  unsavePostButton?.addEventListener("click", () => {
-    const savedPostId = unsavePostButton.dataset.dashboardPostId
-    if (!savedPostId) return
-    unsavePost(savedPostId)
-    unsavePostModal?.close()
-    location.reload()
   })
 
   cancelUnsavePostButton?.addEventListener("click", () => {
@@ -138,14 +146,6 @@ const unsavePostDialogButtons = [
       // alreadyLikedModal?.showModal()
       return
     }
-  })
-
-  deletePostButton?.addEventListener("click", () => {
-    const likedPostId = deletePostButton.dataset.dashboardPostId
-    if (!likedPostId) return
-    dislikePost(likedPostId)
-    dislikePostModal?.close()
-    location.reload()
   })
 
   // --- Fetch Posts from Supabase ---

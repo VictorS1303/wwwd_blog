@@ -1,0 +1,19 @@
+---
+import Button from "./Button.astro"
+const {class: className, id: id} = Astro.props
+---
+
+<Button class=`${className} close-modal-btn text-xl cursor-pointer` id="modal_close_btn" isCloseModalButton={true}>
+  <i class="fas fa-xmark" />
+</Button>
+
+<script>
+  const closeModalBtn = document.querySelector('#modal_close_btn')
+
+  closeModalBtn?.addEventListener('click', (e) => closeModal(e))
+
+  function closeModal(e)
+  {
+    e.target.closest('dialog').close()
+  }
+</script>

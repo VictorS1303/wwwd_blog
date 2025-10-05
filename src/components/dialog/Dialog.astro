@@ -2,6 +2,7 @@
 import Header from "../header/Header.astro"
 import TextBlock from "../text_block/TextBlock.astro"
 import Button from "../button/Button.astro"
+import CloseDialogButton from "../button/CloseDialogButton.astro"
 
 const {
   class: className,
@@ -20,14 +21,8 @@ let dialogType = type || "default"
           transition-top duration-400 ease-in open:top-[50%] open:backdrop-blur-3xl focus:outline-0 focus:ring-0`}
   id={id}
 >
-  <!-- Close button -->
-  <Button
-    class="absolute top-2 right-2 text-xl close-dialog-btn"
-    data-target={id}
-    id={`close_dialog_btn_${id}`}
-  >
-    <i class="fas fa-times pointer-events-none"></i>
-  </Button>
+  <!-- Global close button for every modal -->
+  <CloseDialogButton />
 
   {
     dialogType === "login" ? (
@@ -88,6 +83,22 @@ let dialogType = type || "default"
   }
 </dialog>
 
+<style>
+  dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+  }
+</style>
+
+<script>
+  // Use event delegation so multiple modals work
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".close-modal-btn")) {
+      const dialog = e.target.closest("dialog")
+      dialog?.close()
+    }
+  })
+</script>
 <style>
   dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.4);

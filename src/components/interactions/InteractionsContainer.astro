@@ -51,12 +51,20 @@ const dialogButtons = [
   dialogButtons={dialogButtons}
 />
 
-<!-- Share Modal -->
+<!-- Post Liked Modal -->
 <Dialog
-  id="share_blog_post_modal"
+  id="post_liked_modal"
   type="share"
-  headerText="URL COPIED TO CLIPBOARD"
-  textBlockParagraphText="The blog post is now ready to be shared wherever and with whomever you want!"
+  headerText="POST LIKED"
+  textBlockParagraphText="You have successfully liked this post!"
+/>
+
+<!-- Post Already Liked Modal -->
+<Dialog
+  id="post_already_liked_modal"
+  type="share"
+  headerText="POST ALREADY LIKED"
+  textBlockParagraphText="You have already liked this post!"
 />
 
 <!-- Post Already Saved Modal -->
@@ -75,20 +83,12 @@ const dialogButtons = [
   textBlockParagraphText="You have successfully saved this post!"
 />
 
-<!-- Post Liked Modal -->
+<!-- Share Modal -->
 <Dialog
-  id="post_liked_modal"
+  id="share_blog_post_modal"
   type="share"
-  headerText="POST LIKED"
-  textBlockParagraphText="You have successfully liked this post!"
-/>
-
-<!-- Post Already Liked Modal -->
-<Dialog
-  id="post_already_liked_modal"
-  type="share"
-  headerText="POST ALREADY LIKED"
-  textBlockParagraphText="You have already liked this post!"
+  headerText="URL COPIED TO CLIPBOARD"
+  textBlockParagraphText="The blog post is now ready to be shared wherever and with whomever you want!"
 />
 
 <script>
@@ -113,12 +113,11 @@ const dialogButtons = [
     "#post_already_liked_modal",
   )
 
-  const likeButton = document.querySelector<HTMLButtonElement>("#like_button")
-
   interactionButtonsContainer?.addEventListener("click", (e) =>
     chooseInteraction(e),
   )
 
+  // Choose interaction
   function chooseInteraction(e) {
     const button = e.target.closest("button, a")
     if (!button) return
@@ -143,6 +142,7 @@ const dialogButtons = [
     }
   }
 
+  // Post Like Handler
   async function handlePostLike(postId) {
     const {
       data: { user },
@@ -166,6 +166,7 @@ const dialogButtons = [
     }
   }
 
+  // Save Post Handler
   async function handleSavePost(postId) {
     const {
       data: { user },
@@ -189,10 +190,7 @@ const dialogButtons = [
     postSavedModal?.showModal()
   }
 
-  function downloadPost() {
-    console.log("Post downloaded!")
-  }
-
+  // Share Post
   function sharePost() {
     const postUrl = window.location.href
     navigator.clipboard.writeText(postUrl).then(() => {
