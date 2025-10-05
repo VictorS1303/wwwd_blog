@@ -9,6 +9,9 @@ const { class: className, id: id, navItems = [] } = Astro.props
 const activePage = new URL(Astro.request.url).pathname.replace(/\/$/, "")
 const isHome = activePage === "/"
 const isDashboard = activePage === "/dashboard"
+
+// Placeholder user variable (replace with actual logic)
+const user = null
 ---
 
 {
@@ -29,10 +32,7 @@ const isDashboard = activePage === "/dashboard"
           <ul class="flex flex-col gap-4 justify-center h-full items-center whitespace-nowrap text-[var(--secondary-text-color)] text-2xl md:text-white md:flex-row md:absolute md:right-8">
             {navItems
               .filter((item) => {
-                if (item.requiresAuth && !user) {
-                  return false
-                }
-
+                if (item.requiresAuth && !user) return false
                 return true
               })
               .map((navItem, index) => {
@@ -48,16 +48,19 @@ const isDashboard = activePage === "/dashboard"
                     data-nav-dashboard={
                       navItem.text === "Dashboard" ? true : undefined
                     }
+                    data-nav-register={
+                      navItem.text === "Register" ? true : undefined
+                    }
                   >
                     <a
                       href={navItem.href}
                       class={`
-                          relative 
-                          before:content-[''] before:absolute before:bottom-0 before:left-0 
-                          before:w-full before:h-[2px] before:bg-white 
-                          before:origin-left before:transition-transform before:duration-300
-                          ${isActive ? "before:scale-x-100" : "before:scale-x-0"}
-                        `}
+                      relative 
+                      before:content-[''] before:absolute before:bottom-0 before:left-0 
+                      before:w-full before:h-[2px] before:bg-white 
+                      before:origin-left before:transition-transform before:duration-300
+                      ${isActive ? "before:scale-x-100" : "before:scale-x-0"}
+                    `}
                     >
                       {navItem.text}
                     </a>
@@ -109,11 +112,20 @@ const isDashboard = activePage === "/dashboard"
       "[data-nav-dashboard]",
     )
     const loginLink = document.querySelector<HTMLElement>("[data-nav-login]")
+    const registerLink = document.querySelector<HTMLElement>(
+      "[data-nav-register]",
+    )
 
     const isLoggedIn = !!session?.user
 
-    if (dashboardLink)
+    if (dashboardLink) {
       dashboardLink.style.display = isLoggedIn ? "flex" : "none"
-    if (loginLink) loginLink.style.display = isLoggedIn ? "none" : "flex"
+    }
+    if (loginLink) {
+      loginLink.style.display = isLoggedIn ? "none" : "flex"
+    }
+    if (registerLink) {
+      registerLink.style.display = isLoggedIn ? "none" : "flex"
+    }
   })
 </script>
