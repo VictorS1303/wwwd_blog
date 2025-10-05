@@ -59,8 +59,46 @@ const dialogButtons = [
   textBlockParagraphText="The blog post is now ready to be shared wherever and with whomever you want!"
 />
 
+<!-- Post Already Saved Modal -->
+<Dialog
+  id="post_already_saved_modal"
+  type="share"
+  headerText="POST ALREADY SAVED"
+  textBlockParagraphText="You have already saved this post!"
+/>
+
+<!-- Post Saved Modal -->
+<Dialog
+  id="post_saved_modal"
+  type="share"
+  headerText="POST SAVED"
+  textBlockParagraphText="You have successfully saved this post!"
+/>
+
+<!-- Post Liked Modal -->
+<Dialog
+  id="post_liked_modal"
+  type="share"
+  headerText="POST LIKED"
+  textBlockParagraphText="You have successfully liked this post!"
+/>
+
+<!-- Post Already Liked Modal -->
+<Dialog
+  id="post_already_liked_modal"
+  type="share"
+  headerText="POST ALREADY LIKED"
+  textBlockParagraphText="You have already liked this post!"
+/>
+
 <script>
-  import { likePost, savePost } from "../../../js/utils/supabase_methods.js"
+  import { supabaseClient } from "../../../js/supabase/supabase_client"
+  import { isPostLiked } from "../../../js/utils/supabase_methods.js"
+  import {
+    likePost,
+    savePost,
+    isPostSaved,
+  } from "../../../js/utils/supabase_methods.js"
 
   const interactionButtonsContainer = document.querySelector(
     ".interaction-buttons-container",
@@ -68,22 +106,24 @@ const dialogButtons = [
 
   const loginWarningModal = document.querySelector("#login_warning_modal")
   const shareBlogPostModal = document.querySelector("#share_blog_post_modal")
+  const postSavedModal = document.querySelector("#post_saved_modal")
+  const alreadySavedModal = document.querySelector("#post_already_saved_modal")
+  const postLikedModal = document.querySelector("#post_liked_modal")
+  const postAlreadyLikedModal = document.querySelector(
+    "#post_already_liked_modal",
+  )
 
   const likeButton = document.querySelector<HTMLButtonElement>("#like_button")
-  const likeButtonIcon = likeButton?.querySelector("i")
-  let isLiked = likeButton?.dataset.isLiked === "true"
 
   interactionButtonsContainer?.addEventListener("click", (e) =>
     chooseInteraction(e),
   )
 
-  likeButton?.addEventListener("click", updateLikeButtonState)
-
   function chooseInteraction(e) {
     const button = e.target.closest("button, a")
     if (!button) return
 
-    const postId = button.dataset.postId // <- corrected
+    const postId = button.dataset.postId
 
     switch (button.id) {
       case "like_button":
@@ -103,20 +143,50 @@ const dialogButtons = [
     }
   }
 
-  function handlePostLike(postId) {
-    if (!postId) {
-      console.error("No post ID found")
+  async function handlePostLike(postId) {
+    const {
+      data: { user },
+    } = await supabaseClient.auth.getUser()
+
+    if (!user) {
+      loginWarningModal?.showModal()
       return
     }
-    likePost(postId)
+
+    const isAlreadyLiked = await isPostLiked(postId)
+
+    if (isAlreadyLiked) {
+      console.log("Post is already liked!")
+      postAlreadyLikedModal?.showModal()
+      return
+    } else {
+      await likePost(postId)
+      console.log("Post liked!")
+      postLikedModal?.showModal()
+    }
   }
 
-  function handleSavePost(postId) {
-    if (!postId) {
-      console.error("No post ID found")
+  async function handleSavePost(postId) {
+    const {
+      data: { user },
+    } = await supabaseClient.auth.getUser()
+
+    if (!user) {
+      loginWarningModal?.showModal()
       return
     }
-    savePost(postId)
+
+    const isAlreadySaved = await isPostSaved(postId)
+
+    if (isAlreadySaved) {
+      console.log("Post is already saved!")
+      alreadySavedModal?.showModal()
+      return
+    }
+
+    await savePost(postId)
+    console.log("Post saved!")
+    postSavedModal?.showModal()
   }
 
   function downloadPost() {

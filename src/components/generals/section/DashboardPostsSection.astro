@@ -115,7 +115,7 @@ const unsavePostDialogButtons = [
   })
 
   // --- Card button delegation ---
-  sectionsContainer?.addEventListener("click", (e) => {
+  sectionsContainer?.addEventListener("click", async (e) => {
     const button = e.target.closest("button")
     if (!button) return
 
@@ -129,6 +129,14 @@ const unsavePostDialogButtons = [
       // Saved posts → open unsave modal
       unsavePostButton?.setAttribute("data-dashboard-post-id", dashboardPostId)
       unsavePostModal?.showModal()
+    }
+
+    const existingLike = likedPosts.find((post) => post.id === dashboardPostId)
+    if (existingLike) {
+      console.log("User already liked this post")
+      // Optionally show a modal instead of console.log
+      // alreadyLikedModal?.showModal()
+      return
     }
   })
 

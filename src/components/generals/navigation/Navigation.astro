@@ -44,6 +44,7 @@ const isDashboard = activePage === "/dashboard"
                   <li
                     key={index}
                     class="flex justify-end cursor-pointer"
+                    data-nav-login={navItem.text === "Login" ? true : undefined}
                     data-nav-dashboard={
                       navItem.text === "Dashboard" ? true : undefined
                     }
@@ -51,12 +52,12 @@ const isDashboard = activePage === "/dashboard"
                     <a
                       href={navItem.href}
                       class={`
-                        relative 
-                        before:content-[''] before:absolute before:bottom-0 before:left-0 
-                        before:w-full before:h-[2px] before:bg-white 
-                        before:origin-left before:transition-transform before:duration-300
-                        ${isActive ? "before:scale-x-100" : "before:scale-x-0"}
-                    `}
+                          relative 
+                          before:content-[''] before:absolute before:bottom-0 before:left-0 
+                          before:w-full before:h-[2px] before:bg-white 
+                          before:origin-left before:transition-transform before:duration-300
+                          ${isActive ? "before:scale-x-100" : "before:scale-x-0"}
+                        `}
                     >
                       {navItem.text}
                     </a>
@@ -107,13 +108,12 @@ const isDashboard = activePage === "/dashboard"
     const dashboardLink = document.querySelector<HTMLElement>(
       "[data-nav-dashboard]",
     )
-
-    if (!dashboardLink) {
-      return
-    }
+    const loginLink = document.querySelector<HTMLElement>("[data-nav-login]")
 
     const isLoggedIn = !!session?.user
 
-    dashboardLink.style.display = isLoggedIn ? "flex" : "none"
+    if (dashboardLink)
+      dashboardLink.style.display = isLoggedIn ? "flex" : "none"
+    if (loginLink) loginLink.style.display = isLoggedIn ? "none" : "flex"
   })
 </script>

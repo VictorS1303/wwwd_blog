@@ -364,31 +364,27 @@ export const dislikePost = async (likedPostId) => {
 }
 
 // Prevent multiple likes
-export const isPostLiked = async (postId) =>
-{
-    const {data: {user}, error} = await supabaseClient.auth.getUser()
+export const isPostLiked = async (postId) => {
+  const { data: { user }, error } = await supabaseClient.auth.getUser()
 
-    if(!user)
-    {
-      return false
-    } 
+  if (!user) {
+    return false
+  }
 
-    const {data: likedPostData, error: likedPostError} = await supabaseClient
-      .from('liked_posts')
-      .select('*')
-      .eq('post_id', postId)
-      .eq('user_id', user.id)
-    
+  const { data: likedPostData, error: likedPostError } = await supabaseClient
+    .from("liked_posts")
+    .select("*")
+    .eq("post_id", postId)
+    .eq("user_id", user.id)
 
-    if(likedPostError)  
-    {
-      console.log('Error liking post: ', likedPostError.hint, likedPostError)
-      return
-    }
+  if (likedPostError) {
+    console.log("Error checking liked post: ", likedPostError.hint, likedPostError)
+    return false
+  }
 
-    console.log(likedPostData)
+  console.log(likedPostData)
 
-    return !!likedPostData
+  return likedPostData && likedPostData.length > 0
 }
 
 // Save Post
@@ -444,7 +440,7 @@ export const isPostSaved = async (postId) =>
     }
 
     console.log(savedPostData)
-    return !!savedPostData
+    return savedPostData.length > 0
 }
 
 // Unsave post
@@ -466,6 +462,7 @@ export const unsavePost = async (postId) =>
   {
     console.log('Error unsaving saved post: ', savedPostError.message, savedPostError.hint)
   }
+
 
   // Real time
   const actionButton = document.querySelector(`button[data-post-id="${postId}"]`)
