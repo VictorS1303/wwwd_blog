@@ -2,6 +2,7 @@
 import LoginSignUpLayout from "../layouts/LoginSignUpLayout.astro"
 import Form from "../components/form/Form.astro"
 import Button from "../components/button/Button.astro"
+import Dialog from "../components/dialog/Dialog.astro"
 
 const signUpFormInputs = [
   {
@@ -49,12 +50,34 @@ const signUpFormInputs = [
       Already a user? Log in <Button href="/login" buttonText="here." />
     </h4>
   </div>
+
+  <!-- Register Failed Modal -->
+  <Dialog
+    id="register_failed_modal"
+    type="warning"
+    headerText="REGISTER FAILED"
+    textBlockParagraphText="At least one of the credentials was wrong. Please try again!"
+  />
+
+  <!-- Register Succeeded Modal -->
+  <Dialog
+    id="register_succeeded_modal"
+    type="warning"
+    headerText="REGISTERING SUCCEEDED"
+    textBlockParagraphText="Registering happened successfully! You will be logged in and redirected shortly!"
+  />
 </LoginSignUpLayout>
 
 <script>
   import { registerAndLogin } from "../../js/utils/supabase_methods"
 
   const signUpForm = document.querySelector("#sign_up_form")
+  const registerFailedModal = document.querySelector("#register_failed_modal")
+  const registerSucceededModal = document.querySelector(
+    "#register_succeeded_modal",
+  )
+
+  console.log(registerFailedModal, registerSucceededModal)
 
   signUpForm?.addEventListener("submit", (e) => handleSignUp(e))
 
@@ -78,12 +101,17 @@ const signUpFormInputs = [
       passwordInput,
     )
     if (!signUpResult.success) {
-      alert(`Sign-up failed: ${signUpResult.error}`)
+      registerFailedModal?.showModal()
+      // alert(`Sign-up failed: ${signUpResult.error}`)
       return
     }
 
     // Sign-up succeeded, redirect
     signUpForm?.reset()
-    window.location.href = "/blog-posts"
+
+    registerSucceededModal?.showModal()
+    setTimeout(() => {
+      window.location.href = "/blog-posts"
+    }, 2000)
   }
 </script>

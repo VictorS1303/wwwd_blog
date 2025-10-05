@@ -2,6 +2,7 @@
 import LoginSignUpLayout from "../layouts/LoginSignUpLayout.astro"
 import Form from "../components/form/Form.astro"
 import Button from "../components/button/Button.astro"
+import Dialog from "../components/dialog/Dialog.astro"
 
 const loginFormInputs = [
   {
@@ -38,11 +39,31 @@ const loginFormInputs = [
       />
     </h4>
   </div>
+
+  <!-- Login Failed Modal -->
+  <Dialog
+    id="login_failed_modal"
+    type="warning"
+    headerText="LOGIN FAILED"
+    textBlockParagraphText="At least one of the credentials was wrong. Please try again!"
+  />
+
+  <!-- Login Succeeded Modal -->
+  <Dialog
+    id="login_succeeded_modal"
+    type="warning"
+    headerText="LOGIN SUCCEEDED"
+    textBlockParagraphText="Login happened successfully! You will be redirected shortly!"
+  />
 </LoginSignUpLayout>
 
 <script>
   import { loginUser } from "../../js/utils/supabase_methods"
   const loginForm = document.querySelector("#login_form")
+  const failedLoginModal = document.querySelector("#login_failed_modal")
+  const succededLoginModal = document.querySelector("#login_succeeded_modal")
+
+  console.log(succededLoginModal)
 
   loginForm?.addEventListener("submit", (e) => login(e))
 
@@ -61,10 +82,14 @@ const loginFormInputs = [
     const loginResult = await loginUser(emailInput, passwordInput)
 
     if (!loginResult.success) {
-      alert(`Login failed: ${loginResult.error}`)
+      failedLoginModal?.showModal()
       return
     }
 
-    location.href = "/blog-posts"
+    succededLoginModal?.showModal()
+
+    setTimeout(() => {
+      location.href = "/blog-posts"
+    }, 2000)
   }
 </script>

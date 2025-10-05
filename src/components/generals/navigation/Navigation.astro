@@ -44,12 +44,10 @@ const user = null
                   <li
                     key={index}
                     class="flex justify-end cursor-pointer"
-                    data-nav-login={navItem.text === "Login" ? true : undefined}
-                    data-nav-dashboard={
-                      navItem.text === "Dashboard" ? true : undefined
-                    }
-                    data-nav-register={
-                      navItem.text === "Register" ? true : undefined
+                    data-nav={
+                      ["Login", "Register", "Dashboard"].includes(navItem.text)
+                        ? navItem.text.toLowerCase()
+                        : undefined
                     }
                   >
                     <a
@@ -108,24 +106,23 @@ const user = null
 
   // Listening for login/log out
   supabaseClient.auth.onAuthStateChange((event, session) => {
-    const dashboardLink = document.querySelector<HTMLElement>(
-      "[data-nav-dashboard]",
-    )
-    const loginLink = document.querySelector<HTMLElement>("[data-nav-login]")
-    const registerLink = document.querySelector<HTMLElement>(
-      "[data-nav-register]",
-    )
-
     const isLoggedIn = !!session?.user
 
-    if (dashboardLink) {
-      dashboardLink.style.display = isLoggedIn ? "flex" : "none"
-    }
-    if (loginLink) {
-      loginLink.style.display = isLoggedIn ? "none" : "flex"
-    }
-    if (registerLink) {
-      registerLink.style.display = isLoggedIn ? "none" : "flex"
+    const navDataAttributes = document.querySelectorAll("[data-nav]")
+
+    navDataAttributes.forEach((dataNavElement) =>
+      updateNavigation(dataNavElement),
+    )
+
+    function updateNavigation(dataNavElement) {
+      const navKey = dataNavElement.getAttribute("data-nav")
+      console.log(navKey)
+
+      if (navKey === "dashboard") {
+        dataNavElement.style.display = isLoggedIn ? "flex" : "none"
+      } else if (navKey === "login" || navKey === "register") {
+        dataNavElement.style.display = isLoggedIn ? "none" : "flex"
+      }
     }
   })
 </script>
