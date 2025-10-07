@@ -1,0 +1,18 @@
+---
+import Section from './Section.astro'
+import Dialog from '../../dialog/Dialog.astro'
+
+const { class: className, id: id, type, headerText, textBlockParagraphText, dialogButtons = []} = Astro.props
+
+---
+
+<Section class=`${className} dashboard-lock-section` id="dashboard_lock_section">
+  <Dialog
+    class={className}
+    id={id}
+    type={type}
+    headerText={headerText}
+    textBlockParagraphText={textBlockParagraphText}
+    dialogButtons={dialogButtons}
+  />
+</Section>

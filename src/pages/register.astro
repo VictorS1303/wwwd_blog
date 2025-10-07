@@ -33,6 +33,11 @@ const signUpFormInputs = [
     required: true,
     placeholder: "Please repeat password",
   },
+  {
+    type: "file",
+    name: "profile_image",
+    required: true,
+  },
 ]
 ---
 
@@ -69,6 +74,7 @@ const signUpFormInputs = [
 </LoginSignUpLayout>
 
 <script>
+  import { supabaseClient } from "../../js/supabase/supabase_client"
   import { registerAndLogin } from "../../js/utils/supabase_methods"
 
   const signUpForm = document.querySelector("#sign_up_form")
@@ -89,6 +95,10 @@ const signUpFormInputs = [
     const emailInput = formData.get("email")
     const passwordInput = formData.get("password")
     const repeatPasswordInput = formData.get("repeat_password")
+    const profileImageInput = formData.get("profile_image")
+
+    // Profile Image Upload
+    const profileImageFile = signUpForm.elements["profile_image"].files[0]
 
     if (repeatPasswordInput !== passwordInput) {
       alert("Passwords do not match!")

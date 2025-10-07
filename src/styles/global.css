@@ -56,3 +56,8 @@ code
 {
   color: var(--secondary-text-color)
 }
+
+.dashboard-modal-backdrop-filter[open]::backdrop {
+  background-color: rgba(150, 150, 150, 1);
+  backdrop-filter: blur(60px);
+}

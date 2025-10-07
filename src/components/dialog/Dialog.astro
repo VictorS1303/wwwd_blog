@@ -11,6 +11,7 @@ const {
   textBlockParagraphText,
   type, // "login" | "share" | "download" | "warning"
   dialogButtons = [], // single prop
+  href,
 } = Astro.props
 
 let dialogType = type || "default"
@@ -18,11 +19,12 @@ let dialogType = type || "default"
 
 <dialog
   class={`${className} fixed top-0 left-[50%] -translate-[50%] h-fit w-[80vw] px-4 py-4 max-w-[450px] rounded-md text-center
-          transition-top duration-400 ease-in open:top-[50%] open:backdrop-blur-3xl focus:outline-0 focus:ring-0`}
+          transition-top duration-400 ease-in open:top-[50%] open:backdrop-blur-3xl`}
   id={id}
 >
   <!-- Global close button for every modal -->
-  <CloseDialogButton />
+
+  {dialogType !== "warning" && <CloseDialogButton />}
 
   {
     dialogType === "login" ? (
@@ -67,10 +69,11 @@ let dialogType = type || "default"
               id={btn.id}
               data-post-id={btn.dataPostId}
               buttonText={btn.buttonText}
-              isConfirmButton={true}
+              href={btn.href}
               class="px-4 py-2 text-lg rounded-md text-white bg-[var(--secondary-text-color)] hover:opacity-85 transition-opacity"
             />
           ))}
+          <slot />
         </div>
       </>
     ) : (
@@ -91,22 +94,12 @@ let dialogType = type || "default"
 </style>
 
 <script>
-  // Use event delegation so multiple modals work
-  document.addEventListener("click", (e) => {
-    if (e.target.closest(".close-modal-btn")) {
-      const dialog = e.target.closest("dialog")
-      dialog?.close()
-    }
-  })
-</script>
-<style>
-  dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
-  }
-</style>
+  const dialog = document.querySelector("dialog")
 
-<script>
+  window.addEventListener("keydown", (e) =>
+    preventModalCloseOnDashboardRoute(e),
+  )
+
   // Close button logic
   document.querySelectorAll(".close-dialog-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -115,4 +108,12 @@ let dialogType = type || "default"
       dialog?.close()
     })
   })
+
+  // Prevent modal closing on escape on dashboard route
+  function preventModalCloseOnDashboardRoute(e) {
+    if (e.keyCode === 27 && location.pathname.endsWith("/dashboard")) {
+      dialog?.classList.add("dashboard-modal-backdrop-filter")
+      e.preventDefault()
+    }
+  }
 </script>

@@ -1,0 +1,28 @@
+---
+import DashboardLockSection from "../generals/section/DashboardLockSection.astro";
+
+const dialogButtons = [
+  {
+    buttonText: 'Register',
+    href: '/register'
+  },
+  {
+    buttonText: 'Login',
+    href: '/login'
+  },
+]
+---
+
+<DashboardLockSection
+  class="dashboard-modal-backdrop-filter"
+  id="dashboard_lock_modal"
+  type="warning"
+  headerText="YOU ARE NOT LOGGED IN"
+  textBlockParagraphText="You must register or be logged in in order to access your dashboard."
+  dialogButtons={dialogButtons}
+/>
+
+<script>
+  const dashboardLockModal = document.querySelector('#dashboard_lock_modal')
+  dashboardLockModal?.showModal()
+</script>

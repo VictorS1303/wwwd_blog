@@ -1,15 +1,46 @@
 ---
 import DashboardLayout from "../layouts/DashboardLayout.astro"
-import DashboardHeroSection from "../components/generals/section/DashbboardHeroSection.astro"
+import DashbboardHeroSection from "../components/generals/section/DashboardHeroSection.astro"
 import DashboardPostsSection from "../components/generals/section/DashboardPostsSection.astro"
+import DashboardLock from "../components/dashboard/DashboardLock.astro"
+import { supabaseClient } from "../../js/supabase/supabase_client"
 ---
 
 <DashboardLayout title="My Dashboard">
-  <DashboardHeroSection
+  <DashbboardHeroSection
     src="/images/landing_hero/landing_hero_bg.webp"
     alt="profile image"
     isDashboardHeader={true}
   />
 
-  <DashboardPostsSection />
+  <!-- Wrappers for conditional mounting -->
+  <div id="dashboard-posts-wrapper" style="display:none;">
+    <DashboardPostsSection />
+  </div>
+
+  <div id="dashboard-lock-wrapper" style="display:none;">
+    <DashboardLock />
+  </div>
 </DashboardLayout>
+
+<script type="module">
+  import { supabaseClient } from "../../js/supabase/supabase_client"
+
+  const postsWrapper = document.getElementById("dashboard-posts-wrapper")
+  const lockWrapper = document.getElementById("dashboard-lock-wrapper")
+  const dashboardLockModal = document.querySelector("#dashboard_lock_modal")
+
+  // Run after hydration
+  const {
+    data: { user },
+  } = await supabaseClient.auth.getUser()
+
+  if (user) {
+    // Show dashboard posts
+    postsWrapper.style.display = "block"
+    dashboardLockModal?.close()
+  } else {
+    // Show lock modal
+    lockWrapper.style.display = "block"
+  }
+</script>

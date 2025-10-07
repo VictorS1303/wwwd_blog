@@ -173,6 +173,7 @@ export const registerAndLogin = async (name, email, password) => {
     options: {
       data: {
         username: name,
+        avatar_url: avatarUrl,
       },
     },
   });
