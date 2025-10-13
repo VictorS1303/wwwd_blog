@@ -173,7 +173,6 @@ export const registerAndLogin = async (name, email, password) => {
     options: {
       data: {
         username: name,
-        avatar_url: avatarUrl,
       },
     },
   });
@@ -486,4 +485,33 @@ export const unsavePost = async (postId) =>
       }
     )
     .subscribe()
+}
+
+
+// Update profile
+export const updateProfile = async (username, updatedPassword) => {
+  // Object to store updated data
+  const updatedProfileDataObject = {}
+
+  // Username goes into user_metadata
+  if (username) {
+    updatedProfileDataObject.data = { username }
+  }
+
+  // Password goes at top level
+  if (updatedPassword) {
+    updatedProfileDataObject.password = updatedPassword
+  }
+
+  const { data: updateProfileData, error: updatedProfileError } = await supabaseClient
+    .auth
+    .updateUser(updatedProfileDataObject)
+
+  if (updatedProfileError) {
+    console.error('Failed to update profile: ', updatedProfileError.hint, updatedProfileError.message)
+    return { success: false, error: updatedProfileError }
+  }
+
+  console.log('Profile updated: ', updateProfileData)
+  return { success: true, data: updateProfileData }
 }

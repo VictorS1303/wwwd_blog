@@ -16,14 +16,15 @@ const {
   imgSrc,
   imgAlt,
   imageText,
+  isDialogForm,
 } = Astro.props
 ---
 
 <form
-  class={`${className} bg-white border-2 border-[var(--secondary-text-color)] rounded-md h-fit p-8 min-w-[375px] max-w-[70vw] shadow-md`}
+  class={`${className} bg-white rounded-md h-fit p-8 min-w-[375px] max-w-[70vw] ${isDialogForm ? "shadow-none" : "shadow-md border-2 border-[var(--secondary-text-color)]"}`}
   id={id}
 >
-  {headerText && <Header headerText={headerText} isFormHeader={isFormHeader} />}
+  {headerText && <Header headerText={headerText} isFormHeader={true} />}
 
   <div class="my-12">
     {
@@ -32,7 +33,7 @@ const {
           <div key={input.id} class="mb-6">
             <label
               for={input.id}
-              class="block text-md mb-2 text-black font-medium cursor-pointer"
+              class="block text-left mb-2 text-black font-medium cursor-pointer"
             >
               {input.label}
               {input.required && (
@@ -47,7 +48,6 @@ const {
                   id={input.id}
                   name={input.name}
                   placeholder={input.placeholder}
-                  name={input.name}
                   required={input.required}
                   class="w-full border-b-2 border-[var(--secondary-text-color)] focus:outline-none focus:ring-0 placeholder:text-[var(--secondary-text-color)] placeholder:opacity-60"
                   autocomplete={input.autocomplete}

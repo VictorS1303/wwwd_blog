@@ -5,6 +5,11 @@ import Section from "./Section.astro"
 import Image from "../../imags/Image.astro"
 import Header from "../../header/Header.astro"
 import ControlButtonsContainer from "../../containers/ControlButtonsContainer.astro"
+import { supabaseClient } from "../../../../js/supabase/supabase_client"
+
+const {
+  data: { user },
+} = await supabaseClient.auth.getUser()
 
 const controlButtons = [
   {
@@ -21,7 +26,9 @@ const controlButtons = [
   },
 ]
 
-controlButtons.forEach((controlButton, index) => console.log(controlButton.id))
+controlButtons.forEach((controlButton, index) =>
+  console.log("Control button IDs: ", controlButton.id),
+)
 ---
 
 <Section class="hero flex flex-col items-center md:items-start">

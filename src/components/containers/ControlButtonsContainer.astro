@@ -15,26 +15,3 @@ const { class: className, id: id, buttons = [] } = Astro.props
     ))
   }
 </div>
-
-<script>
-  import { logOutUser } from "../../../js/utils/supabase_methods"
-  const dashboardControlsContainer = document.querySelector(
-    ".dashboard-controls-container",
-  )
-
-  dashboardControlsContainer?.addEventListener("click", (e) =>
-    determineDashboardAction(e),
-  )
-
-  function determineDashboardAction(e) {
-    console.log(e.target)
-    if (e.target.classList.contains("log-out-button")) {
-      logOutUser()
-    }
-    if (e.target.classList.contains("delete-profile-button")) {
-      deleteUser()
-    }
-  }
-
-  console.log(dashboardControlsContainer)
-</script>

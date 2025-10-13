@@ -1,0 +1,21 @@
+---
+import Dialog from "./Dialog.astro"
+import Form from "../form/Form.astro"
+
+
+const {class: className, dialogId: dialogId, formId: formId, headerText, isDialogForm, isSubmitButton, buttonText, isButtonVisible, inputs = []} = Astro.props
+
+
+---
+
+<Dialog class={className} id={dialogId}>
+  <Form
+    headerText={headerText}
+    isDialogForm={isDialogForm}
+    inputs={inputs}
+    isSubmitButton={isSubmitButton}
+    id={formId}
+    buttonText={buttonText}
+    isButtonVisible={isButtonVisible}
+  />
+</Dialog>

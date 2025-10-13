@@ -3,7 +3,25 @@ import DashboardLayout from "../layouts/DashboardLayout.astro"
 import DashbboardHeroSection from "../components/generals/section/DashboardHeroSection.astro"
 import DashboardPostsSection from "../components/generals/section/DashboardPostsSection.astro"
 import DashboardLock from "../components/dashboard/DashboardLock.astro"
-import { supabaseClient } from "../../js/supabase/supabase_client"
+import EditProfileDialog from "../components/dialog/EditProfileDialog.astro"
+import Dialog from "../components/dialog/Dialog.astro"
+
+const profileUpdateInputs = [
+  {
+    type: "text",
+    id: "new_username_input",
+    label: "New username",
+    placeholder: "Enter new username",
+    name: "updated_username",
+  },
+  {
+    type: "password",
+    id: "new_password_input",
+    label: "New password",
+    placeholder: "Enter new password",
+    name: "updated_password",
+  },
+]
 ---
 
 <DashboardLayout title="My Dashboard">
@@ -21,26 +39,99 @@ import { supabaseClient } from "../../js/supabase/supabase_client"
   <div id="dashboard-lock-wrapper" style="display:none;">
     <DashboardLock />
   </div>
+
+  <!-- Successful Update -->
+  <Dialog
+    id="successful_update_modal"
+    type="warning"
+    headerText="SUCCESS"
+    textBlockParagraphText="Your profile information updated successfully!"
+  />
+
+  <!-- Failed Update -->
+  <Dialog
+    id="failed_update_modal"
+    type="warning"
+    headerText="FAIL"
+    textBlockParagraphText="Your profile information failed updating!"
+  />
+
+  <EditProfileDialog
+    headerText="Edit Profile"
+    isDialogForm={true}
+    inputs={profileUpdateInputs}
+    dialogId="update_profile_dialog"
+    formId="update_profile_form"
+    buttonText="Update Profile"
+    isSubmitButton={true}
+    isButtonVisible={true}
+  />
 </DashboardLayout>
 
-<script type="module">
+<script>
   import { supabaseClient } from "../../js/supabase/supabase_client"
+  import { logOutUser } from "../../js/utils/supabase_methods"
+  import { updateProfile } from "../../js/utils/supabase_methods"
 
   const postsWrapper = document.getElementById("dashboard-posts-wrapper")
   const lockWrapper = document.getElementById("dashboard-lock-wrapper")
   const dashboardLockModal = document.querySelector("#dashboard_lock_modal")
+  const dashboardControlsContainer = document.querySelector(
+    ".dashboard-controls-container",
+  )
+  const updateProfileForm = document.querySelector("#update_profile_form")
+  const updateProfileDialog = document.querySelector("#update_profile_dialog")
+  const succssfulUpdateModal = document.querySelector(
+    "#successful_update_modal",
+  )
 
-  // Run after hydration
+  const failedUpdateModal = document.querySelector("#failed_update_modal")
+
+  // Dashboard actions
+  dashboardControlsContainer?.addEventListener("click", (e) =>
+    determineDashboardAction(e),
+  )
+
+  function determineDashboardAction(e) {
+    if (e.target.classList.contains("log-out-button")) {
+      logOutUser()
+    }
+    if (e.target.classList.contains("edit-profile-button")) {
+      updateProfileDialog?.showModal()
+    }
+  }
+
+  // Show/hide dashboard depending on auth
   const {
     data: { user },
   } = await supabaseClient.auth.getUser()
-
   if (user) {
-    // Show dashboard posts
     postsWrapper.style.display = "block"
     dashboardLockModal?.close()
   } else {
-    // Show lock modal
     lockWrapper.style.display = "block"
   }
+
+  // Form submission — updated version
+  updateProfileForm?.addEventListener("submit", async (e) => {
+    e.preventDefault() // prevent page reload
+
+    const formData = new FormData(updateProfileForm)
+    const updatedUsername = formData.get("updated_username")
+    const updatedPassword = formData.get("updated_password")
+
+    // Call your existing updateProfile function
+    const updateResult = await updateProfile(updatedUsername, updatedPassword)
+
+    if (updateResult.success) {
+      updateProfileDialog?.close()
+      succssfulUpdateModal?.showModal()
+
+      setTimeout(() => {
+        location?.realod()
+      }, 2000)
+    } else {
+      failedUpdateModal?.showModal()
+    }
+  })
 </script>
