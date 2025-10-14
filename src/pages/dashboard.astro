@@ -22,6 +22,21 @@ const profileUpdateInputs = [
     name: "updated_password",
   },
 ]
+
+const confirmLogoutButtons = [
+  {
+    class: "confirm-logout-btn",
+    id: "confirm_logout_btn",
+    buttonText: "LOGOUT",
+    isConfirmButton: true,
+  },
+  {
+    class: "stay-logged-in-btn",
+    id: "stay_logged_in_btn",
+    buttonText: "STAY LOGGED IN",
+    isConfirmButton: true,
+  },
+]
 ---
 
 <DashboardLayout title="My Dashboard">
@@ -56,6 +71,7 @@ const profileUpdateInputs = [
     textBlockParagraphText="Your profile information failed updating!"
   />
 
+  <!-- Edit Profile -->
   <EditProfileDialog
     headerText="Edit Profile"
     isDialogForm={true}
@@ -65,6 +81,16 @@ const profileUpdateInputs = [
     buttonText="Update Profile"
     isSubmitButton={true}
     isButtonVisible={true}
+  />
+
+  <!-- Confirm Logout -->
+  <Dialog
+    id="confirm_logout_modal"
+    type="warning"
+    isHeaderText={true}
+    headerText="CONFIRM LOGOUT"
+    textBlockParagraphText="By clicking yes, you confirm you irreversably want to log out."
+    dialogButtons={confirmLogoutButtons}
   />
 </DashboardLayout>
 
@@ -79,13 +105,17 @@ const profileUpdateInputs = [
   const dashboardControlsContainer = document.querySelector(
     ".dashboard-controls-container",
   )
+
+  const confirmLogoutModal = document.querySelector("#confirm_logout_modal")
+  const failedUpdateModal = document.querySelector("#failed_update_modal")
+
   const updateProfileForm = document.querySelector("#update_profile_form")
   const updateProfileDialog = document.querySelector("#update_profile_dialog")
   const succssfulUpdateModal = document.querySelector(
     "#successful_update_modal",
   )
 
-  const failedUpdateModal = document.querySelector("#failed_update_modal")
+  confirmLogoutModal?.addEventListener("click", (e) => determineLogOutAction(e))
 
   // Dashboard actions
   dashboardControlsContainer?.addEventListener("click", (e) =>
@@ -94,10 +124,20 @@ const profileUpdateInputs = [
 
   function determineDashboardAction(e) {
     if (e.target.classList.contains("log-out-button")) {
-      logOutUser()
+      confirmLogoutModal?.showModal()
     }
     if (e.target.classList.contains("edit-profile-button")) {
       updateProfileDialog?.showModal()
+    }
+  }
+
+  // Determine log out action
+  function determineLogOutAction(e) {
+    if (e.target.classList.contains("confirm-logout-btn")) {
+      logOutUser()
+    }
+    if (e.target.classList.contains("stay-logged-in-btn")) {
+      confirmLogoutModal?.close()
     }
   }
 

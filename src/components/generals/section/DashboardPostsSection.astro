@@ -29,6 +29,12 @@ const unsavePostDialogButtons = [
     isConfirmButton: true,
   },
 ]
+
+console.log(
+  "Control buttons: ",
+  dislikePostDialogButtons,
+  unsavePostDialogButtons,
+)
 ---
 
 <Dialog
@@ -257,7 +263,25 @@ const unsavePostDialogButtons = [
     )
   }
 
-  // --- Render Cards ---
+  // Show "No posts" message
+  function showNoPostsMessage(container, posts, noPostsMessageText) {
+    if (!posts || posts.length <= 0) {
+      const noPostsMessage = document.createElement("p")
+      noPostsMessage.textContent = noPostsMessageText
+      noPostsMessage.classList.add(
+        "text-[var(--secondary-text-color)]",
+        "text-xl",
+      )
+
+      container.appendChild(noPostsMessage)
+    }
+  }
+
+  // Render cards
   likedPosts.forEach(createLikedPostCard)
   savedPosts.forEach(createSavedPostCard)
+
+  // Render No Posts Messages
+  showNoPostsMessage(likedPostsContainer, likedPosts, "No liked posts")
+  showNoPostsMessage(savedPostsContainer, savedPosts, "No saved posts")
 </script>

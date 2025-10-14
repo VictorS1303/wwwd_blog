@@ -39,7 +39,7 @@ let dialogType = type || "default"
                 href={btn.href}
                 buttonText={btn.buttonText}
                 isConfirmButton={true}
-                class="bg-[var(--secondary-text-color)] text-white px-4 py-2 text-xl rounded-md transition-opacity duration-150 ease-in hover:opacity-90"
+                class={`${btn.class} bg-[var(--secondary-text-color)] text-white px-4 py-2 text-xl rounded-md transition-opacity duration-150 ease-in hover:opacity-90`}
               />
             ))}
           </div>
@@ -69,8 +69,9 @@ let dialogType = type || "default"
               id={btn.id}
               data-post-id={btn.dataPostId}
               buttonText={btn.buttonText}
+              isConfirmButton={btn.isConfirmButton}
               href={btn.href}
-              class="px-4 py-2 text-lg rounded-md text-white bg-[var(--secondary-text-color)] hover:opacity-85 transition-opacity"
+              class={`${btn.class} px-4 py-2 text-lg rounded-md text-white bg-[var(--secondary-text-color)] hover:opacity-85 transition-opacity`}
             />
           ))}
           <slot />
