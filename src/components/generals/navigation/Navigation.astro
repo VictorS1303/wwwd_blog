@@ -54,9 +54,10 @@ const user = null
                     <a
                       href={navItem.href}
                       class={`
-                      relative 
-                      before:content-[''] before:absolute before:bottom-0 before:left-0 
-                      before:w-full before:h-[2px] before:bg-white 
+                      relative
+                      before:content-[''] before:absolute before:bottom-0 before:left-0
+                      before:w-full before:h-[2px]
+                      before:bg-[var(--secondary-text-color)] md:before:bg-white
                       before:origin-left before:transition-transform before:duration-300
                       ${isActive ? "before:scale-x-100" : "before:scale-x-0"}
                     `}
@@ -117,13 +118,97 @@ const user = null
 
     function updateNavigation(dataNavElement) {
       const navKey = dataNavElement.getAttribute("data-nav")
-      console.log(navKey)
 
-      if (navKey === "dashboard") {
-        dataNavElement.style.display = isLoggedIn ? "flex" : "none"
-      } else if (navKey === "login" || navKey === "register") {
-        dataNavElement.style.display = isLoggedIn ? "none" : "flex"
+      switch (navKey) {
+        case "dashboard":
+          isLoggedIn
+            ? (dataNavElement.classList.remove("hidden"),
+              dataNavElement.classList.add("flex", "md:mt-0"))
+            : (dataNavElement.classList.add("hidden"),
+              dataNavElement.classList.remove("flex", "md:mt-0"))
+          break
+
+        case "login":
+          isLoggedIn
+            ? (dataNavElement.classList.add("hidden"),
+              dataNavElement.classList.remove("flex"))
+            : (dataNavElement.classList.remove("hidden"),
+              dataNavElement.classList.add("flex", "md:mt-0"))
+          break
+
+        case "register":
+          isLoggedIn
+            ? (dataNavElement.classList.add("hidden"),
+              dataNavElement.classList.remove(
+                "flex",
+                "mt-8",
+                "md:mt-0",
+                "md:ml-8",
+              ))
+            : (dataNavElement.classList.remove("hidden"),
+              dataNavElement.classList.add(
+                "flex",
+                "mt-8",
+                "md:mt-0",
+                "md:ml-8",
+              ))
+          break
+
+        default:
+          dataNavElement.classList.remove("hidden")
+          dataNavElement.classList.add("flex")
+          break
       }
+
+      // if (isLoggedIn) {
+      //   // When logged in
+      //   switch (navKey) {
+      //     case "dashboard":
+      //       dataNavElement.classList.remove("hidden")
+      //       dataNavElement.classList.add("flex", "mt-12", "md:mt-0", "md:ml-4")
+      //       break
+      //     case "login":
+      //     case "register":
+      //       dataNavElement.classList.add("hidden")
+      //       dataNavElement.classList.remove(
+      //         "flex",
+      //         "mt-12",
+      //         "mt-8",
+      //         "md:mt-0",
+      //         "md:ml-8",
+      //       )
+      //       break
+      //     default:
+      //       dataNavElement.classList.remove("hidden")
+      //       dataNavElement.classList.add("flex")
+      //       break
+      //   }
+      // } else {
+      //   // When NOT logged in
+      //   switch (navKey) {
+      //     case "dashboard":
+      //       dataNavElement.classList.add("hidden")
+      //       dataNavElement.classList.remove(
+      //         "flex",
+      //         "mt-12",
+      //         "md:mt-0",
+      //         "md:ml-4",
+      //       )
+      //       break
+      //     case "login":
+      //       dataNavElement.classList.remove("hidden")
+      //       dataNavElement.classList.add("flex", "mt-12", "md:mt-0") // extra spacing
+      //       break
+      //     case "register":
+      //       dataNavElement.classList.remove("hidden")
+      //       dataNavElement.classList.add("flex", "mt-8", "md:mt-0", "md:ml-8") // spacing for register
+      //       break
+      //     default:
+      //       dataNavElement.classList.remove("hidden")
+      //       dataNavElement.classList.add("flex")
+      //       break
+      //   }
+      // }
     }
   })
 </script>
