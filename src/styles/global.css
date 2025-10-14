@@ -61,3 +61,35 @@ code
   background-color: rgba(150, 150, 150, 1);
   backdrop-filter: blur(60px);
 }
+
+/* Typewriter (index) */
+.Typewriter__wrapper
+{
+  display: inline-block;
+}
+
+#heading .Typewriter__wrapper
+{
+  font-size: 3.5rem;
+  line-height: 1.6;
+}
+
+#tagline .Typewriter__wrapper
+{
+  font-size: 1.5rem;
+  padding-inline: 1rem;
+  max-width: 50ch;
+}
+
+@media screen and (min-width: 768px)
+{
+  #heading .Typewriter__wrapper
+  {
+    font-size: 4rem;
+  }
+
+  #tagline .Typewriter__wrapper
+  {
+    font-size: 2rem;
+  }
+}
