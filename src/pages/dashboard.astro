@@ -5,6 +5,7 @@ import DashboardPostsSection from "../components/generals/section/DashboardPosts
 import DashboardLock from "../components/dashboard/DashboardLock.astro"
 import EditProfileDialog from "../components/dialog/EditProfileDialog.astro"
 import Dialog from "../components/dialog/Dialog.astro"
+import { supabaseClient } from "../../js/supabase/supabase_client"
 
 const profileUpdateInputs = [
   {
@@ -39,7 +40,7 @@ const confirmLogoutButtons = [
 ]
 ---
 
-<DashboardLayout title="My Dashboard">
+<DashboardLayout>
   <DashbboardHeroSection
     src="/images/landing_hero/landing_hero_bg.webp"
     alt="profile image"
@@ -152,10 +153,12 @@ const confirmLogoutButtons = [
     lockWrapper.style.display = "block"
   }
 
+  // Set title
+  const username = user?.user_metadata.username
+  document.title = `Welcome, ${username}!`
+
   // Form submission — updated version
   updateProfileForm?.addEventListener("submit", async (e) => {
-    e.preventDefault() // prevent page reload
-
     const formData = new FormData(updateProfileForm)
     const updatedUsername = formData.get("updated_username")
     const updatedPassword = formData.get("updated_password")

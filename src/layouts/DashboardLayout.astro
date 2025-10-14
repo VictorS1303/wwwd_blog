@@ -5,10 +5,8 @@ import Navigation from "../components/generals/navigation/Navigation.astro"
 ---
 
 <Layout>
-  <div
-    class="flex flex-col gap-12 w-screen p-4 mt-12 items-center md:items-start"
-  >
-    <Navigation isDashboard={true} />
+  <div class="flex flex-col gap-12 w-screen p-4 mt-12 items-start">
+    <Navigation isDashboard={true} buttonText="Blog Posts" />
     <slot />
   </div>
 </Layout>

@@ -5,7 +5,7 @@ import MobileNavToggleButton from "../../button/MobileNavToggleButton.astro"
 import Button from "../../button/Button.astro"
 import { supabaseClient } from "../../../../js/supabase/supabase_client"
 
-const { class: className, id: id, navItems = [] } = Astro.props
+const { class: className, id: id, navItems = [], buttonText } = Astro.props
 const activePage = new URL(Astro.request.url).pathname.replace(/\/$/, "")
 const isHome = activePage === "/"
 const isDashboard = activePage === "/dashboard"
@@ -16,8 +16,9 @@ const user = null
 
 {
   isDashboard ? (
-    <Button href="/blog-posts">
+    <Button class="flex gap-2 items-center" href="/blog-posts">
       <i class="fa-solid fa-arrow-left text-2xl" />
+      <p class="text-lg">{buttonText}</p>
     </Button>
   ) : (
     <>
