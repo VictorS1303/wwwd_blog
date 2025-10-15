@@ -8,7 +8,7 @@ const { textBlocks = [] } = Astro.props
     textBlocks.map((block, index) => (
       <TextBlock
         id={block.id}
-        hasHeader={block.hasHeader}
+        hasHeader={block}
         headerText={block.headerText}
         textBlockParagraphText={block.textBlockParagraphText}
         isBlogPostCardText={block.isBlogPostCardText}

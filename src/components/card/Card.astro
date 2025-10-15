@@ -1,6 +1,4 @@
 ---
-export const customElement = true
-
 import Label from "../label/Label.astro"
 import Header from "../header/Header.astro"
 import TextBlock from "../text_block/TextBlock.astro"
@@ -12,7 +10,7 @@ import Overlay from "../generals/overlay/Overlay.astro"
 
 const {
   class: className,
-  id: id,
+  id,
   isBlogPostCard,
   headerText,
   labelText,
@@ -21,11 +19,10 @@ const {
   href,
   buttonText,
   isBlogPostCardHeader,
-  isLatestBlogPostCard,
   src,
   alt,
   categories = [],
-  cardType, // "liked" | "saved" | undefined
+  cardType,
   articleHref,
 } = Astro.props
 
@@ -35,7 +32,7 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
 {
   isBlogPostCard ? (
     <article
-      class="blog-post-card group hidden opacity-0 transition-opacity duration-200 flex-col relative w-full md:max-w-[300px]"
+      class="blog-post-card group transition-opacity duration-200 flex flex-col relative w-full md:max-w-[300px]"
       data-title={headerText}
       data-categories={categories.map((category) => category.toLowerCase())}
     >
@@ -51,59 +48,17 @@ const categoriesWithoutDuplicates = [...new Set(categories)]
         )}
       </div>
 
-      <div class="blog-post-card-content-container flex flex-col gap-2 mt-4 flex-1">
+      <div class="blog-post-card-content-container flex flex-col gap-2 mt-4 flex-1 min-h-[250px]">
         <div class="blog-post-title-and-topic-container flex justify-between gap-8 items-center">
           <Header
             headerText={headerText}
-            isBlogPostCardHeader={isBlogPostCardHeader}
-            class="w-[80ch] whitespace-prewrap"
+            isBlogPostCardHeader={true}
+            class="w-full whitespace-prewrap text-red-500"
           />
         </div>
 
         <TextBlock
           class="excerpt line-clamp-4 text-md mb-4"
-          textBlockParagraphText={textBlockParagraphText}
-          isBlogPostCardText={isBlogPostCardText}
-        />
-
-        <Button
-          href={href}
-          class="relative p-2 mt-auto text-xl rounded-sm bg-[var(--blog-post-card-button-border-color)] text-white"
-          buttonText={buttonText}
-        />
-      </div>
-    </article>
-  ) : isLatestBlogPostCard ? (
-    <article
-      class="blog-post-card group transition-opacity duration-200 flex-col relative w-full md:max-w-[300px]"
-      data-title={headerText}
-      data-categories={categories
-        .map((category) => category.toLowerCase())
-        .join(",")}
-    >
-      <Image src={src} class="h-50 rounded-t-md object-fit w-full" alt={alt} />
-
-      <div class="flex justify-start mt-4">
-        {categories.length > 0 && (
-          <div class="flex gap-2">
-            {categoriesWithoutDuplicates.map((cat) => (
-              <Tab tabText={cat} />
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div class="blog-post-card-content-container flex flex-col gap-2 mt-4 flex-1">
-        <div class="blog-post-title-and-topic-container flex justify-between gap-8 items-center">
-          <Header
-            headerText={headerText}
-            isBlogPostCardHeader={isBlogPostCardHeader}
-            class="w-[80ch]"
-          />
-        </div>
-
-        <TextBlock
-          class="excerpt line-clamp-4 group-hover:line-clamp-none transition-all duration-300 text-md mb-4"
           textBlockParagraphText={textBlockParagraphText}
           isBlogPostCardText={isBlogPostCardText}
         />

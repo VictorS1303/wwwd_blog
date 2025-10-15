@@ -1,7 +1,7 @@
 ---
 const {
   class: className,
-  id: id,
+  id,
   headerText,
   isSingleViewHeader,
   isTextBlockHeader,
@@ -23,7 +23,10 @@ const {
       <h1>{headerText}</h1>
     </header>
   ) : isBlogPostCardHeader ? (
-    <header class="text-xl font-bold text-black">
+    <header
+      class={`font-bold text-[var(--secondary-text-color)] text-2xl`}
+      id={id}
+    >
       <h1>{headerText}</h1>
     </header>
   ) : isHeroHeader ? (

@@ -2,14 +2,14 @@
 import { fetchLatestPosts } from "../../../js/utils/supabase_methods"
 import Card from "../card/Card.astro"
 
-const { class: className, id: id } = Astro.props
+const { class: className, id: id, isBlogPostCard } = Astro.props
 
 const latestPosts = await fetchLatestPosts()
 
 console.log(latestPosts)
 ---
 
-<div class="flex gap-8 flex-wrap mt-4">
+<div class="flex gap-8 justify-between flex-wrap mt-4">
   {
     latestPosts.length > 0 ? (
       latestPosts.map((latestBlogPostCard) => {
@@ -26,7 +26,7 @@ console.log(latestPosts)
             categories={latestBlogPostCard.post_categories}
             src={`${latestBlogPostCard.post_image}.webp`}
             alt={latestBlogPostCard.post_image_alt}
-            isLatestBlogPostCard={true}
+            isBlogPostCard={true}
           />
         )
       })

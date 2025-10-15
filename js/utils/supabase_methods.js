@@ -515,3 +515,18 @@ export const updateProfile = async (username, updatedPassword) => {
   console.log('Profile updated: ', updateProfileData)
   return { success: true, data: updateProfileData }
 }
+
+// Fetch about data
+export const fetchAboutData = async () =>
+{
+  const {data: aboutData, error: aboutError} = await supabaseClient
+  .from('about')
+  .select('*', {ascending: false})
+
+  if(aboutError)
+  {
+    console.log("Error fetching about data: ", aboutError.hint, aboutError.message)
+  }
+
+  return aboutData || []
+}
