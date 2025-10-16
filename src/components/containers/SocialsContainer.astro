@@ -1,14 +1,18 @@
 ---
-const {class: className, id: id, socialLinks = [], href} = Astro.props
+const { class: className, id: id, socialLinks = [], href } = Astro.props
 ---
 
-<div class={className} id={id}>
+<div class=`${className} w` id={id}>
   {
-    socialLinks.length > 0 ?
-      socialLinks.map((socialLink) => (
-        <a href={socialLink.href} class="transition-text duration-150 ease-in hover:text-[var(--secondary-text-color)]">
-          <i class={`${socialLink.class} text-2xl`}></i>
-        </a>
-      )) : null
+    socialLinks.length > 0
+      ? socialLinks.map((socialLink) => (
+          <a
+            href={socialLink.href}
+            class="transition-text duration-150 ease-in hover:text-[var(--secondary-text-color)]"
+          >
+            <i class={`${socialLink.class} text-2xl`} />
+          </a>
+        ))
+      : null
   }
 </div>

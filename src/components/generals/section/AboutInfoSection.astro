@@ -2,15 +2,17 @@
 import Section from "./Section.astro"
 import TextBlock from "../../text_block/TextBlock.astro"
 
-const { aboutData = [] } = Astro.props
+const { aboutData = [], class: className } = Astro.props
 ---
 
-<Section class="space-y-6 md:w-1/2">
-  {aboutData.map((block) => (
-    <TextBlock
-      hasHeader={block.has_header}
-      headerText={block.header_text}
-      textBlockParagraphText={block.text_block_paragraph_text}
-    />
-  ))}
-</Section>
+<article class={`space-y-6 md:w-1/2 ${className}`}>
+  {
+    aboutData.map((block) => (
+      <TextBlock
+        hasHeader={block.has_header}
+        headerText={block.header_text}
+        textBlockParagraphText={block.text_block_paragraph_text}
+      />
+    ))
+  }
+</article>
