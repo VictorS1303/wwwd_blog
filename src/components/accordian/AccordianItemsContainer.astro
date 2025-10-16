@@ -4,10 +4,7 @@ import AccordianItem from "./AccordianItem.astro"
 const { class: className, id: id, accordianData } = Astro.props
 ---
 
-<article
-  class={`${className} w-full mt-12 md:w-1/2 outline-2 outline-red-400`}
-  id={id}
->
+<article class={`${className} w-full mt-12 md:w-1/2`} id={id}>
   {
     accordianData.length > 0
       ? accordianData.map((accordianItem) => (

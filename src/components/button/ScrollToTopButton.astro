@@ -1,28 +1,35 @@
 ---
-import Button from './Button.astro'
+import Button from "./Button.astro"
 ---
 
 <Button id="scroll_to_top_btn" isScrollToTopBtn={true}>
   <i class="fa-solid fa-arrow-up text-[var(--secondary-text-color)]"></i>
 </Button>
 
-
 <script>
-  const scrollToTopBtn = document.querySelector('#scroll_to_top_btn')
+  const scrollToTopBtn = document.querySelector("#scroll_to_top_btn")
 
-  window.addEventListener('scroll', toggleScrollToTopButton)
+  window.addEventListener("scroll", toggleScrollToTopButton)
 
-  function toggleScrollToTopButton()
-  {
-      if(window.scrollY > 300)
-      {
-        scrollToTopBtn?.classList.remove('-right-12')
-        scrollToTopBtn?.classList.add('right-6')
-      }
-      else
-      {
-        scrollToTopBtn?.classList.remove('right-6')
-        scrollToTopBtn?.classList.add('-right-12')
-      }
+  function toggleScrollToTopButton() {
+    const footer = document.querySelector("footer")
+    const footerTop = footer?.offsetTop || Infinity
+    const scrollBottom = window.scrollY + window.innerHeight
+
+    // Slide in/out logic
+    if (window.scrollY > 300) {
+      scrollToTopBtn?.classList.remove("-right-12")
+      scrollToTopBtn?.classList.add("right-6")
+    } else {
+      scrollToTopBtn?.classList.remove("right-6")
+      scrollToTopBtn?.classList.add("-right-12")
+    }
+
+    // Move button up when footer enters view
+    if (scrollBottom >= footerTop) {
+      scrollToTopBtn?.classList.add("bottom-20")
+    } else {
+      scrollToTopBtn?.classList.remove("bottom-20")
+    }
   }
 </script>

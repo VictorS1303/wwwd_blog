@@ -2,6 +2,7 @@
 import "../styles/global.css"
 import MainFooter from "../components/footer/MainFooter.astro"
 import LandingFooter from "../components/footer/LandingFooter.astro"
+import ScrollToTopButton from "../components/button/ScrollToTopButton.astro"
 
 const { title, isLandingHero } = Astro.props
 
@@ -55,9 +56,12 @@ const footerItems = [
     {
       isLandingPage ? (
         <LandingFooter socialLinks={socialLinks} />
+        
       ) : (
         <MainFooter footerItems={footerItems} socialLinks={socialLinks} />
+        <ScrollToTopButton />
       )
     }
+
   </body>
 </html>

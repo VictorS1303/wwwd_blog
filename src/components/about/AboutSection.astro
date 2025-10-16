@@ -12,9 +12,11 @@ const aboutData = await fetchAboutData()
 ---
 
 <Section
-  class="about-section w-full flex flex-col outline-2 outline-red-400 md:flex-row md:justify-between md:gap-8"
+  class="about-section w-full flex flex-col md:flex-row md:justify-between md:gap-8"
   id="about_section"
 >
   <AboutInfoSection aboutData={aboutData} />
-  <AccordianItemsContainer accordianData={accordianData} />
+  <div class="flex flex-col gap-4 md:flex-row md:justify-between">
+    <AccordianItemsContainer accordianData={accordianData} />
+  </div>
 </Section>
