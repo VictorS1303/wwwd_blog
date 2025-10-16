@@ -7,10 +7,10 @@
 {
     /* COLORS */
     --primary-text-color: #fff;
-    --secondary-text-color: #f45b35;
-    --accordion-item-bg-color: #f45b35;
-    --blog-post-card-category-label-bg-color: #f45b35;
-    --blog-post-card-button-border-color: #f45b35;
+    --secondary-text-color: #9F2809;
+    --accordion-item-bg-color: #9F2809;
+    --blog-post-card-category-label-bg-color: #9F2809;
+    --blog-post-card-button-border-color: #9F2809;
 
     /* FONTS */
     --headings-font: 'Gabarito', sans-serif;
