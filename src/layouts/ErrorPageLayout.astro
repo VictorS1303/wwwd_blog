@@ -3,8 +3,16 @@ import TextBlock from "../components/text_block/TextBlock.astro"
 import Layout from "./Layout.astro"
 import Button from "../components/button/Button.astro"
 
-const { title, src, textBlockParagraphText, blogPostsHref, blogPostsButtonText, randomBlogPostHref, randomBlogPostButtonText} = Astro.props
-
+const {
+  title,
+  src,
+  textBlockParagraphText,
+  blogPostsHref,
+  blogPostsButtonText,
+  randomBlogPostHref,
+  randomBlogPostButtonText,
+  alt,
+} = Astro.props
 ---
 
 <Layout title={title}>
@@ -13,8 +21,11 @@ const { title, src, textBlockParagraphText, blogPostsHref, blogPostsButtonText, 
       <img
         src={src}
         class="h-[300px] w-[300px] object-contain flex-1"
+        alt={alt}
       />
-      <div class="flex-1 flex flex-col items-center gap-8 md:-order-1 md:items-start">
+      <div
+        class="flex-1 flex flex-col items-center gap-8 md:-order-1 md:items-start"
+      >
         <TextBlock
           class="whitespace-pre-wrap text-xl text-center px-4 md:px-0 md:-order-1 md:text-start"
           textBlockParagraphText={textBlockParagraphText}
