@@ -471,20 +471,7 @@ export const unsavePost = async (postId) =>
     postCard?.remove()
   }
 
-  // Real-time subscription
-  supabaseClient
-    .channel("public:saved_posts")
-    .on(
-      "postgres_changes",
-      { event: "DELETE", schema: "public", table: "saved_posts" },
-      (payload) => {
-        console.log("Realtime delete detected:", payload)
-        const deletedId = payload.old.id
-        const card = document.querySelector(`button[data-post-id="${deletedId}"]`)?.closest("article.post-card")
-        card?.remove()
-      }
-    )
-    .subscribe()
+
 }
 
 
