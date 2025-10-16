@@ -30,6 +30,7 @@ const {
       type="button"
       data-is-logged-in={dataIsLoggedIn}
       data-post-id={dataPostId}
+      name="interaction-button"
     >
       {buttonText}
       <slot />
@@ -42,6 +43,7 @@ const {
       id={id}
       download={download ? true : undefined}
       data-is-logged-in={dataIsLoggedIn}
+      name="download-button"
     >
       {buttonText}
       <slot />
@@ -51,6 +53,7 @@ const {
       id={id}
       href="#top"
       class={`${className} grid place-content-center fixed bottom-12 -right-12 h-[45px] w-[45px] bg-white border-2 border-[var(--secondary-text-color)] rounded-full shadow-md transition-all duration-250 hover:border-2 hover:border-[var(--secondary-text-color)] hover:bg-[#131312]`}
+      name="scroll-to-top-button"
     >
       {buttonText}
       <slot />
@@ -62,6 +65,7 @@ const {
       type={type}
       data-is-logged-in={dataIsLoggedIn}
       data-post-id={dataPostId}
+      name="dashboard-card-button"
     >
       {buttonText}
       <slot />
@@ -69,12 +73,14 @@ const {
   ) : isDashboardControlButton ? (
     <button
       class={`${className} text-lg text-[var(--secondary-text-color)] cursor-pointer hover:border-b-2 hover:border-[var(--secondary-text-color)] whitespace-nowrap`}
+      name="dashboard-control-button"
     >
       {buttonText}
     </button>
   ) : isSubmitButton ? (
     <button
       class={`${className} text-lg text-white w-full bg-[var(--secondary-text-color)] px-4 py-1 rounded-md cursor-pointer transition-opacity duration-150 ease-in hover:opacity-85`}
+      name="submit-button"
     >
       {buttonText}
     </button>
@@ -83,6 +89,7 @@ const {
       class={`${className} text-lg text-white w-full bg-[var(--secondary-text-color)] px-4 py-1 rounded-md cursor-pointer transition-opacity duration-150 ease-in hover:opacity-85`}
       id={id}
       data-dashboard-post-id={dashboardPostId}
+      name="confirm-button"
     >
       {buttonText}
     </button>
@@ -91,6 +98,7 @@ const {
       class={`${className} text-[var(--secondary-text-color)] absolute right-4 top-4`}
       id={id}
       data-dashboard-post-id={dashboardPostId}
+      name="close-modal-button"
     >
       <slot />
     </button>
@@ -98,6 +106,7 @@ const {
     <button
       class={`${className} absolute text-white z-[10000000] text-2xl right-6 top-6 transition-right duration-400 ease-in cursor-pointer md:hidden`}
       id={id}
+      name="mobile-nav-toggle-button"
     >
       <slot />
     </button>
