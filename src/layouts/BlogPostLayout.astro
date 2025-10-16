@@ -19,8 +19,6 @@ const post = await fetchSinglePostBySlug(slug)
 
 const isLiked = await isPostLiked(post.id)
 
-console.log(isLiked)
-
 const { frontmatter, headings } = Astro.props
 
 const {

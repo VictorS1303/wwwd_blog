@@ -156,7 +156,6 @@ const dialogButtons = [
     const isAlreadyLiked = await isPostLiked(postId)
 
     if (isAlreadyLiked) {
-      console.log("Post is already liked!")
       postAlreadyLikedModal?.showModal()
       return
     } else {

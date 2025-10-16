@@ -137,7 +137,6 @@ export const fetchHeroData = async () =>
     console.log(heroError.message, heroError.hint)
   }
 
-  console.log(heroData[0].hero_images)
 
   return heroData || []
 }
@@ -177,7 +176,6 @@ export const registerAndLogin = async (name, email, password) => {
     },
   });
 
-  console.log("Supabase signUp response:", { data, error });
 
   if (error) {
     console.error("Sign-up error:", error.message, error.hint);
@@ -204,7 +202,6 @@ export const registerAndLogin = async (name, email, password) => {
     return { success: false, signUpError: loginError.message };
   }
 
-  console.log("User logged in successfully:", loginData.session.user);
 
   return { success: true, user: loginData.session.user };
 };
@@ -221,15 +218,13 @@ export async function loginUser(email, password) {
     return { success: false, error: error.message }
   }
 
-  console.log("User logged in:", data.user)
   return { success: true, user: data.user }
 }
 
 // Log out user
 export const logOutUser = async () => {
   const { error } = await supabaseClient.auth.signOut();
-
-  console.log(error)  
+  
 
   location.href = '/blog-posts'
 }
@@ -257,8 +252,6 @@ export const fetchLikedPosts = async () =>
     console.log(`Error fetching liked posts: ${likedPostsError.message, likedPostsError.hint}`)
   }
 
-  // Log fetched data
-  console.log('Liked posts fetched: ', likedPostsData)
 
   return likedPostsData || []
 }
@@ -289,7 +282,6 @@ export const fetchSavedPosts = async () =>
     console.log('Error fetching posts: ', savedPostsError.hint, savedPostsError.message)
   }
 
-  console.log(savedPostsData)
   return savedPostsData || []
 }
 
@@ -378,11 +370,9 @@ export const isPostLiked = async (postId) => {
     .eq("user_id", user.id)
 
   if (likedPostError) {
-    console.log("Error checking liked post: ", likedPostError.hint, likedPostError)
     return false
   }
 
-  console.log(likedPostData)
 
   return likedPostData && likedPostData.length > 0
 }
@@ -439,7 +429,6 @@ export const isPostSaved = async (postId) =>
       return
     }
 
-    console.log(savedPostData)
     return savedPostData.length > 0
 }
 

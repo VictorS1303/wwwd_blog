@@ -5,8 +5,6 @@ import NoReturnMessage from "../messages/NoReturnMessage.astro"
 import { fetchLikedPosts } from "../../../js/utils/supabase_methods"
 
 const likedPosts = await fetchLikedPosts()
-
-console.log("Liked posts: ", likedPosts)
 ---
 
 <div
@@ -30,8 +28,6 @@ console.log("Liked posts: ", likedPosts)
 
   const likedPosts = await fetchLikedPosts()
   const savedPosts = await fetchSavedPosts()
-
-  console.log("Liked posts: ", likedPosts, "Saved posts: ", savedPosts)
 
   function createCardTemplate(
     container,
@@ -203,7 +199,6 @@ console.log("Liked posts: ", likedPosts)
 
     const sectionHeadingText = headingText
 
-    console.log(sectionHeading)
     sectionHeading.append(sectionHeadingSize, sectionHeadingText)
   }
 
