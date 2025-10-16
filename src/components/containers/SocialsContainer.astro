@@ -8,6 +8,7 @@ const { class: className, id: id, socialLinks = [], href } = Astro.props
       ? socialLinks.map((socialLink) => (
           <a
             href={socialLink.href}
+            target="_blank"
             class="transition-text duration-150 ease-in hover:text-[var(--secondary-text-color)]"
           >
             <i class={`${socialLink.class} text-2xl`} />
