@@ -1,7 +1,31 @@
 ---
-const { title, isLandingHero } = Astro.props
 import "../styles/global.css"
-import Footer from "../components/footer/Footer.astro"
+import MainFooter from "../components/footer/MainFooter.astro"
+import LandingFooter from "../components/footer/LandingFooter.astro"
+
+const { title, isLandingHero } = Astro.props
+
+// Detect current page path automatically
+const isLandingPage = Astro.url.pathname === "/"
+
+const currentYear = new Date().getFullYear()
+
+const socialLinks = [
+  {
+    href: "https://www.instagram.com/worldwidewebdevelopment?utm_source=ig_web_button_share_sheet&igsh=MWdoOXk2cTcxZnl2bQ==",
+    class: "fa-brands fa-instagram",
+    target: "_blank",
+  },
+]
+
+const footerItems = [
+  {
+    footerItemText: "WWWD",
+  },
+  {
+    footerItemText: `${currentYear}`,
+  },
+]
 ---
 
 <!doctype html>
@@ -22,12 +46,18 @@ import Footer from "../components/footer/Footer.astro"
           <slot />
         </main>
       ) : (
-        <main class="flex-1 p-4 md:px-10">
+        <main class="flex-1 pt-4 pb-8 md:px-10">
           <slot />
         </main>
       )
     }
 
-    <Footer class="mt-[30px]" isIndexFooter={false} />
+    {
+      isLandingPage ? (
+        <LandingFooter socialLinks={socialLinks} />
+      ) : (
+        <MainFooter footerItems={footerItems} socialLinks={socialLinks} />
+      )
+    }
   </body>
 </html>

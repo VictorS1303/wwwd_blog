@@ -1,0 +1,14 @@
+---
+import Footer from './Footer.astro'
+import SocialsContainer from '../containers/SocialsContainer.astro'
+import FooterItemsContainer from '../containers/FooterItemsContainer.astro'
+
+const {class: className, id: id, socialLinks, footerItems} = Astro.props
+
+
+---
+
+<Footer class="flex justify-between items-center px-10 h-[60px] border-t-2 border-[var(--secondary-text-color)]">
+  <FooterItemsContainer footerItems={footerItems} />
+  <SocialsContainer socialLinks={socialLinks} />
+</Footer>

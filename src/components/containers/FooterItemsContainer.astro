@@ -1,0 +1,16 @@
+---
+const { class: className, footerItems = [], id, isLandingFooter} = Astro.props
+---
+<div class="footer-items-container flex justify-between text-center w-1/2">
+  {footerItems.length > 0 &&
+    footerItems.map((footerItem) => (
+      <div key={footerItem.id || footerItem.footerItemText}>
+        <h3 class="text-xl">
+          <div class="footer-item-container">
+            <span class={footerItem.class}>{footerItem.footerItemText}</span>
+          </div>
+        </h3>
+      </div>
+    ))
+  }
+</div>

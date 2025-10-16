@@ -1,0 +1,10 @@
+---
+import Footer from './Footer.astro'
+import SocialsContainer from '../containers/SocialsContainer.astro'
+
+const {socialLinks = []} = Astro.props
+---
+
+<Footer class="absolute bottom-4 left-[50%] -translate-x-[50%] text-white">
+  <SocialsContainer socialLinks={socialLinks}/>
+</Footer>
