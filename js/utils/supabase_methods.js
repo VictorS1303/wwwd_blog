@@ -107,3 +107,17 @@ export const fetchErrorPageData = async () =>
 
   return errorPageData[0] || []
 }
+
+export const fetchLandingPageData = async () =>
+{
+  const {data: landingPageData, error: landingPageError} = await supabaseClient
+  .from('landing_page')
+  .select('*')
+
+  if(landingPageError)
+  {
+    console.log('Error fetching landing page data: ', landingPageError.hint, landingPageError.message)
+  }
+  
+  return landingPageData || []
+}
