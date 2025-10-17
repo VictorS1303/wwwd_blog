@@ -63,24 +63,27 @@ code
 }
 
 /* Typewriter (index) */
+#heading,
+#tagline
+{
+  text-align: center;
+}
+
 .Typewriter__wrapper
 {
   display: inline-block;
-  text-align: center;
 }
 
 #heading .Typewriter__wrapper
 {
   font-size: 3.5rem;
   line-height: 1.6;
-  text-align: center;
 }
 
 #tagline .Typewriter__wrapper
 {
   font-size: 1.5rem;
   padding-inline: 1rem;
-  text-align: center;
   max-width: 50ch;
 }
 
@@ -90,12 +93,11 @@ code
   {
     font-size: 6rem;
     line-height: 1.3;
-    text-align: center;
+
   }
 
   #tagline .Typewriter__wrapper
   {
     font-size: 2rem;
-    text-align: center;
   }
 }
