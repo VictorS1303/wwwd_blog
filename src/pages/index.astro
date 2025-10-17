@@ -11,6 +11,9 @@ import Layout from "../layouts/Layout.astro"
 </Layout>
 
 <script>
+  document.addEventListener('DOMContentLoaded', () => {
+
+
   import Typewriter from "typewriter-effect/dist/core"
   import { fetchLandingPageData } from "../../js/utils/supabase_methods.js"
 
@@ -58,4 +61,5 @@ import Layout from "../layouts/Layout.astro"
       }, 1000)
     })
     .start()
+  })
 </script>
