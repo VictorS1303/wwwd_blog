@@ -11,20 +11,14 @@ import Layout from "../layouts/Layout.astro"
 </Layout>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-
-
   import Typewriter from "typewriter-effect/dist/core"
-  import { fetchLandingPageData } from "../../js/utils/supabase_methods.js"
-
-  const landingPageData = await fetchLandingPageData()
 
   const headingEl = document.querySelector("#heading")
   const taglineEl = document.querySelector("#tagline")
 
-  const headingText = landingPageData.heading_text
+  const headingText =
+    "<span class='text-[var(--secondary-text-color)]'>W</span>orld <span class='text-[var(--secondary-text-color)]'>W</span>ide <span class='text-[var(--secondary-text-color)]'>W</span>eb <span class='text-[var(--secondary-text-color)]'>D</span>evelopment"
 
-  const taglineText = landingPageData.tagline_text
   const taglineText =
     "- Remember to make your website just a little bit more awesome every day"
 
@@ -62,5 +56,4 @@ import Layout from "../layouts/Layout.astro"
       }, 1000)
     })
     .start()
-  })
 </script>

@@ -109,21 +109,21 @@ export const fetchErrorPageData = async () =>
 }
 
 // Fetch landing page data
-export const fetchLandingPageData = async () =>
-{
-  const {data: landingPageData, error: landingPageError} = await supabaseClient
-  .from('landing_page')
-  .select('*')
+// export const fetchLandingPageData = async () =>
+// {
+//   const {data: landingPageData, error: landingPageError} = await supabaseClient
+//   .from('landing_page')
+//   .select('*')
   
-  if(landingPageError)
-  {
-    console.log(landingPageError.message, landingPageError.hint)
-  }
+//   if(landingPageError)
+//   {
+//     console.log(landingPageError.message, landingPageError.hint)
+//   }
 
-  return landingPageData[0] || []
-}
+//   return landingPageData[0] || []
+// }
 
-fetchLandingPageData()
+// fetchLandingPageData()
 
 // Fetch hero data
 export const fetchHeroData = async () =>
