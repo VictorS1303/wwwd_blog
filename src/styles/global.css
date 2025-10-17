@@ -66,6 +66,7 @@ code
 .Typewriter__wrapper
 {
   display: inline-block;
+  text-align: center;
 }
 
 #heading .Typewriter__wrapper
