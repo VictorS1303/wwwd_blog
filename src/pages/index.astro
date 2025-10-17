@@ -25,34 +25,35 @@ import Layout from "../layouts/Layout.astro"
   const headingText = landingPageData.heading_text
 
   const taglineText = landingPageData.tagline_text
+  const taglineText =
+    "- Remember to make your website just a little bit more awesome every day"
 
   const heading = new Typewriter(headingEl, {
     autoStart: false,
     loop: false,
-    delay: 100, // typing speed (ms per char)
+    delay: 100,
     cursor: "",
-    deleteSpeed: 40, // deleting speed (ms per char)
+    deleteSpeed: 40,
   })
 
   const tagline = new Typewriter(taglineEl, {
     autoStart: false,
     loop: false,
     cursor: "",
-    delay: 60, // tagline typing speed
+    delay: 60,
   })
 
-  // Step 1: Type heading
+  // Type heading first
   heading
     .typeString(headingText)
     .callFunction(() => {
-      // Step 2: Small pause, then start tagline
+      // After heading is typed, wait a moment then start tagline
       setTimeout(() => {
         tagline
           .typeString(taglineText)
           .callFunction(() => {
-            // Step 3: After tagline is fully typed, delete heading
+            // After tagline is typed, delete heading
             heading.deleteAll().callFunction(() => {
-              // Step 4: Hide the heading cursor once it's done
               const cursor = headingEl.querySelector(".Typewriter__cursor")
               if (cursor) cursor.style.display = "none"
             })
