@@ -37,8 +37,8 @@ if (post?.post_text) {
   priorKnowledge={post.prior_knowledge}
   download={post.post_download_url}
   readingTime={post.reading_time}
-  image={`${post.post_image}.webp`}
-  }
+  src={post.post_image}
+  alt={post.post_image_alt}
 >
   <div set:html={html} />
 </BlogPostLayout>

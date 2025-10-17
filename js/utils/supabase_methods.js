@@ -17,30 +17,21 @@ export const fetchAllPosts = async () =>
 }
 
 // Fetch single posts by slug
-export const fetchSinglePostBySlug = async (slug) => {
+export const fetchSinglePostBySlug = async (slug) =>
+{
     const { data: post, error } = await supabaseClient
         .from("blog_posts")
         .select("*")
         .eq("post_slug", slug)
-        .single();
+        .single()
 
-    if (error) {
-        console.log("Error: ", error.hint, error.message, slug);
-        return null;
+    if (error)
+    {
+        console.log("Error: ", error.hint, error.message, slug)
     }
-
-    if (post?.post_image) {
-        const { publicUrl, error: urlError } = supabaseClient
-            .storage
-            .from("post-images")
-            .getPublicUrl(post.post_image);
-
-        if (urlError) console.log("Error getting public URL:", urlError);
-        post.post_image = publicUrl; // replace path with full URL
-    }
-
-    return post;
-};
+    
+    return post || []
+}
 
 // Fetch filtered posts
 export const fetchFilteredPosts = async (searchTerm) =>
