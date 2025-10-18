@@ -9,21 +9,23 @@ import netlify from '@astrojs/netlify';
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'server',
-
+  
   vite: {
     plugins: [tailwindcss()],
   },
-
+  
   devToolbar: {
     enabled: false,
   },
-
+  
   integrations: [
     expressiveCode(),
   ],
-
-  adapter: netlify({
-    imageCDN: false,
-  }),
+  
+  output: 'server',
+  adapter: netlify(
+    {
+      imageCDN: false,
+    }
+  )
 });

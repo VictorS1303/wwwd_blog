@@ -20,7 +20,6 @@ import Header from "../header/Header.astro"
 import Section from "../generals/section/Section.astro"
 import BackButton from "../button/BackButton.astro"
 import { supabaseClient } from "../../../js/supabase/supabase_client"
-import { Image } from "astro:assets"
 
 // Nav items with booleans flipped based on login
 const navItems = [
@@ -37,11 +36,10 @@ const navItems = [
   isSingleView ? (
     <div class="flex flex-col gap-2">
       <Section class={`${className} relative h-[60vh] overflow-hidden`} id={id}>
-        <Image
+        <img
           src={src}
           alt={alt}
           class="absolute object-cover h-[100%] w-screen rounded-md"
-          data-netlify-image="false"
         />
         {hasOverlay && <Overlay />}
         <div class="absolute top-[50%] left-[50%] -translate-[50%] hero-desc-container text-white text-3xl z-[10000] md:text-5xl">
