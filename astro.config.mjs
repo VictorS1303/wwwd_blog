@@ -23,5 +23,7 @@ export default defineConfig({
     expressiveCode(),
   ],
 
-  adapter: netlify(),
+  adapter: netlify({
+    imageCDN: false,
+  }),
 });
