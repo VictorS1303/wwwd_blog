@@ -18,21 +18,20 @@ let dialogType = type || "default"
 ---
 
 <dialog
-  class={`${className} fixed top-0 left-[50%] -translate-[50%] h-fit w-[80vw] px-4 py-4 max-w-[450px] rounded-md text-center
-          transition-top duration-400 ease-in open:top-[50%] open:backdrop-blur-3xl`}
+  class={`${className} fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-fit w-[80vw] max-w-[450px] rounded-md text-center
+          transition-all duration-400 ease-in open:backdrop-blur-3xl`}
   id={id}
 >
-  <!-- Global close button for every modal -->
+  <div class="flex flex-col w-full p-4">
+    <!-- Global close button for every modal except warning -->
+    {dialogType !== "warning" && <CloseDialogButton />}
 
-  {dialogType !== "warning" && <CloseDialogButton />}
-
-  {
-    dialogType === "login" ? (
-      <>
-        <div class="mt-12">
+    {
+      dialogType === "login" && (
+        <div class="mt-4">
           <Header class="text-2xl font-bold" headerText={headerText} />
           <TextBlock textBlockParagraphText={textBlockParagraphText} />
-          <div class="mt-12 mb-4 space-x-4">
+          <div class="mt-8 mb-4 space-x-4 flex justify-center flex-wrap">
             {dialogButtons.map((btn) => (
               <Button
                 id={btn.id}
@@ -44,50 +43,78 @@ let dialogType = type || "default"
             ))}
           </div>
         </div>
-      </>
-    ) : dialogType === "share" ? (
-      <>
-        <div class="grid place-content-center mx-auto py-8">
+      )
+    }
+
+    {
+      dialogType === "share" && (
+        <div class="mt-8 grid place-content-center mx-auto">
           <Header class="text-2xl font-bold" headerText={headerText} />
           <TextBlock textBlockParagraphText={textBlockParagraphText} />
+          <div class="mt-4">
+            <slot />
+          </div>
         </div>
-        <slot />
-      </>
-    ) : dialogType === "download" ? (
-      <>
-        <Header headerText={headerText} />
-        <TextBlock textBlockParagraphText={textBlockParagraphText} />
-        <slot />
-      </>
-    ) : dialogType === "warning" ? (
-      <>
-        <Header headerText={headerText} />
-        <TextBlock textBlockParagraphText={textBlockParagraphText} />
-        <div class="mt-8 flex justify-center gap-4">
-          {dialogButtons.map((btn) => (
-            <Button
-              id={btn.id}
-              data-post-id={btn.dataPostId}
-              buttonText={btn.buttonText}
-              isConfirmButton={btn.isConfirmButton}
-              href={btn.href}
-              class={`${btn.class} px-4 py-2 text-lg rounded-md text-white bg-[var(--secondary-text-color)] hover:opacity-85 transition-opacity`}
-            />
-          ))}
-          <slot />
+      )
+    }
+
+    {
+      dialogType === "download" && (
+        <div class="mt-8 flex flex-col items-center">
+          <Header headerText={headerText} />
+          <TextBlock textBlockParagraphText={textBlockParagraphText} />
+          <div class="mt-4">
+            <slot />
+          </div>
         </div>
-      </>
-    ) : (
-      <>
-        <Header headerText={headerText} />
-        <TextBlock textBlockParagraphText={textBlockParagraphText} />
-        <slot />
-      </>
-    )
-  }
+      )
+    }
+
+    {
+      dialogType === "warning" && (
+        <div class="flex flex-col items-center">
+          <Header headerText={headerText} />
+          <TextBlock textBlockParagraphText={textBlockParagraphText} />
+          <div class="mt-8 flex justify-center gap-4 flex-wrap">
+            {dialogButtons.map((btn) => (
+              <Button
+                id={btn.id}
+                data-post-id={btn.dataPostId}
+                buttonText={btn.buttonText}
+                isConfirmButton={btn.isConfirmButton}
+                href={btn.href}
+                class={`${btn.class} px-4 py-2 text-lg rounded-md text-white bg-[var(--secondary-text-color)] hover:opacity-85 transition-opacity`}
+              />
+            ))}
+            <div class="mt-4">
+              <slot />
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    {
+      dialogType === "default" && (
+        <div class="mt-8 flex flex-col items-center">
+          <Header headerText={headerText} />
+          <TextBlock textBlockParagraphText={textBlockParagraphText} />
+          <div class="mt-4">
+            <slot />
+          </div>
+        </div>
+      )
+    }
+  </div>
 </dialog>
 
 <style>
+  dialog {
+    padding: 0;
+    border: none;
+    margin: 0;
+  }
+
   dialog::backdrop {
     background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(4px);
@@ -96,10 +123,6 @@ let dialogType = type || "default"
 
 <script>
   const dialog = document.querySelector("dialog")
-
-  window.addEventListener("keydown", (e) =>
-    preventModalCloseOnDashboardRoute(e),
-  )
 
   // Close button logic
   document.querySelectorAll(".close-dialog-btn").forEach((btn) => {
@@ -111,10 +134,10 @@ let dialogType = type || "default"
   })
 
   // Prevent modal closing on escape on dashboard route
-  function preventModalCloseOnDashboardRoute(e) {
-    if (e.keyCode === 27 && location.pathname.endsWith("/dashboard")) {
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && location.pathname.endsWith("/dashboard")) {
       dialog?.classList.add("dashboard-modal-backdrop-filter")
       e.preventDefault()
     }
-  }
+  })
 </script>

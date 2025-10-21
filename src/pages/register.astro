@@ -33,17 +33,23 @@ const signUpFormInputs = [
     required: true,
     placeholder: "Please repeat password",
   },
+  {
+    type: "file",
+    label: "Profile image",
+    name: "profile_image",
+    required: true,
+  },
 ]
 ---
 
-<LoginSignUpLayout title="Register">
+<LoginSignUpLayout title="Sign up">
   <Form
     isFormHeader={true}
-    headerText="Register"
+    headerText="Sign up"
     inputs={signUpFormInputs}
     isSubmitButton={true}
     id="sign_up_form"
-    buttonText="Register"
+    buttonText="Sign up"
   />
   <div class="text-center mt-4">
     <h4>
@@ -72,7 +78,7 @@ const signUpFormInputs = [
   import { supabaseClient } from "../../js/supabase/supabase_client"
   import { registerAndLogin } from "../../js/utils/supabase_methods"
 
-  const signUpForm = document.querySelector("#sign_up_form")
+  const signUpForm = document.querySelector<HTMLFormElement>("#sign_up_form")
   const registerFailedModal = document.querySelector("#register_failed_modal")
   const registerSucceededModal = document.querySelector(
     "#register_succeeded_modal",
@@ -84,33 +90,67 @@ const signUpFormInputs = [
     e.preventDefault()
 
     const formData = new FormData(signUpForm)
-    const nameInput = formData.get("name")
-    const emailInput = formData.get("email")
-    const passwordInput = formData.get("password")
-    const repeatPasswordInput = formData.get("repeat_password")
+    const name = formData.get("name")
+    const email = formData.get("email")
+    const password = formData.get("password")
+    const repeatPassword = formData.get("repeat_password")
+    const profileImageFile = signUpForm.elements["profile_image"]?.files[0]
 
-    if (repeatPasswordInput !== passwordInput) {
+    console.log("Profile image file:", profileImageFile) // ✅ Add this
+    console.log("File name:", profileImageFile?.name) // ✅ Add this
+    console.log("File size:", profileImageFile?.size) // ✅ Add this
+
+    // Validate password match
+    if (password !== repeatPassword) {
       alert("Passwords do not match!")
       return
     }
 
+    // Register user and upload image in one flow
     const signUpResult = await registerAndLogin(
-      nameInput,
-      emailInput,
-      passwordInput,
+      name,
+      email,
+      password,
+      profileImageFile,
     )
-    if (!signUpResult.success) {
+
+    console.log("Full sign up result:", signUpResult) // ✅ Add this
+    console.log("Avatar URL from result:", signUpResult?.avatarUrl) // ✅ Add this
+
+    if (!signUpResult?.success) {
+      console.error("Registration failed:", signUpResult?.signUpError)
       registerFailedModal?.showModal()
-      // alert(`Sign-up failed: ${signUpResult.error}`)
       return
     }
 
-    // Sign-up succeeded, redirect
-    signUpForm?.reset()
+    const user = signUpResult.user
+    const avatarImageUrl = signUpResult.avatarUrl
 
+    // Insert user data into your users table
+    const { error: dbError } = await supabaseClient.from("users").upsert(
+      {
+        id: user.id,
+        name,
+        email,
+        avatar_file_name: avatarImageUrl,
+      },
+      { onConflict: "id" },
+    )
+
+    if (dbError) {
+      console.error("Failed to save user in DB:", dbError.message)
+      registerFailedModal?.showModal()
+      return
+    }
+
+    console.log("User saved in 'users' table")
+
+    // Success - reset form and show modal
+    signUpForm?.reset()
     registerSucceededModal?.showModal()
-    setTimeout(() => {
-      window.location.href = "/blog-posts"
-    }, 2000)
+
+    // setTimeout(() => {
+    //   window.location.href = "/blog-posts"
+    // }, 2000)
   }
 </script>

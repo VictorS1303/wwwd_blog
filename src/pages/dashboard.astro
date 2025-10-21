@@ -177,4 +177,11 @@ const confirmLogoutButtons = [
       failedUpdateModal?.showModal()
     }
   })
+
+  document
+    .querySelector(".edit-profile-button")
+    ?.addEventListener("click", () => {
+      updateProfileForm.reset() // Clear inputs
+      updateProfileDialog?.showModal()
+    })
 </script>

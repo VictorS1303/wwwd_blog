@@ -11,6 +11,8 @@ const {
   isSavedBlogPostCardHeader,
   isHeroHeader,
   isFormHeader,
+  alt,
+  src,
 } = Astro.props
 ---
 
@@ -39,9 +41,10 @@ const {
     </header>
   ) : isDashboardHeader ? (
     <header
-      class="font-bold text-3xl mt-6 mb-4 text-[var(--secondary-text-color)]"
+      class="font-bold text-3xl mt-6 mb-2 text-[var(--secondary-text-color)] md:mt-0"
       id={id}
     >
+      {src && <img src={src} alt={alt || "User avatar"} />}
       <h1>{headerText}</h1>
     </header>
   ) : isLikedBlogPostCardHeader ? (

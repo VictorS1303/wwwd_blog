@@ -149,47 +149,128 @@ await fetchHeroData()
 // };
 
 // Register up and login
-export const registerAndLogin = async (name, email, password) => {
+// Register up and login
+export const registerAndLogin = async (name, email, password, profileImage = null) =>
+{
   // 1. Sign up user
-  const { data, error } = await supabaseClient.auth.signUp({
+  const {data, error} = await supabaseClient.auth.signUp({
     email,
     password,
     options: {
       data: {
         username: name,
-      },
-    },
-  });
-
-
-  if (error) {
-    console.error("Sign-up error:", error.message, error.hint);
-    return { success: false, signUpError: error.message };
+      }
+    }
+  })
+  if(error)
+  {
+    console.log('Sign up error: ', error.message, error.hint)
+    return {success: false, signUpError: error.message}
   }
-
-  // 2. If session exists after sign-up, user is automatically logged in
-  if (data.session) {
-    console.log("User automatically signed in:", data.session.user);
-    return { success: true, user: data.session.user };
+  const userId = data.user.id
+  let avatarUrl = null
+  // Upload profile image if provided
+  if(profileImage)
+  {
+    try
+    {
+      const fileExtension = profileImage.name.split('.').pop()
+      const fileName = `${userId}/profile.${fileExtension}`
+      const {error: uploadError} = await supabaseClient
+       .storage
+       .from('avatar_images')
+       .upload(fileName, profileImage, {
+          cacheControl: '3600',
+          upsert: false
+       })
+       if(uploadError)
+       {
+        console.error('Image upload error: ', uploadError.message)
+       }
+       else
+       {
+          const {data: {publicUrl}} = supabaseClient
+            .storage
+            .from('avatar_images')
+            .getPublicUrl(fileName)
+         
+          avatarUrl = publicUrl
+          console.log('Avatar URL generated:', avatarUrl) // Debug log
+          
+          // Update user metadata with avatar URL
+          const {error: updateError} = await supabaseClient.auth.updateUser({
+            data: {avatar_url: avatarUrl}
+          })
+          if (updateError) {
+            console.error("Error updating user metadata:", updateError.message);
+          }
+       }
+    } catch (uploadException) {
+      console.log('Unexpected error during image upload: ', uploadException)
+    }
   }
-
-  // 3. If no session returned (email confirmation required), manually sign in
-  console.warn("No active session after sign-up, attempting manual login...");
-
-  const { data: loginData, error: loginError } =
-    await supabaseClient.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-  if (loginError) {
-    console.error("Login error:", loginError.message);
-    return { success: false, signUpError: loginError.message };
+  // If session exists after sign up, user is automatically logged in
+  if(data.session)
+  {
+    console.log('User automatically signed in: ', data.session.user)
+    console.log('Returning avatarUrl:', avatarUrl) // Debug log
+    return {success: true, user: data.session.user, avatarUrl}
   }
+  // If no session returned, automatically signed in
+  console.warn('No active session after sign up. Attempting manual login.')
+  const {data: loginData, error: loginError} = await supabaseClient.auth.signInWithPassword({
+    email,
+    password,
+  })
+  if(loginError)
+  {
+    console.error('Login error: ', loginError.message)
+    return {success: false, signUpError: loginError.message}
+  }
+  return {success: true, user: loginData.session.user, avatarUrl}
+}
+
+// export const registerAndLogin = async (name, email, password) => {
+//   // 1. Sign up user
+//   const { data, error } = await supabaseClient.auth.signUp({
+//     email,
+//     password,
+//     options: {
+//       data: {
+//         username: name,
+//       },
+//     },
+//   });
 
 
-  return { success: true, user: loginData.session.user };
-};
+//   if (error) {
+//     console.error("Sign-up error:", error.message, error.hint);
+//     return { success: false, signUpError: error.message };
+//   }
+
+//   // 2. If session exists after sign-up, user is automatically logged in
+//   if (data.session) {
+//     console.log("User automatically signed in:", data.session.user);
+//     return { success: true, user: data.session.user };
+//   }
+
+//   // 3. If no session returned (email confirmation required), manually sign in
+//   console.warn("No active session after sign-up, attempting manual login...");
+
+//   const { data: loginData, error: loginError } =
+//     await supabaseClient.auth.signInWithPassword({
+//       email,
+//       password,
+//     });
+
+//   if (loginError) {
+//     console.error("Login error:", loginError.message);
+//     return { success: false, signUpError: loginError.message };
+//   }
+
+
+//   return { success: true, user: loginData.session.user };
+// };
 
 // Login user
 export async function loginUser(email, password) {
@@ -450,7 +531,7 @@ export const unsavePost = async (postId) =>
 
 
 // Update profile
-export const updateProfile = async (username, updatedPassword) => {
+export const updateProfile = async (username, updatedPassword, updatedProfileImage) => {
   // Object to store updated data
   const updatedProfileDataObject = {}
 
@@ -463,6 +544,8 @@ export const updateProfile = async (username, updatedPassword) => {
   if (updatedPassword) {
     updatedProfileDataObject.password = updatedPassword
   }
+
+  // 
 
   const { data: updateProfileData, error: updatedProfileError } = await supabaseClient
     .auth
