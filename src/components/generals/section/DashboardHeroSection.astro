@@ -56,36 +56,109 @@ const controlButtons = [
   </div>
 </Section>
 
-<script type="module">
-  import { supabaseClient } from "../../../../js/supabase/supabase_client.js"
+<script>
+  import { supabaseClient } from "../../js/supabase/supabase_client"
+  import { logOutUser } from "../../js/utils/supabase_methods"
+  import { updateProfile } from "../../js/utils/supabase_methods"
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    const {
-      data: { session },
-    } = await supabaseClient.auth.getSession()
+  const postsWrapper = document.getElementById("dashboard-posts-wrapper")
+  const lockWrapper = document.getElementById("dashboard-lock-wrapper")
+  const dashboardLockModal = document.querySelector("#dashboard_lock_modal")
+  const dashboardControlsContainer = document.querySelector(
+    ".dashboard-controls-container",
+  )
 
-    const localData = JSON.parse(
-      localStorage.getItem("sb-lbaohauhywokqbrthwjd-auth-token"),
-    )
+  const confirmLogoutModal = document.querySelector("#confirm_logout_modal")
+  const failedUpdateModal = document.querySelector("#failed_update_modal")
 
-    const user = session?.user || localData?.user || null
+  const updateProfileForm = document.querySelector("#update_profile_form")
+  const updateProfileDialog = document.querySelector("#update_profile_dialog")
+  const succssfulUpdateModal = document.querySelector(
+    "#successful_update_modal",
+  )
 
-    const avatarUrl = user?.user_metadata?.avatar_url
-    const userName = user?.user_metadata?.username || "User"
+  confirmLogoutModal?.addEventListener("click", (e) => determineLogOutAction(e))
 
-    const headerEl = document.querySelector("#dashboard_header")
-    const avatarContainer = document.querySelector("#avatar-container")
+  // Dashboard actions
+  dashboardControlsContainer?.addEventListener("click", (e) =>
+    determineDashboardAction(e),
+  )
 
-    if (headerEl) {
-      headerEl.textContent = `Welcome, ${userName}!`
+  function determineDashboardAction(e) {
+    if (e.target.classList.contains("log-out-button")) {
+      confirmLogoutModal?.showModal()
     }
+    if (e.target.classList.contains("edit-profile-button")) {
+      updateProfileDialog?.showModal()
+    }
+  }
 
-    if (avatarUrl && avatarContainer && !avatarContainer.querySelector("img")) {
-      const img = document.createElement("img")
-      img.src = avatarUrl
-      img.alt = "User avatar"
-      img.className = "h-[175px] w-[175px] object-cover rounded-md"
-      avatarContainer.appendChild(img)
+  // Determine log out action
+  function determineLogOutAction(e) {
+    if (e.target.classList.contains("confirm-logout-btn")) {
+      logOutUser()
+    }
+    if (e.target.classList.contains("stay-logged-in-btn")) {
+      confirmLogoutModal?.close()
+    }
+  }
+
+  // Show/hide dashboard depending on auth and populate hero section
+  async function initDashboard() {
+    const {
+      data: { user },
+    } = await supabaseClient.auth.getUser()
+
+    if (user) {
+      postsWrapper.style.display = "block"
+      lockWrapper.style.display = "none" // hide lock wrapper
+
+      // Update dashboard hero
+      const heroImg = document.querySelector(".dashboard-hero-image")
+      const heroName = document.querySelector(".dashboard-hero-name")
+      if (heroImg)
+        heroImg.src =
+          user.user_metadata.avatar_url ||
+          "/images/landing_hero/landing_hero_bg.webp"
+      if (heroName) heroName.textContent = user.user_metadata.username || "User"
+
+      // Set title
+      document.title = `Welcome, ${user.user_metadata.username || "User"}!`
+    } else {
+      lockWrapper.style.display = "block"
+      postsWrapper.style.display = "none"
+    }
+  }
+
+  // Call it after page load
+  window.addEventListener("DOMContentLoaded", initDashboard)
+
+  // Form submission — updated version
+  updateProfileForm?.addEventListener("submit", async (e) => {
+    e.preventDefault()
+    const formData = new FormData(updateProfileForm)
+    const updatedUsername = formData.get("updated_username")
+    const updatedPassword = formData.get("updated_password")
+
+    // Call your existing updateProfile function
+    const updateResult = await updateProfile(updatedUsername, updatedPassword)
+
+    if (updateResult.success) {
+      updateProfileDialog?.close()
+      succssfulUpdateModal?.showModal()
+
+      setTimeout(() => {
+        location.reload() // fixed typo here
+      }, 2000)
+    } else {
+      failedUpdateModal?.showModal()
     }
   })
+
+  document
+    .querySelector(".edit-profile-button")
+    ?.addEventListener("click", () => {
+      updateProfileForm.reset() // Clear inputs
+      updateProfileDialog?.showModal()
+    })
 </script>
