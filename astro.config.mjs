@@ -1,8 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import expressiveCode from 'astro-expressive-code';
+import expressiveCode from 'astro-expressive-code'
 import tailwindcss from '@tailwindcss/vite';
-
 
 import netlify from '@astrojs/netlify';
 
@@ -18,14 +17,15 @@ export default defineConfig({
     enabled: false,
   },
   
-  integrations: [
-    expressiveCode(),
-  ],
-  
+  markdown: {
+    shikiConfig: {
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
+    },
+  },
+
   output: 'server',
-  adapter: netlify(
-    {
-      imageCDN: false,
-    }
-  )
+  adapter: netlify()
 });

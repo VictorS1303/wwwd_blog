@@ -8,6 +8,8 @@ const { title, isLandingHero } = Astro.props
 
 // Detect current page path automatically
 const isLandingPage = Astro.url.pathname === "/"
+const isRegisterPage = Astro.url.pathname === '/register'
+const isLoginPage = Astro.url.pathname === '/login'
 
 const currentYear = new Date().getFullYear()
 
@@ -43,7 +45,7 @@ const footerItems = [
     <script src="/js/zod.js" defer></script>
     <title>{title}</title>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class=`${isLoginPage || isRegisterPage ? 'overflow-hidden' : ''} min-h-screen flex flex-col`>
     {
       isLandingHero ? (
         <main class="flex-1">
@@ -57,7 +59,7 @@ const footerItems = [
     }
 
     {
-      isLandingPage ? (
+      isLandingPage || isRegisterPage || isLoginPage ? (
         <LandingFooter socialLinks={socialLinks} />
         
       ) : (

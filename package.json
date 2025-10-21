@@ -24,12 +24,12 @@
     "rehype-toc": "^3.0.2",
     "remark-autolink-headings": "^7.0.1",
     "remark-toc": "^9.0.0",
-    "shiki": "^3.9.2",
     "tailwindcss": "^4.1.11",
     "typewriter-effect": "^2.22.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.16"
+    "@tailwindcss/typography": "^0.5.16",
+    "shiki": "^3.13.0"
   }
 }
