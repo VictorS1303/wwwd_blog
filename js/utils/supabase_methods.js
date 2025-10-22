@@ -219,25 +219,31 @@ export const registerAndLogin = async (name, email, password, profileImage = nul
 
 // Login user
 export async function loginUser(email, password) {
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  })
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    })
 
-  if (error) {
-    console.error("Login error:", error.message)
-    return { success: false, error: error.message }
+    if (error) {
+      console.error("Login error:", error.message)
+      return { success: false, error: error.message }
+    }
+
+    // ✅ v2 SDK: data.session is what gets persisted automatically
+    if (!data.session) {
+      console.warn("No session returned after login — something is wrong")
+      return { success: false, error: "No session returned" }
+    }
+
+    console.log("User logged in:", data.user)
+    console.log("Session persisted in localStorage:", data.session)
+
+    return { success: true, user: data.user, session: data.session }
+  } catch (err) {
+    console.error("Unexpected login error:", err)
+    return { success: false, error: err.message }
   }
-
-  return { success: true, user: data.user }
-}
-
-// Log out user
-export const logOutUser = async () => {
-  const { error } = await supabaseClient.auth.signOut();
-  
-
-  location.href = '/blog-posts'
 }
 
 
