@@ -246,6 +246,11 @@ export async function loginUser(email, password) {
   }
 }
 
+export const logOutUser = async () =>
+{
+  await supabaseClient.auth.signOut()
+}
+
 
 // Fetch liked posts
 export const fetchLikedPosts = async () =>
