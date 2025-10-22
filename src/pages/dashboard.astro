@@ -146,16 +146,19 @@ const confirmLogoutButtons = [
   const {
     data: { user },
   } = await supabaseClient.auth.getUser()
+
   if (user) {
     postsWrapper.style.display = "block"
+    document.title = `Welcome, ${username}!`
     dashboardLockModal?.close()
   } else {
     lockWrapper.style.display = "block"
+    dashboardLockModal?.showModal() // ← Add this line
+    document.title = "No user"
   }
 
   // Set title
   const username = user?.user_metadata.username
-  document.title = `Welcome, ${username}!`
 
   // Form submission — updated version
   updateProfileForm?.addEventListener("submit", async (e) => {
