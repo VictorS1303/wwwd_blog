@@ -5,13 +5,6 @@ import Section from "./Section.astro"
 import Image from "../../imags/Image.astro"
 import Header from "../../header/Header.astro"
 import ControlButtonsContainer from "../../containers/ControlButtonsContainer.astro"
-import { supabaseClient } from "../../../../js/supabase/supabase_client"
-
-const {
-  data: { user },
-} = await supabaseClient.auth.getUser()
-
-const avatarUrl = user?.user_metadata?.avatar_url
 
 const controlButtons = [
   {
@@ -31,17 +24,11 @@ const controlButtons = [
 
 <Section class="hero">
   <div class="flex flex-col md:flex-row md:items-start md:gap-6">
-    <!-- Avatar Image -->
+    <!-- Avatar Image - will be populated by client-side script -->
     <div id="avatar-container" class="flex-shrink-0 mb-4 md:mb-0">
-      {
-        avatarUrl && (
-          <img
-            src={avatarUrl}
-            alt="User avatar"
-            class="h-[175px] w-[175px] object-cover rounded-md"
-          />
-        )
-      }
+      <!-- Placeholder while loading -->
+      <div class="h-[175px] w-[175px] bg-gray-200 rounded-md animate-pulse">
+      </div>
     </div>
 
     <!-- Header + Buttons -->
@@ -62,30 +49,43 @@ const controlButtons = [
   document.addEventListener("DOMContentLoaded", async () => {
     const {
       data: { session },
+      error,
     } = await supabaseClient.auth.getSession()
 
-    const localData = JSON.parse(
-      localStorage.getItem("sb-lbaohauhywokqbrthwjd-auth-token"),
-    )
+    if (error) {
+      console.error("Error getting session:", error)
+      return
+    }
 
-    const user = session?.user || localData?.user || null
+    const user = session?.user
 
-    const avatarUrl = user?.user_metadata?.avatar_url
-    const userName = user?.user_metadata?.username || "User"
+    if (!user) {
+      console.log("No user found")
+      return
+    }
+
+    const avatarUrl = user.user_metadata?.avatar_url
+    const userName = user.user_metadata?.username || "User"
 
     const headerEl = document.querySelector("#dashboard_header")
-    const avatarContainer = document.querySelector("#avatar-container")
+    const avatarContainer = document.querySelector("#avatar_container")
 
+    // Update header
     if (headerEl) {
       headerEl.textContent = `Welcome, ${userName}!`
     }
 
-    if (avatarUrl && avatarContainer && !avatarContainer.querySelector("img")) {
-      const img = document.createElement("img")
-      img.src = avatarUrl
-      img.alt = "User avatar"
-      img.className = "h-[175px] w-[175px] object-cover rounded-md"
-      avatarContainer.appendChild(img)
+    // Update avatar - replace the placeholder
+    if (avatarContainer) {
+      avatarContainer.innerHTML = "" // Clear placeholder
+
+      if (avatarUrl) {
+        const img = document.createElement("img")
+        img.src = avatarUrl
+        img.alt = "User avatar"
+        img.className = "h-[175px] w-[175px] object-cover rounded-md"
+        avatarContainer.appendChild(img)
+      }
     }
   })
 </script>
