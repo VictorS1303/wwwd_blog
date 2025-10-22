@@ -5,4 +5,11 @@ const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL
 const supabaseKey = import.meta.env.PUBLIC_SUPABASE_KEY
 
 // Create client
-export const supabaseClient = createClient(supabaseUrl, supabaseKey)
+export const supabaseClient = createClient(supabaseUrl, supabaseKey, {
+    auth:
+    {
+        persistSession: true,
+        storage: localStorage,
+        autoRefreshToken: true,
+    }
+})
