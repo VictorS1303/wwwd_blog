@@ -1,14 +1,14 @@
 ---
-import DashboardLockSection from "../generals/section/DashboardLockSection.astro";
+import DashboardLockSection from "../generals/section/DashboardLockSection.astro"
 
 const dialogButtons = [
   {
-    buttonText: 'Register',
-    href: '/register'
+    buttonText: "Register",
+    href: "/register",
   },
   {
-    buttonText: 'Login',
-    href: '/login'
+    buttonText: "Login",
+    href: "/login",
   },
 ]
 ---
@@ -21,8 +21,3 @@ const dialogButtons = [
   textBlockParagraphText="You must register or be logged in in order to access your dashboard."
   dialogButtons={dialogButtons}
 />
-
-<script>
-  const dashboardLockModal = document.querySelector('#dashboard_lock_modal')
-  dashboardLockModal?.showModal()
-</script>

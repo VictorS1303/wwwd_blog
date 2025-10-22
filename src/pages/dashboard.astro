@@ -97,8 +97,7 @@ const confirmLogoutButtons = [
 
 <script>
   import { supabaseClient } from "../../js/supabase/supabase_client"
-  import { logOutUser } from "../../js/utils/supabase_methods"
-  import { updateProfile } from "../../js/utils/supabase_methods"
+  import { logOutUser, updateProfile } from "../../js/utils/supabase_methods"
 
   const postsWrapper = document.getElementById("dashboard-posts-wrapper")
   const lockWrapper = document.getElementById("dashboard-lock-wrapper")
@@ -106,15 +105,14 @@ const confirmLogoutButtons = [
   const dashboardControlsContainer = document.querySelector(
     ".dashboard-controls-container",
   )
-
   const confirmLogoutModal = document.querySelector("#confirm_logout_modal")
   const failedUpdateModal = document.querySelector("#failed_update_modal")
-
   const updateProfileForm = document.querySelector("#update_profile_form")
   const updateProfileDialog = document.querySelector("#update_profile_dialog")
   const succssfulUpdateModal = document.querySelector(
     "#successful_update_modal",
   )
+  const usernameDisplay = document.getElementById("dashboard-username")
 
   confirmLogoutModal?.addEventListener("click", (e) => determineLogOutAction(e))
 
@@ -124,58 +122,51 @@ const confirmLogoutButtons = [
   )
 
   function determineDashboardAction(e) {
-    if (e.target.classList.contains("log-out-button")) {
+    if (e.target.classList.contains("log-out-button"))
       confirmLogoutModal?.showModal()
-    }
-    if (e.target.classList.contains("edit-profile-button")) {
+    if (e.target.classList.contains("edit-profile-button"))
       updateProfileDialog?.showModal()
-    }
   }
 
   // Determine log out action
   function determineLogOutAction(e) {
-    if (e.target.classList.contains("confirm-logout-btn")) {
-      logOutUser()
-    }
-    if (e.target.classList.contains("stay-logged-in-btn")) {
+    if (e.target.classList.contains("confirm-logout-btn")) logOutUser()
+    if (e.target.classList.contains("stay-logged-in-btn"))
       confirmLogoutModal?.close()
-    }
   }
 
-  // Show/hide dashboard depending on auth
+  // --- 🧠 AUTH & USERNAME HANDLING ---
   const {
     data: { user },
   } = await supabaseClient.auth.getUser()
 
+  const username = user?.user_metadata?.username ?? "User"
+
   if (user) {
     postsWrapper.style.display = "block"
     document.title = `Welcome, ${username}!`
+    usernameDisplay.textContent = `Welcome, ${username}!`
     dashboardLockModal?.close()
   } else {
     lockWrapper.style.display = "block"
-    dashboardLockModal?.showModal() // ← Add this line
+    dashboardLockModal?.showModal()
     document.title = "No user"
+    usernameDisplay.textContent = "Not logged in"
   }
 
-  // Set title
-  const username = user?.user_metadata.username
-
-  // Form submission — updated version
+  // --- 📝 Profile update handling ---
   updateProfileForm?.addEventListener("submit", async (e) => {
+    e.preventDefault()
     const formData = new FormData(updateProfileForm)
     const updatedUsername = formData.get("updated_username")
     const updatedPassword = formData.get("updated_password")
 
-    // Call your existing updateProfile function
     const updateResult = await updateProfile(updatedUsername, updatedPassword)
 
     if (updateResult.success) {
       updateProfileDialog?.close()
       succssfulUpdateModal?.showModal()
-
-      setTimeout(() => {
-        location?.reload()
-      }, 2000)
+      setTimeout(() => location?.reload(), 2000)
     } else {
       failedUpdateModal?.showModal()
     }
@@ -184,7 +175,7 @@ const confirmLogoutButtons = [
   document
     .querySelector(".edit-profile-button")
     ?.addEventListener("click", () => {
-      updateProfileForm.reset() // Clear inputs
+      updateProfileForm.reset()
       updateProfileDialog?.showModal()
     })
 </script>
