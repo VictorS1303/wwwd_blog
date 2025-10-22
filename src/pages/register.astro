@@ -96,9 +96,9 @@ const signUpFormInputs = [
     const repeatPassword = formData.get("repeat_password")
     const profileImageFile = signUpForm.elements["profile_image"]?.files[0]
 
-    console.log("Profile image file:", profileImageFile) // ✅ Add this
-    console.log("File name:", profileImageFile?.name) // ✅ Add this
-    console.log("File size:", profileImageFile?.size) // ✅ Add this
+    console.log("Profile image file:", profileImageFile)
+    console.log("File name:", profileImageFile?.name)
+    console.log("File size:", profileImageFile?.size)
 
     // Validate password match
     if (password !== repeatPassword) {

@@ -43,14 +43,23 @@ const controlButtons = [
   </div>
 </Section>
 
-<script type="module">
+<script>
   import { supabaseClient } from "../../../../js/supabase/supabase_client.js"
 
-  document.addEventListener("DOMContentLoaded", async () => {
+  async function initDashboard() {
+    console.log("Init started") // Debug
+
+    const headerEl = document.querySelector("#dashboard_header")
+    const avatarContainer = document.querySelector("#avatar_container")
+
+    console.log("Elements:", headerEl, avatarContainer) // Debug - ARE THESE NULL?
+
     const {
       data: { session },
       error,
     } = await supabaseClient.auth.getSession()
+
+    console.log("Session:", session, "Error:", error) // Debug
 
     if (error) {
       console.error("Error getting session:", error)
@@ -67,18 +76,17 @@ const controlButtons = [
     const avatarUrl = user.user_metadata?.avatar_url
     const userName = user.user_metadata?.username || "User"
 
-    const headerEl = document.querySelector("#dashboard_header")
-    const avatarContainer = document.querySelector("#avatar_container")
-
     // Update header
     if (headerEl) {
+      console.log("Updating header with:", userName) // Debug
       headerEl.textContent = `Welcome, ${userName}!`
+    } else {
+      console.error("headerEl is null!") // Debug
     }
 
-    // Update avatar - replace the placeholder
+    // Update avatar
     if (avatarContainer) {
-      avatarContainer.innerHTML = "" // Clear placeholder
-
+      avatarContainer.innerHTML = ""
       if (avatarUrl) {
         const img = document.createElement("img")
         img.src = avatarUrl
@@ -87,5 +95,12 @@ const controlButtons = [
         avatarContainer.appendChild(img)
       }
     }
-  })
+  }
+
+  // Run after DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDashboard)
+  } else {
+    initDashboard()
+  }
 </script>
